@@ -1,22 +1,67 @@
-import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
-import Layout from '../layout/dashboard';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useSession, getSession } from 'next-auth/react';
+import useSWR from 'swr';
 
+import DashboardUser from '../components/user-panel';
 
-export default function Home() {
-  const { data: session } = useSession();
+import SpinLoader from '../components/spiner';
 
+const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+const Dashboard = () => {
+  const { data: session, status } = useSession(); // Obtén la sesión actual con NextAuth
+  const [jwt, setJwt] = useState(null); // Estado para almacenar el token JWT
+  const router = useRouter();
+
+  // Fetcher para useSWR
+  const fetcher = async (url) => {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${jwt}`, // Usa el JWT en las cabeceras
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error fetching data');
+    }
+
+    return response.json();
+  };
+
+  // Usamos useEffect para obtener el JWT desde la sesión cuando esté disponible
   useEffect(() => {
-    if (session == null) return;
-    console.log('session.jwt:', session.jwt);
+    const getToken = async () => {
+      const session = await getSession(); // Obtén la sesión actual
+      if (session) {
+        setJwt(session.jwt); // Guarda el token JWT en el estado
+      }
+    };
 
-  }, [session]);
+    getToken();
+  }, []);
 
-  //console.log(session)
+  // Usamos useSWR para obtener los datos del usuario
+  const { data, error, isLoading } = useSWR(jwt ? `${strapiUrl}/api/users/me` : null, fetcher);
+
+  // Este useEffect se ejecuta una vez que los datos del usuario están disponibles
+  useEffect(() => {
+    if (data && !data.planPagado) {
+      // Si el usuario no tiene un plan pagado, redirigimos a la página de pago
+      router.push('/upgrade');
+    }
+  }, [data, router]);
+
+  // Manejo de errores y estado de carga
+  if (status === 'loading' || isLoading) return <><SpinLoader/></>;
+  if (error) return <p>Ha ocurrido un error</p>;
 
   return (
-    <Layout title="Hola, estimado 👋">
-        Index
-    </Layout>
+    <>
+      <DashboardUser/>
+      {/* Aquí puedes agregar más contenido del dashboard */}
+    </>
   );
-}
+};
+
+export default Dashboard;

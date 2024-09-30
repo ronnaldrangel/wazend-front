@@ -19,13 +19,13 @@ import Image from 'next/image';
 
 const navigation = [
   { name: 'Dashboard', href: '/'},
-  { name: 'Suscripciones', href: '/subscription'},
-  { name: 'Soporte', href: '/support'},
-  { name: 'Documentación', href: 'https://docs.wazend.net/', external: true},
+  { name: 'Herramientas', href: '/tools'},
+  { name: 'Grupo VIP', href: 'https://api.whatsapp.com/send?phone=51924079147&text=Hola%20soy%20cliente%20y%20quiero%20unirme%20al%20grupo%20VIP%20de%20Wazend%2C%20mi%20correo%20es', external: true},
+  { name: 'Documentación', href: 'https://help.wazend.net/', external: true},
 ]
 const userNavigation = [
   { name: 'Tu perfil', href: '/profile' },
-  { name: 'Facturación', href: 'https://wazend.net/account/', external: true},
+  { name: 'Facturación', href: 'https://wazend.lemonsqueezy.com/billing', external: false},
   { name: 'Cerrar sesión', href: '#', signOut: true },
 ]
 
