@@ -8,6 +8,8 @@ import md5 from 'md5';
 
 import { signOut, useSession } from 'next-auth/react';
 
+import Image from 'next/image';
+
 // const user = {
 //   name: 'Tom Cook',
 //   email: 'tom@example.com',
@@ -69,15 +71,19 @@ export default function Navbar() {
                 <div className="flex">
                   <div className="flex flex-shrink-0 items-center">
                     <Link href="/">
-                      <img
+                      <Image
                         className="block h-8 w-auto lg:hidden"
-                        src="https://res.cloudinary.com/dyhpggkre/image/upload/v1711698081/icon_615a1010ac.svg"
-                        alt="Wazend"
+                        src="/images/icon-dark.svg"
+                        alt="Wazend Logo"
+                        width={236} // Ajusta el ancho deseado
+                        height={60} // Ajusta la altura deseada
                       />
-                      <img
+                      <Image
                         className="hidden h-8 w-auto lg:block"
-                        src="https://res.cloudinary.com/dyhpggkre/image/upload/v1711698081/icon_615a1010ac.svg"
-                        alt="Wazend"
+                        src="/images/icon-dark.svg"
+                        alt="Wazend Logo"
+                        width={236} // Ajusta el ancho deseado
+                        height={60} // Ajusta la altura deseada
                       />
                     </Link>
                   </div>

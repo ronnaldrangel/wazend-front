@@ -1,19 +1,24 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
+import Image from 'next/image';
+
 export default function EmailSuccess() {
     return (
         <>
             <Head>
                 <title>Wazend</title>
             </Head>
-            <div className="h-screen bg-cover bg-center" style={{ backgroundImage: 'url("https://app.whaticket.com/assets/backgroundSuccess-DOAtfqXm.png")' }}>
+            <div className="h-screen bg-cover bg-center" style={{ backgroundImage: 'url("/images/bg-email.png")' }}>
                 <main className="grid min-h-full place-items-center bg-white bg-opacity-0 px-6 py-24 sm:py-32 lg:px-8">
                     <div className="text-center">
-                        <img
+                        <Image
                             className="h-10 w-auto mx-auto mb-10"
-                            src="https://res.cloudinary.com/dyhpggkre/image/upload/v1711698081/logo_35fc05b51f.svg"
+                            src="/images/logo-dark.svg"
                             alt="Wazend Logo"
+                            width={236} // Ajusta el ancho deseado
+                            height={60} // Ajusta la altura deseada
+                            
                         />
                         <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">¡Excelente! 🎉</h1>
                         <p className="mt-6 text-2xl leading-7 text-gray-600">¡Ya casi terminas! Verifica tu correo electrónico para activar tu cuenta en Wazend.</p>
