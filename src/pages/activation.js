@@ -15,8 +15,7 @@ export default function RedirectAndLog() {
   }, []);
 
   return (
-    <div>
-      <p>Redirigiendo a login...</p>
-    </div>
+    <>
+    </>
   );
 };
