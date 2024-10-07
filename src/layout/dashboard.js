@@ -13,9 +13,9 @@ export default function Layout({ children, title, showButton }) {
 
                 <Navbar />
 
-                <main>
-                    <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900">{title}</h1>
+                <main className="mx-auto max-w-7xl py-8 px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title}</h1>
                         {showButton && (
                             <button
                                 type="button"
@@ -27,7 +27,7 @@ export default function Layout({ children, title, showButton }) {
                             </button>
                         )}
                     </div>
-                    <div className="mx-auto max-w-7xl py-0 px-4 sm:px-6 lg:px-8">{children}</div>
+                    <div className="mt-6 pb-6">{children}</div>
                 </main>
 
             </div>
