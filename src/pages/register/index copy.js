@@ -4,26 +4,28 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
-import { CheckCircleIcon } from '@heroicons/react/24/solid'
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 import {
   EyeIcon,
   EyeSlashIcon,
-} from '@heroicons/react/24/outline'
+} from '@heroicons/react/24/outline';
 
 import Image from 'next/image';
 
-
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 
 export default function SignUp() {
   const router = useRouter();
 
+  // Estado inicial con campos name y phone
   const [formData, setFormData] = useState({
+    name: '',     // Cambiado a name
+    phone: '',    // Cambiado a phone
     email: '',
     password: ''
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordConditions, setPasswordConditions] = useState({
     uppercase: false,
@@ -33,7 +35,6 @@ export default function SignUp() {
     length: false
   });
   const [showPasswordConditions, setShowPasswordConditions] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false); // Nuevo estado para controlar la visibilidad de la contraseña
 
   const handleChange = (e) => {
@@ -50,7 +51,6 @@ export default function SignUp() {
   };
 
   const validatePasswordConditions = (password) => {
-    // La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número, un carácter especial y tener una longitud mínima de 8 caracteres
     const conditions = {
       uppercase: /[A-Z]/.test(password),
       lowercase: /[a-z]/.test(password),
@@ -72,10 +72,13 @@ export default function SignUp() {
       setIsSubmitting(true);
 
       const username = generateUsername(formData.email); // Generar el nombre de usuario a partir del correo electrónico
+      // Enviar solicitud a Strapi con name y phone
       const response = await axios.post(`${strapiUrl}/api/auth/local/register`, {
         username,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        name: formData.name,         // Enviar el campo name
+        phone: formData.phone        // Enviar el campo phone
       });
       console.log('Registration successful:', response.data);
       toast.success('Registro exitoso.');
@@ -115,6 +118,52 @@ export default function SignUp() {
 
               <div className="mt-8">
                 <form className="space-y-6" onSubmit={handleSubmit}>
+                  {/* Nombre */}
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                      Nombre completo
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Nombre completo"
+                        required
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Teléfono */}
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
+                      WhatsApp
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        placeholder="51924079147"
+                        required
+                        value={formData.phone}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Solo permitir números
+                          if (/^\d*$/.test(value)) {
+                            handleChange(e); // Llama a tu función de cambio solo si es válido
+                          }
+                        }}
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+
+                  </div>
+
+                  {/* Email */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                       Correo electrónico
@@ -134,18 +183,16 @@ export default function SignUp() {
                     </div>
                   </div>
 
+                  {/* Contraseña */}
                   <div>
-                    <div className="flex items-center justify-between">
-                      <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                        Contraseña
-                      </label>
-                    </div>
+                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                      Contraseña
+                    </label>
                     <div className="mt-2 relative">
                       <input
                         id="password"
                         name="password"
                         type={showPassword ? 'text' : 'password'} // Alternar entre tipo de entrada password y text
-                        autoComplete="current-password"
                         placeholder="••••••••"
                         required
                         value={formData.password}
@@ -164,10 +211,10 @@ export default function SignUp() {
                           <EyeIcon className="h-5 w-5" aria-hidden="true" />
                         )}
                       </button>
-
                     </div>
                   </div>
 
+                  {/* Condiciones de contraseña */}
                   <div className="text-sm text-gray-500">
                     {showPasswordConditions && (
                       <ul>
@@ -250,7 +297,6 @@ export default function SignUp() {
     </div>
   );
 };
-
 
 export const getServerSideProps = async (context) => {
   const session = await getSession(context);

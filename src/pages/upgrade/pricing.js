@@ -59,11 +59,11 @@ export default function Example() {
   const [frequency, setFrequency] = useState(frequencies[0])
 
   return (
-    <div className="bg-white py-8 sm:py-12">
+    <div className=" py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Comienza ahora
+            Precios adaptados a sus necesidades
           </p>
         </div>
         <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
@@ -73,7 +73,7 @@ export default function Example() {
           <RadioGroup
             value={frequency}
             onChange={setFrequency}
-            className="grid grid-cols-2 gap-x-1 rounded-full p-1 text-center text-xs font-semibold leading-5 ring-1 ring-inset ring-gray-200"
+            className="bg-white grid grid-cols-2 gap-x-1 rounded-full p-1 text-center text-xs font-semibold leading-5 ring-1 ring-inset ring-gray-200"
           >
             <RadioGroup.Label className="sr-only">Payment frequency</RadioGroup.Label>
             {frequencies.map((option) => (
@@ -97,7 +97,7 @@ export default function Example() {
             <div
               key={tier.id}
               className={classNames(
-                tier.featured ? 'bg-gray-900 ring-gray-900' : 'ring-gray-200',
+                tier.featured ? 'bg-gray-900 ring-gray-900' : 'ring-gray-200 bg-white',
                 'rounded-3xl p-8 ring-1 xl:p-10'
               )}
             >

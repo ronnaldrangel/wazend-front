@@ -11,20 +11,20 @@ const navigation = [
   { name: 'Mis servicios', href: '/' },
   { name: 'Herramientas', href: '/tools' },
   //{ name: 'Grupo VIP', href: 'https://api.whatsapp.com/send?phone=51924079147&text=Hola%20soy%20cliente%20y%20quiero%20unirme%20al%20grupo%20VIP%20de%20Wazend%2C%20mi%20correo%20es', external: true },
-  { name: 'Documentación', href: 'https://help.wazend.net/', external: true }
+  { name: 'Documentación', href: 'https://docs.wazend.net/', external: true }
 ]
 
 const userNavigation = [
   { name: 'Tu perfil', href: '/profile' },
-  { name: 'Facturación', href: 'https://wazend.lemonsqueezy.com/billing', external: false },
+  { name: 'Facturación', href: 'https://wazend.net/my-account', external: true },
   { name: 'Cerrar sesión', href: '/', signOut: true }
 ]
 
-function classNames (...classes) {
+function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Navbar () {
+export default function Navbar() {
   const router = useRouter()
   const [currentPath, setCurrentPath] = useState(router.pathname)
   const { data: session } = useSession()
@@ -206,12 +206,19 @@ export default function Navbar () {
                         key={item.name}
                         as='a'
                         href={item.href}
-                        className='block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800'
-                        onClick={item.signOut ? handleSignOut : undefined}
+                        className={`block px-4 py-2 text-base font-medium ${item.signOut ? 'text-red-500 hover:text-red-600' : 'text-gray-500'} hover:bg-gray-100 hover:text-gray-800`}
+                        onClick={(e) => {
+                          if (item.signOut) {
+                            e.preventDefault(); // Previene la redirección predeterminada
+                            handleSignOut();    // Llama a la función de cerrar sesión
+                          }
+                        }}
                         target={item.external ? '_blank' : undefined}
                       >
                         {item.name}
                       </Disclosure.Button>
+
+
                     ))}
                   </div>
                 </div>

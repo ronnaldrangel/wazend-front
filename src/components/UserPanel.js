@@ -9,7 +9,7 @@ import { ArrowTopRightOnSquareIcon, ArrowRightCircleIcon } from '@heroicons/reac
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-const UserOrders = () => {
+const UserSubscription = () => {
   const { data: session, status } = useSession();
   const [jwt, setJwt] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -60,12 +60,12 @@ const UserOrders = () => {
     getTokenAndUserId();
   }, []);
 
-  const { data, error, isLoading } = useSWR(jwt ? `${strapiUrl}/api/users/me?populate=orders` : null, fetcher);
+  const { data, error, isLoading } = useSWR(jwt ? `${strapiUrl}/api/users/me?populate=subscriptions` : null, fetcher);
 
   const createOrder = async () => {
     setIsCreating(true);
     try {
-      const response = await fetch(`${strapiUrl}/api/orders`, {
+      const response = await fetch(`${strapiUrl}/api/subscriptions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const UserOrders = () => {
           data: {
             selectedPlan: 'basic',
             startDate: new Date().toISOString().split('T')[0],
-            expirationDate: new Date().toISOString().split('T')[0],
+            endDate: new Date().toISOString().split('T')[0],
             user: { connect: userId },
           },
         }),
@@ -86,7 +86,7 @@ const UserOrders = () => {
       }
 
       console.log('Orden creada con éxito');
-      mutate(`${strapiUrl}/api/users/me?populate=orders`);
+      mutate(`${strapiUrl}/api/users/me?populate=subscriptions`);
     } catch (error) {
       console.error('Error al crear la orden:', error);
     } finally {
@@ -94,13 +94,13 @@ const UserOrders = () => {
     }
   };
 
-  if (status === 'loading' || isLoading || error || !data || !data.orders) return <OrderSkeleton />;
-  if (data.orders.length === 0) return <NoOrders />;
+  if (status === 'loading' || isLoading || error || !data || !data.subscriptions) return <OrderSkeleton />;
+  if (data.subscriptions.length === 0) return <NoOrders />;
 
   return (
     <div>
       <ul className="space-y-4">
-        {data.orders.map((order) => (
+        {data.subscriptions.map((order) => (
           <li key={order.id} className="flex flex-col md:flex-row bg-white rounded-xl p-8 shadow-lg gap-4 md:items-center ">
             {/* Primera Parte: Imagen */}
             <div className="hidden md:block">
@@ -119,17 +119,17 @@ const UserOrders = () => {
                 <a href={`https://${order.url}`} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold hover:underline">{order.url}</a>
                 <ArrowTopRightOnSquareIcon className='h-4 w-4 text-emerald-700' />
               </div>
-              <p className="text-2xl font-bold">Wazend CRM</p>
+              <p className="text-2xl font-bold">Wazend CRM (#{order.wooID})</p>
               <div className="flex flex-row items-center space-x-2 mt-1 text-gray-500">
-                <div className={`w-3 h-3 rounded-full ${order.statusPlan === 'pending' ? 'bg-yellow-500' : order.statusPlan === 'available' ? 'bg-green-500' : order.statusPlan === 'expired' ? 'bg-red-500' : 'bg-gray-500'}`} />
-                <p className="text-sm font-bold uppercase">{order.selectedPlan}</p>
-                <p className="text-sm">Se renueva el {new Date(order.expirationDate).toLocaleDateString()}</p>
+                <div className={`w-3 h-3 rounded-full ${order.statusPlan === 'pending' ? 'bg-yellow-500' : order.statusPlan === 'active' ? 'bg-green-500' : order.statusPlan === 'expired' ? 'bg-red-500' : 'bg-gray-500'}`} />
+                <p className="text-sm font-bold uppercase">{order.plan}</p>
+                <p className="text-sm">Se renueva el {new Date(order.endDate).toLocaleDateString()}</p>
               </div>
             </div>
 
             {/* Tercera Parte: Botón */}
             <div className="md:w-2/3 flex justify-end">
-              {order.statusPlan === 'available' ? (
+              {order.statusPlan === 'active' ? (
                 <button
                   onClick={() => window.open(`https://${order.url}`, '_blank')}
                   className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-lg font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
@@ -138,7 +138,9 @@ const UserOrders = () => {
                   <span>Acceder</span>
                 </button>
               ) : (
-                <span className="text-lg font-semibold text-gray-600">{order.statusPlan}</span>
+                <span className={`text-lg font-semibold ${order.statusPlan === 'pending' ? 'text-yellow-500' : order.statusPlan === 'active' ? 'text-green-500' : order.statusPlan === 'expired' ? 'text-red-500' : 'text-gray-500'}`}>
+                  Tu servicio está {order.statusPlan}
+                </span>
               )}
             </div>
           </li>
@@ -156,4 +158,4 @@ const UserOrders = () => {
   );
 };
 
-export default UserOrders;
+export default UserSubscription;

@@ -5,23 +5,19 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
-
-import {
-  EyeIcon,
-  EyeSlashIcon,
-} from '@heroicons/react/24/outline';
-
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css'; // Asegúrate de importar los estilos
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function SignUp() {
   const router = useRouter();
 
-  // Estado inicial con campos name y phone
   const [formData, setFormData] = useState({
-    name: '',     // Cambiado a name
-    phone: '',    // Cambiado a phone
+    name: '',
+    phone: '',
     email: '',
     password: ''
   });
@@ -35,7 +31,7 @@ export default function SignUp() {
     length: false
   });
   const [showPasswordConditions, setShowPasswordConditions] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // Nuevo estado para controlar la visibilidad de la contraseña
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,7 +43,7 @@ export default function SignUp() {
   };
 
   const generateUsername = (email) => {
-    return email.replace(/[^a-zA-Z0-9]/g, ''); // Eliminar todos los caracteres no alfanuméricos del correo electrónico
+    return email.replace(/[^a-zA-Z0-9]/g, '');
   };
 
   const validatePasswordConditions = (password) => {
@@ -71,14 +67,13 @@ export default function SignUp() {
     try {
       setIsSubmitting(true);
 
-      const username = generateUsername(formData.email); // Generar el nombre de usuario a partir del correo electrónico
-      // Enviar solicitud a Strapi con name y phone
+      const username = generateUsername(formData.email);
       const response = await axios.post(`${strapiUrl}/api/auth/local/register`, {
         username,
         email: formData.email,
         password: formData.password,
-        name: formData.name,         // Enviar el campo name
-        phone: formData.phone        // Enviar el campo phone
+        name: formData.name,
+        phone: formData.phone
       });
       console.log('Registration successful:', response.data);
       toast.success('Registro exitoso.');
@@ -107,8 +102,8 @@ export default function SignUp() {
                     className="h-8 w-auto"
                     src="/images/logo-dark.svg"
                     alt="Wazend Logo"
-                    width={236} // Ajusta el ancho deseado
-                    height={60} // Ajusta la altura deseada
+                    width={236}
+                    height={60}
                   />
                 </Link>
                 <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -137,30 +132,29 @@ export default function SignUp() {
                     </div>
                   </div>
 
-                  {/* Teléfono */}
+                  {/* Teléfono (WhatsApp) */}
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
                       WhatsApp
                     </label>
                     <div className="mt-2">
-                      <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        placeholder="51924079147"
-                        required
+                      <PhoneInput
+                        country={'pe'} // Cambia el código de país según sea necesario
                         value={formData.phone}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          // Solo permitir números
-                          if (/^\d*$/.test(value)) {
-                            handleChange(e); // Llama a tu función de cambio solo si es válido
-                          }
+                        onChange={(phone) => setFormData({ ...formData, phone })}
+                        inputStyle={{
+                          width: '100%',
+                          borderRadius: '0.375rem',
+                          border: '1px solid #D1D5DB',
+                          fontSize: '0.875rem', // Tamaño de letra igual que los otros formularios
+                          color: '#1F2937', // Color de texto (gris oscuro)
                         }}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                        buttonStyle={{
+                          borderRadius: '0.375rem 0 0 0.375rem',
+                          borderRight: 'none',
+                        }}
                       />
                     </div>
-
                   </div>
 
                   {/* Email */}
@@ -192,7 +186,7 @@ export default function SignUp() {
                       <input
                         id="password"
                         name="password"
-                        type={showPassword ? 'text' : 'password'} // Alternar entre tipo de entrada password y text
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="••••••••"
                         required
                         value={formData.password}
@@ -203,7 +197,7 @@ export default function SignUp() {
                       <button
                         type="button"
                         className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 focus:outline-none"
-                        onClick={() => setShowPassword(!showPassword)} // Alternar entre mostrar y ocultar la contraseña
+                        onClick={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? (
                           <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
@@ -288,8 +282,8 @@ export default function SignUp() {
               className="absolute inset-0 h-full w-full object-cover"
               src="/images/bg-register.webp"
               alt="Wazend BG"
-              width={960} // Ajusta el ancho deseado
-              height={1080} // Ajusta la altura deseada
+              width={960}
+              height={1080}
             />
           </div>
         </div>
@@ -300,7 +294,6 @@ export default function SignUp() {
 
 export const getServerSideProps = async (context) => {
   const session = await getSession(context);
-  // Check if session exists or not, if not, redirect
   if (session) {
     return {
       redirect: {

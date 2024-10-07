@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import 'react-phone-input-2/lib/style.css';
 import { SessionProvider } from 'next-auth/react';
 import Head from 'next/head'
 
