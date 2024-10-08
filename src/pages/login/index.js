@@ -100,7 +100,7 @@ export default function SignIn() {
 
         <p className="mt-10 text-sm text-center leading-6 text-gray-500">
           ¿No tienes una cuenta?{' '}
-          <Link href="/register" className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500">
+          <Link href="https://wazend.net/pricing/" className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500">
             Regístrate ahora
           </Link>
         </p>
