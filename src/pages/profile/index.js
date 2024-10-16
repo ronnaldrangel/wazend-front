@@ -1,49 +1,61 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
 import { TrashIcon } from '@heroicons/react/24/solid';
+import ProfileLayout from '../../layout/ProfileLayout';
 
-import ProfileLayout from './ProfileLayout';
+import { useState, useEffect } from 'react';
 
 
 export default function General() {
   const { data: session } = useSession();
 
+  const [email, setEmail] = useState('');
+
+    // Llenar el campo de email cuando session.user.email esté disponible
+    useEffect(() => {
+      if (session?.user?.email) {
+        setEmail(session.user.email);
+      }
+    }, [session]);
+
   return (
     <>
       <ProfileLayout>
-        <div className="w-full md:w-3/4 grid gap-y-4">
+
           {/* Formulario */}
           <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-lg p-6">
-            <div className="grid gap-y-6">
-              <p className="block text-md font-semibold leading-6 text-gray-900">Detalles</p>
+            <div className="grid">
+              <p className="block text-md font-semibold leading-6 text-gray-900 mb-2">Información del perfil</p>
+              <p className="block text-sm font-base leading-6 text-gray-900 mb-6">
+                Actualice la información del perfil de su cuenta y su dirección de correo electrónico.
+              </p>
 
               {/* Nombre */}
+
+              {/* Correo electrónico */}
+
               <div>
-                <label htmlFor="website" className="block text-xs font-semibold leading-6 text-gray-900">
-                  Nombre
+                <label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
+                  Correo electrónico
                 </label>
-                <div className="mt-1">
-                  {session && (
-                    <span className="inline-flex items-center rounded-sm bg-gray-100 px-4 py-2 text-sm font-base text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                      {session.user.email}
-                    </span>
-                  )}
+                <div className="mt-2">
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="Ingresa tu correo electrónico"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="block w-1/2 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 text-base"
+                  />
                 </div>
               </div>
 
-              {/* Correo electrónico */}
-              <div>
-                <label htmlFor="about" className="block text-xs font-semibold leading-6 text-gray-900">
-                  Correo electrónico
-                </label>
-                <div className="mt-1">
-                  {session && (
-                    <span className="inline-flex items-center rounded-sm bg-gray-100 px-4 py-2 text-sm font-base text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                      {session.user.email}
-                    </span>
-                  )}
-                </div>
-              </div>
+
+
+
             </div>
           </div>
 
@@ -63,7 +75,6 @@ export default function General() {
             </button>
           </div>
 
-        </div>
       </ProfileLayout>
     </>
   );

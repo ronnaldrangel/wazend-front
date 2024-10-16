@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
                   className="h-8 w-auto"
                   src="/images/logo-dark.svg"
                   alt="Wazend Logo"
-                  width={238} // Ajusta el ancho deseado
+                  width={236} // Ajusta el ancho deseado
                   height={60} // Ajusta la altura deseada
                 />
               </Link>

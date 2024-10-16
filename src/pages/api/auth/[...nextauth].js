@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { signIn } from '../../../services/auth';
+import { signIn } from '../../../services/auth'
 
 export default NextAuth({
   // Configure one or more authentication providers

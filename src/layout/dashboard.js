@@ -9,12 +9,12 @@ const handleButtonClick = () => {
 export default function Layout({ children, title, showButton }) {
     return (
         <>
-            <div className="min-h-screen">
+            <div className="min-h-full">
 
                 <Navbar />
 
-                <main className="mx-auto max-w-7xl py-8 px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between">
+                <header className="bg-white shadow-sm">
+                    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 flex items-center justify-between">
                         <h1 className="text-3xl font-bold tracking-tight text-gray-900">{title}</h1>
                         {showButton && (
                             <button
@@ -27,7 +27,10 @@ export default function Layout({ children, title, showButton }) {
                             </button>
                         )}
                     </div>
-                    <div className="mt-6 pb-6">{children}</div>
+                </header>
+
+                <main>
+                    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">{children}</div>
                 </main>
 
             </div>

@@ -9,8 +9,7 @@ import Image from 'next/image'
 
 const navigation = [
   { name: 'Mis servicios', href: '/' },
-  { name: 'Herramientas', href: '/tools' },
-  //{ name: 'Grupo VIP', href: 'https://api.whatsapp.com/send?phone=51924079147&text=Hola%20soy%20cliente%20y%20quiero%20unirme%20al%20grupo%20VIP%20de%20Wazend%2C%20mi%20correo%20es', external: true },
+  //{ name: 'Herramientas', href: '/tools' },
   { name: 'Documentación', href: 'https://docs.wazend.net/', external: true }
 ]
 
@@ -58,6 +57,7 @@ export default function Navbar() {
 
   return (
     <>
+      {/* <Disclosure as='nav' className='bg-white shadow-sm border-b border-gray-100'></Disclosure> */}
       <Disclosure as='nav' className='bg-white shadow-sm border-b border-gray-100'>
         {({ open }) => (
           <>

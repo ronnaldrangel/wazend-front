@@ -7,8 +7,6 @@ import { getSession } from 'next-auth/react';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css'; // Asegúrate de importar los estilos
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -17,7 +15,6 @@ export default function SignUp() {
 
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
     email: '',
     password: ''
   });
@@ -72,8 +69,7 @@ export default function SignUp() {
         username,
         email: formData.email,
         password: formData.password,
-        name: formData.name,
-        phone: formData.phone
+        name: formData.name
       });
       console.log('Registration successful:', response.data);
       toast.success('Registro exitoso.');
@@ -128,31 +124,6 @@ export default function SignUp() {
                         value={formData.name}
                         onChange={handleChange}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Teléfono (WhatsApp) */}
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
-                      WhatsApp
-                    </label>
-                    <div className="mt-2">
-                      <PhoneInput
-                        country={'pe'} // Cambia el código de país según sea necesario
-                        value={formData.phone}
-                        onChange={(phone) => setFormData({ ...formData, phone })}
-                        inputStyle={{
-                          width: '100%',
-                          borderRadius: '0.375rem',
-                          border: '1px solid #D1D5DB',
-                          fontSize: '0.875rem', // Tamaño de letra igual que los otros formularios
-                          color: '#1F2937', // Color de texto (gris oscuro)
-                        }}
-                        buttonStyle={{
-                          borderRadius: '0.375rem 0 0 0.375rem',
-                          borderRight: 'none',
-                        }}
                       />
                     </div>
                   </div>
