@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
 
-import ProfileLayout from '../../../layout/ProfileLayout';
+import ProfileLayout from '../../../layout/profileLayout';
 
 
 export default function General() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
 import { TrashIcon } from '@heroicons/react/24/solid';
-import ProfileLayout from '../../layout/ProfileLayout';
+import ProfileLayout from '../../layout/profileLayout';
 
 import { useState, useEffect } from 'react';
 
@@ -23,7 +23,7 @@ export default function General() {
       <ProfileLayout>
 
           {/* Formulario */}
-          <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-lg p-6">
+          <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-lg p-6">
             <div className="grid">
               <p className="block text-md font-semibold leading-6 text-gray-900 mb-2">Información del perfil</p>
               <p className="block text-sm font-base leading-6 text-gray-900 mb-6">
@@ -60,7 +60,7 @@ export default function General() {
           </div>
 
           {/* Botón de eliminación */}
-          <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-lg p-6">
+          <div className="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-lg p-6 mt-6">
             <p className="block text-md font-semibold leading-6 text-gray-900 mb-2">¿Estás seguro de esto?</p>
             <p className="block text-sm font-base leading-6 text-gray-900 mb-6">
               Wazend eliminará sus suscripciones actuales y todos sus proyectos, junto con todas sus implementaciones, configuraciones y todos los demás recursos pertenecientes a su cuenta personal. Esta acción no es reversible.

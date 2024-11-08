@@ -39,9 +39,10 @@ export default function Profile({ children }) {
           </div>
 
           {/* Contenido de la sección */}
-          <div className="w-full md:w-3/4 grid gap-y-4">
-          {children}
+          <div className="w-full md:w-3/4">
+            {children}
           </div>
+          
         </div>
       </Layout>
     </>

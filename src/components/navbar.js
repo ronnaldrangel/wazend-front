@@ -8,9 +8,11 @@ import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 
 const navigation = [
+  { name: 'Prueba gratis', href: '/trial', trial: true },
   { name: 'Mis servicios', href: '/' },
   //{ name: 'Herramientas', href: '/tools' },
-  { name: 'Documentación', href: 'https://docs.wazend.net/', external: true }
+  { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
+  { name: 'Soporte', href: 'https://wazend.net/support/', external: true }
 ]
 
 const userNavigation = [
@@ -82,7 +84,7 @@ export default function Navbar() {
                       />
                     </Link>
                   </div>
-                  <div className='hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8'>
+                  {/* <div className='hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8'>
                     {navigation.map((item) => (
                       <Link
                         key={item.name}
@@ -100,7 +102,30 @@ export default function Navbar() {
                         {item.external && <ArrowTopRightOnSquareIcon className='h-4 w-4 ml-2 text-gray-500' />}
                       </Link>
                     ))}
+                  </div> */}
+
+                  <div className='hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8'>
+                    {navigation.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={classNames(
+                          currentPath === item.href
+                            ? 'border-emerald-500 text-gray-900'
+                            : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                          'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium'
+                        )}
+                        aria-current={currentPath === item.href ? 'page' : undefined}
+                        target={item.external ? '_blank' : undefined}
+                      >
+                        <span className={item.trial ? 'bg-green-600 text-white px-2 py-1 rounded-lg' : ''}>
+                          {item.name}
+                        </span>
+                        {/* {item.external && <ArrowTopRightOnSquareIcon className='h-4 w-4 ml-2 text-gray-500' />} */}
+                      </Link>
+                    ))}
                   </div>
+
                 </div>
 
                 {session && (
