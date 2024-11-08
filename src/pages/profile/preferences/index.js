@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ProfileLayout from '../../../layout/profileLayout';
+import ProfileLayout from '../../../layout/ProfileLayout';
 
 
 export default function General() {

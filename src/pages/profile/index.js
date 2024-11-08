@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
 import { TrashIcon } from '@heroicons/react/24/solid';
-import ProfileLayout from '../../layout/profileLayout';
+import ProfileLayout from '../../layout/ProfileLayout';
 
 import { useState, useEffect } from 'react';
 
