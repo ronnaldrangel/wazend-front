@@ -4,14 +4,14 @@ import useSWR from 'swr';
 //import NoOrders from '../NoOrders';
 import OrderSkeleton from '../OrderSkeleton';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowTopRightOnSquareIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-import Link from 'next/link';
 import NoInstances from './NoTrialInstances';
-
 import MessageTrial from './MessageTrial';
+import DeleteButton from './DeleteButton';
 
 const UserSubscription = () => {
   const { data: session, status } = useSession();
@@ -89,13 +89,13 @@ const UserSubscription = () => {
 
             {/* Second Part: Plan Content and Date */}
             <div className="md:w-1/3 flex-grow">
-              <Link href={`/instances/${order.instanceId}`} passHref>
+              {/* <Link href={`/instances/${order.instanceId}`} passHref>
                 <div className="flex-row items-center space-x-2 text-emerald-600 inline-flex">
                   <p className="text-lg font-semibold hover:underline">Wazend-API</p>
                   <ArrowTopRightOnSquareIcon className='h-4 w-4 text-emerald-700' />
                 </div>
-              </Link>
-              <p className="text-2xl font-bold">{order.instanceId}</p>
+              </Link> */}
+              <p className="text-2xl font-bold">Instancia #{order.id}</p>
               <div className="flex flex-row items-center space-x-2 mt-1 text-gray-500">
                 <div className={`w-3 h-3 rounded-full ${new Date(order.endDate) < new Date()
                   ? 'bg-red-500'
@@ -112,22 +112,26 @@ const UserSubscription = () => {
 
 
             {/* Third Part: Button */}
-            <div className="justify-end ">
+            <div className="flex justify-end space-x-4">
               {new Date(order.endDate) >= new Date() ? (
-                <Link href={`/instances/${order.instanceId}`} passHref>
-                  <button
-                    className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-lg font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
-                  >
-                    <ArrowRightCircleIcon className="h-6 w-6" />
-                    <span>Acceder</span>
-                  </button>
-                </Link>
+                <>
+                  <Link href={`/instances/${order.instanceId}`} passHref>
+                    <button
+                      className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-lg font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
+                    >
+                      <ArrowRightCircleIcon className="h-6 w-6" />
+                      <span>Acceder</span>
+                    </button>
+                  </Link>
+                  <DeleteButton documentId={order.documentId} instanceName={order.instanceName} />
+                </>
               ) : (
                 <span className="text-lg font-semibold text-red-500">
                   Tu servicio fue cancelado
                 </span>
               )}
             </div>
+
 
           </li>
         ))}

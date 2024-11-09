@@ -5,7 +5,7 @@ const ButtonControl = ({ instanceName }) => {
   
   const handleRestart = async () => {
     try {
-      const response = await fetch(`https://api.wazend.net/instance/restart/${instanceName}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/restart/${instanceName}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ const ButtonControl = ({ instanceName }) => {
 
   const handleDisconnect = async () => {
     try {
-      const response = await fetch(`https://api.wazend.net/instance/logout/${instanceName}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/logout/${instanceName}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const ButtonControl = ({ instanceName }) => {
   };
 
   return (
-    <div className="mt-6 flex justify-end space-x-2">
+    <>
       <button
         onClick={handleRestart}
         className="rounded-md bg-gray-200 hover:bg-gray-300 px-4 py-2 text-black font-medium text-sm"
@@ -65,7 +65,7 @@ const ButtonControl = ({ instanceName }) => {
       >
         DESCONECTAR
       </button>
-    </div>
+    </>
   );
 };
 

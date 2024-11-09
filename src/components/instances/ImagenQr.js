@@ -10,7 +10,7 @@ const QRCodeComponent = ({ instanceName }) => {
   useEffect(() => {
     const fetchQRCode = async () => {
       try {
-        const response = await fetch(`https://api.wazend.net/instance/connect/${instanceName}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/connect/${instanceName}`, {
           method: 'GET',
           headers: {
             apiKey: process.env.NEXT_PUBLIC_WAZEND_API_KEY,

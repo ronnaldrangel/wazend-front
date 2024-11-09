@@ -6,8 +6,6 @@ import MessageTrial from '../trial/MessageTrial';
 
 import { toast } from 'sonner';
 
-import { mutate } from 'swr';
-
 export default function NoInstances() {
   const { data: session } = useSession(); // Accede a la sesión del usuario autenticado
   const [isSubmitting, setIsSubmitting] = useState(false);

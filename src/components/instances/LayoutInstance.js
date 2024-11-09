@@ -24,9 +24,9 @@ const LayoutInstance = ({ instanceId }) => {
   const [showQr, setShowQr] = useState(false);
 
   const { data: instanceData, error } = useSWR(
-    instanceId ? ['https://api.wazend.net/instance/fetchInstances', instanceId] : null,
+    instanceId ? [`${process.env.NEXT_PUBLIC_WAZEND_API_URL}instance/fetchInstances`, instanceId] : null,
     ([url, id]) => fetcher(url, id)
-  );
+);
 
   if (error) return <p>Error: {error.message}</p>;
   if (!instanceData) return <p>Cargando...</p>;
@@ -85,7 +85,7 @@ const LayoutInstance = ({ instanceId }) => {
 
                 <div>
                   <h3 className='text-sm font-base'>Última conexión</h3>
-                  <p className='text-lg font-semibold text-green-600'>
+                  <p className='text-lg font-semibold text-blue-500'>
                     {new Date(instance.updatedAt).toLocaleDateString('es-ES', {
                       day: '2-digit',
                       month: '2-digit',
@@ -133,7 +133,7 @@ const LayoutInstance = ({ instanceId }) => {
 
                 <div>
                   <h3 className='text-sm font-base'>Creado el</h3>
-                  <p className='text-lg font-semibold text-green-600'>
+                  <p className='text-lg font-semibold text-blue-500'>
                     {new Date(instance.createdAt).toLocaleDateString('es-ES', {
                       day: '2-digit',
                       month: '2-digit',
@@ -217,7 +217,10 @@ const LayoutInstance = ({ instanceId }) => {
               </div>
             </div>
 
-            <ButtonControl instanceName={instance.name} />
+            <div className="mt-6 flex justify-end space-x-2">
+              <ButtonControl instanceName={instance.name} />
+            </div>
+
           </section>
         )}
 
@@ -228,34 +231,36 @@ const LayoutInstance = ({ instanceId }) => {
             <p className='mb-8'>Después de eso, podrá enviar y recibir mensajes de WhatsApp.</p>
             <div className='flex flex-col md:flex-row md:space-x-4'>
 
-
-              <div>
-                <button
-                  onClick={handleShowQr}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Mostrar QR
-                </button>
-
-                {showQr && (
-                  <div className="mt-4">
-                    <ImagenQr instanceName={instance.name} />
-                  </div>
-                )}
+              <div className='w-full md:w-[500px] h-[280px] border-2 border-gray-200 p-2 rounded-lg overflow-hidden'>
+                <Image
+                  src='/images/scan-wa.gif'
+                  alt='Hand holding a phone with WhatsApp'
+                  width={200}
+                  height={50}
+                  className='w-full h-full object-cover rounded-md'
+                />
               </div>
 
-              <div className='w-1/3'>
-                <div className='border-2 border-gray-200 p-2 rounded-lg overflow-hidden h-52'>
-                  <Image
-                    src='/images/scan-wa.gif'
-                    alt='Hand holding a phone with WhatsApp'
-                    width={200}
-                    height={50}
-                    className='w-full h-full object-cover rounded-md'
-                  />
-                </div>
-              </div>
+
             </div>
+
+            <div className="mt-6 flex justify-end space-x-2">
+              <button
+                onClick={handleShowQr}
+                className="rounded-md bg-blue-700 hover:bg-blue-800 px-4 py-2 text-white font-medium text-sm"
+              >
+                MOSTRAR QR
+              </button>
+
+              {showQr && (
+                <div className="mt-4">
+                  <ImagenQr instanceName={instance.name} />
+                </div>
+              )}
+
+              <ButtonControl instanceName={instance.name} />
+            </div>
+
           </section>
         )}
 
