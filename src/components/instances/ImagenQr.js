@@ -1,7 +1,6 @@
 import { useState, useEffect, Fragment } from 'react';
 import Image from 'next/image';
 import { Dialog, Transition } from '@headlessui/react';
-import { CheckIcon } from '@heroicons/react/24/outline';
 
 const QRCodeComponent = ({ instanceName }) => {
   const [qrBase64, setQrBase64] = useState('');

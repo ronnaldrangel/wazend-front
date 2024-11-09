@@ -24,7 +24,7 @@ const LayoutInstance = ({ instanceId }) => {
   const [showQr, setShowQr] = useState(false);
 
   const { data: instanceData, error } = useSWR(
-    instanceId ? [`${process.env.NEXT_PUBLIC_WAZEND_API_URL}instance/fetchInstances`, instanceId] : null,
+    instanceId ? [`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/fetchInstances`, instanceId] : null,
     ([url, id]) => fetcher(url, id)
 );
 
