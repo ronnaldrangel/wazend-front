@@ -1,11 +1,11 @@
 
 import { toast } from 'sonner';
 
-const ButtonControl = () => {
+const ButtonControl = ({ instanceName }) => {
   
   const handleRestart = async () => {
     try {
-      const response = await fetch('https://api.wazend.net/instance/restart/wazend-wap', {
+      const response = await fetch(`https://api.wazend.net/instance/restart/${instanceName}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ const ButtonControl = () => {
 
   const handleDisconnect = async () => {
     try {
-      const response = await fetch('https://api.wazend.net/instance/logout/wazend-wap', {
+      const response = await fetch(`https://api.wazend.net/instance/logout/${instanceName}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

@@ -217,7 +217,7 @@ const LayoutInstance = ({ instanceId }) => {
               </div>
             </div>
 
-            <ButtonControl />
+            <ButtonControl instanceName={instance.name} />
           </section>
         )}
 
@@ -305,7 +305,7 @@ const LayoutInstance = ({ instanceId }) => {
                   <input
                     type='checkbox'
                     id={event}
-                    className='mr-2 h-4 w-4 rounded border-gray-300 text-gray-600 focus:ring-gray-600'
+                    className='mr-2 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-600'
                   />
                   <label htmlFor={event} className='text-sm font-semibold text-gray-600 flex items-center'>
                     {event}{' '}

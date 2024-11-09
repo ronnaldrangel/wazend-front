@@ -201,7 +201,7 @@ export default function Navbar() {
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
-                      as='a'
+                      as={Link}
                       href={item.href}
                       className={classNames(
                         currentPath === item.href
@@ -226,10 +226,11 @@ export default function Navbar() {
                     </div>
                   </div>
                   <div className='mt-3 space-y-1'>
+
                     {userNavigation.map((item) => (
                       <Disclosure.Button
                         key={item.name}
-                        as='a'
+                        as={item.external ? 'a' : Link} // Usa 'a' para enlaces externos y Link para internos
                         href={item.href}
                         className={`block px-4 py-2 text-base font-medium ${item.signOut ? 'text-red-500 hover:text-red-600' : 'text-gray-500'} hover:bg-gray-100 hover:text-gray-800`}
                         onClick={(e) => {
@@ -242,9 +243,8 @@ export default function Navbar() {
                       >
                         {item.name}
                       </Disclosure.Button>
-
-
                     ))}
+
                   </div>
                 </div>
               </Disclosure.Panel>
