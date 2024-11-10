@@ -8,11 +8,10 @@ const InstancePage = () => {
   const { id } = router.query; // Obtén el id de la ruta
 
   return (
-    <Layout title='Configuración de instancia'>
-    {/* <Layout title={`Mi Instancia ${id ? `(${id})` : ''}`}> */}
-    {/* Pasa el id como prop a LayoutInstance */}
+    <Layout title='Configuración de instancia' NoTab={true}>
       <LayoutInstance instanceId={id} />
     </Layout>
+    //<LayoutInstance instanceId={id} />
   );
 };
 

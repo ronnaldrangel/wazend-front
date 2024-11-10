@@ -47,6 +47,8 @@ const LayoutInstance = ({ instanceId }) => {
     <>
       <div className='space-y-8'>
 
+      <h1 className="text-2xl font-bold tracking-tight text-gray-900">Instancia #{instance.name}</h1>
+
         <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
           <div className='flex flex-col md:flex-row'>
 
@@ -277,6 +279,7 @@ const LayoutInstance = ({ instanceId }) => {
               className='w-full rounded-md border border-gray-300 p-2'
             />
           </div>
+          
           <div className='p-4'>
             <h3 className='text-sm font-semibold text-gray-800 mb-4'>Webhook Events</h3>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
