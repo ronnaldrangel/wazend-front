@@ -244,12 +244,12 @@ const LayoutInstance = ({ instanceId }) => {
 
             </div>
 
-            <div className="mt-6 flex justify-end space-x-2">
+            <div className="mt-6 flex flex-col sm:flex-row sm:justify-end sm:space-x-2 space-y-2 sm:space-y-0">
               <button
                 onClick={handleShowQr}
-                className="rounded-md bg-blue-700 hover:bg-blue-800 px-4 py-2 text-white font-medium text-sm"
+                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
               >
-                MOSTRAR QR
+                Mostrar QR
               </button>
 
               {showQr && (
@@ -267,7 +267,7 @@ const LayoutInstance = ({ instanceId }) => {
         {/* Seccion de ajustes*/}
         <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
           <div className='flex justify-start p-4 mb-4 border-b-2'>
-            <h2 className='text-xl font-semibold'>Ajustes de instancia</h2>
+            <h2 className='text-xl font-semibold'>Ajustes de instancia (Proximamente)</h2>
           </div>
           <div className='mt-2 mb-2 p-4'>
             <h3 className='text-sm font-semibold text-gray-800 mb-2'>Webhook URL</h3>

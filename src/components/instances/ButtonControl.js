@@ -55,15 +55,15 @@ const ButtonControl = ({ instanceName }) => {
     <>
       <button
         onClick={handleRestart}
-        className="rounded-md bg-gray-200 hover:bg-gray-300 px-4 py-2 text-black font-medium text-sm"
+        className="inline-flex w-full justify-center rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 sm:ml-3 sm:w-auto"
       >
-        REINICIAR
+        Reiniciar
       </button>
       <button
         onClick={handleDisconnect}
-        className="rounded-md bg-red-700 hover:bg-red-800 px-4 py-2 text-white font-medium text-sm"
+        className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
       >
-        DESCONECTAR
+        Desconectar
       </button>
     </>
   );
