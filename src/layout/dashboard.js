@@ -3,7 +3,7 @@ import Navbar from "../components/navbar";
 import { PlusIcon } from '@heroicons/react/20/solid';
 
 const handleButtonClick = () => {
-    window.location.href = 'https://wazend.net/pricing/';
+    window.location.href = 'https://api.whatsapp.com/send?phone=51924079147&text=Hola%2C%20quiero%20contratar%20un%20servicio%20de%20Wazend';
 };
 
 export default function Layout({ children, title, showButton }) {
