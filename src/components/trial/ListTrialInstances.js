@@ -95,16 +95,17 @@ const UserSubscription = () => {
                   <ArrowTopRightOnSquareIcon className='h-4 w-4 text-emerald-700' />
                 </div>
               </Link> */}
-              <p className="text-2xl font-bold">Instancia #{order.id}</p>
+              <p className="text-2xl font-bold">Instancia gratuita #{order.id}</p>
               <div className="flex flex-row items-center space-x-2 mt-1 text-gray-500">
                 <div className={`w-3 h-3 rounded-full ${new Date(order.endDate) < new Date()
                   ? 'bg-red-500'
-                  : 'bg-blue-500'
+                  : 'bg-green-500'
                   }`} />
                 <p className="text-sm font-bold uppercase">
                   {new Date(order.endDate) < new Date() ? 'Cancelado' : 'Free Trial'}
                 </p>
-                <p className="text-sm">Expira el {new Date(order.endDate).toLocaleDateString()}</p>
+                <p className="text-sm">Expira el {new Date(order.endDate).toLocaleDateString('es-ES')}</p>
+                {/* <p className="text-sm">Expira el {order.createdAt}</p> */}
               </div>
             </div>
 
@@ -112,7 +113,7 @@ const UserSubscription = () => {
 
 
             {/* Third Part: Button */}
-            <div className="flex justify-end space-x-4">
+            <div className="flex flex-col md:flex-row md:justify-end space-y-4 md:space-y-0 md:space-x-4">
               {new Date(order.endDate) >= new Date() ? (
                 <>
                   <Link href={`/instances/${order.instanceId}`} passHref>
@@ -123,15 +124,18 @@ const UserSubscription = () => {
                       <span>Acceder</span>
                     </button>
                   </Link>
-                  <DeleteButton documentId={order.documentId} instanceName={order.instanceName} />
                 </>
               ) : (
-                <span className="text-lg font-semibold text-red-500">
-                  Tu servicio fue cancelado
-                </span>
+                <>
+                  {/* <span className="text-lg font-semibold text-red-500">
+          Tu servicio fue cancelado
+        </span> */}
+                </>
               )}
+              <div className="w-full md:w-auto">
+                <DeleteButton documentId={order.documentId} instanceName={order.instanceName} />
+              </div>
             </div>
-
 
           </li>
         ))}

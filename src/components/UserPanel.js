@@ -127,53 +127,57 @@ const UserSubscription = () => {
                 <p className="text-lg font-semibold hover:underline">Wazend {order.plan}</p>
               </div> */}
 
-              <p className="text-2xl font-bold">Wazend {order.plan} (#{order.id})</p>
+              <p className="text-2xl font-bold">Wazend {order.type} (#{order.id})</p>
               <div className="flex flex-row items-center space-x-2 mt-1 text-gray-500">
                 <div className={`w-3 h-3 rounded-full ${order.statusPlan === 'pending' ? 'bg-yellow-500' : order.statusPlan === 'active' ? 'bg-green-500' : order.statusPlan === 'expired' ? 'bg-red-500' : 'bg-gray-500'}`} />
                 <p className="text-sm font-bold uppercase">PLAN {order.plan}</p>
-                <p className="text-sm">Expira el {new Date(order.endDate).toLocaleDateString()}</p>
+                <p className="text-sm">Expira el {new Date(order.endDate).toLocaleDateString('es-ES')}</p>
               </div>
             </div>
 
-            {/* Tercera Parte: Botón */}
-            {/* <div className="md:w-2/3 flex justify-end">
-              {order.statusPlan === 'active' ? (
-                <button
-                  onClick={() => window.open(`https://${order.url}`, '_blank')}
-                  className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-lg font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
-                >
-                  <ArrowRightCircleIcon className="h-6 w-6" />
-                  <span>Acceder</span>
-                </button>
-              ) : (
-                <span className={`text-lg font-semibold ${order.statusPlan === 'pending' ? 'text-yellow-500' : order.statusPlan === 'active' ? 'text-green-500' : order.statusPlan === 'expired' ? 'text-red-500' : 'text-gray-500'}`}>
-                  Tu servicio está fue cancelado
-                </span>
-              )}
-            </div> */}
 
-            <div className="flex justify-end space-x-4">
-              {new Date(order.endDate) >= new Date() ? (
-                <>
-                  <Link href={`/instances/${order.instanceId}`} passHref>
-                    <button
-                      className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-lg font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
-                    >
-                      <ArrowRightCircleIcon className="h-6 w-6" />
-                      <span>Acceder</span>
-                    </button>
-                  </Link>
+            {order.type === 'API' ? (
+              <div className="flex justify-end space-x-4">
+                {new Date(order.endDate) >= new Date() ? (
+                  <>
+                    <Link href={`/instances/${order.instanceId}`} passHref>
+                      <button
+                        className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-lg font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
+                      >
+                        <ArrowRightCircleIcon className="h-6 w-6" />
+                        <span>Acceder</span>
+                      </button>
+                    </Link>
+                  </>
+                ) : (
+                  <span className="text-lg font-semibold text-red-500">
+                    Tu servicio fue cancelado
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-col md:flex-row md:justify-end space-y-4 md:space-y-0 md:space-x-4">
+                {new Date(order.endDate) >= new Date() ? (
+                  <>
+                    <Link href={`/services/${order.documentId}`} passHref>
+                      <button
+                        className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-lg font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
+                      >
+                        <ArrowRightCircleIcon className="h-6 w-6" />
+                        <span>Acceder</span>
+                      </button>
+                    </Link>
+                  </>
+                ) : (
+                  <span className="text-lg font-semibold text-red-500">
+                    Tu servicio fue cancelado
+                  </span>
+                )}
+              </div>
+            )}
 
-                </>
-              ) : (
-                <span className="text-lg font-semibold text-red-500">
-                  Tu servicio fue cancelado
-                </span>
-              )}
-            </div>
 
 
-            
           </li>
         ))}
       </ul>
