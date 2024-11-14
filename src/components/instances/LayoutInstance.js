@@ -9,6 +9,9 @@ import { toast } from 'sonner';
 import ImagenQr from './ImagenQr';
 import ButtonControl from './ButtonControl';
 
+import WebhookControl from './WebhookControl';
+
+
 // Función fetcher que usa axios y pasa instanceId como parámetro
 const fetcher = (url, instanceId) =>
   axios.get(url, {
@@ -26,7 +29,7 @@ const LayoutInstance = ({ instanceId }) => {
   const { data: instanceData, error } = useSWR(
     instanceId ? [`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/fetchInstances`, instanceId] : null,
     ([url, id]) => fetcher(url, id)
-);
+  );
 
   if (error) return <p>Error: {error.message}</p>;
   if (!instanceData) return <p>Cargando...</p>;
@@ -47,7 +50,7 @@ const LayoutInstance = ({ instanceId }) => {
     <>
       <div className='space-y-8'>
 
-      <h1 className="text-2xl font-bold tracking-tight text-gray-900">Instancia #{instance.name}</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">Instancia #{instance.name}</h1>
 
         <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
           <div className='flex flex-col md:flex-row'>
@@ -267,7 +270,9 @@ const LayoutInstance = ({ instanceId }) => {
         )}
 
         {/* Seccion de ajustes*/}
-        <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
+        <WebhookControl instanceName={instance.name}/>
+
+        {/* <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
           <div className='flex justify-start p-4 mb-4 border-b-2'>
             <h2 className='text-xl font-semibold'>Ajustes de instancia (Proximamente)</h2>
           </div>
@@ -330,14 +335,14 @@ const LayoutInstance = ({ instanceId }) => {
               Tan pronto como ocurra uno de estos eventos, se llamará la URL del webhook anterior con los datos del evento.
             </p>
             <p className='text-sm text-blue-500 mb-6'>
-              <Link href='#'>Consulte la documentación para obtener más información sobre los webhooks.</Link>
+              <Link href='https://docs.wazend.net/'>Consulte la documentación para obtener más información sobre los webhooks.</Link>
 
             </p>
           </div>
           <div className='px-4 pb-4'>
             <button className='rounded-md bg-emerald-600 text-white px-4 py-2 hover:bg-emerald-700 font-medium'>Guardar</button>
           </div>
-        </section>
+        </section> */}
 
 
       </div>
