@@ -11,7 +11,7 @@ const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
   { name: 'Mis servicios', href: '/' },
   //{ name: 'Herramientas', href: '/tools' },
-  //{ name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
+  { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
   { name: 'Soporte', href: '/support'}
 ]
 

@@ -52,6 +52,18 @@ const LayoutInstance = ({ instanceId }) => {
 
         <h1 className="text-2xl font-bold tracking-tight text-gray-900">Instancia #{instance.name}</h1>
 
+        <div>
+          <a
+            href="https://docs.wazend.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          >
+            Documentación
+          </a>
+        </div>
+
+
         <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
           <div className='flex flex-col md:flex-row'>
 
@@ -270,7 +282,7 @@ const LayoutInstance = ({ instanceId }) => {
         )}
 
         {/* Seccion de ajustes*/}
-        <WebhookControl instanceName={instance.name}/>
+        <WebhookControl instanceName={instance.name} />
 
         {/* <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
           <div className='flex justify-start p-4 mb-4 border-b-2'>
