@@ -1,16 +1,12 @@
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-
 import WistiaPlayer from './WistiaPlayer';
 
-export default function ModalVideo() {
-  const [open, setOpen] = useState(true);
-
+export default function ModalVideo({ onClose }) {
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => {}}>
-      {/* <Dialog as="div" className="relative z-10" onClose={setOpen}> */}
+    <Transition.Root show={true} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -39,21 +35,23 @@ export default function ModalVideo() {
                   <button
                     type="button"
                     className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    onClick={() => setOpen(false)}
+                    onClick={onClose}
                   >
-                    <span className="sr-only">Close</span>
+                    <span className="sr-only">Cerrar</span>
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 <div>
                   <div className="mt-3 text-center">
-                  {/* <div className="mt-3 text-center sm:text-left"> */}
-                    <Dialog.Title as="h3" className="text-3xl font-bold leading-6 text-gray-900">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-3xl font-bold leading-6 text-gray-900"
+                    >
                       Bienvenido a Wazend 🎉
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-base text-gray-500 mb-10">
-                        Estos son los primeros pasos debes tener en cuenta
+                        Estos son los primeros pasos que debes tener en cuenta:
                       </p>
                       <WistiaPlayer
                         videoId="ryu8y6lie4"
