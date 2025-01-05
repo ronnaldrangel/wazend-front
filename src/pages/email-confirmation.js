@@ -1,37 +1,39 @@
-import Head from 'next/head';
-import Link from 'next/link';
+import Layout from '../layout/auth';
+import { getSession } from 'next-auth/react';
 
-import Image from 'next/image';
+import { CheckCircleIcon } from '@heroicons/react/20/solid';
 
-export default function EmailSuccess() {
+
+export default function EmailConfirm() {
     return (
-        <>
-            <Head>
-                <title>Wazend</title>
-            </Head>
-            <div className="h-screen bg-cover bg-center" style={{ backgroundImage: 'url("/images/bg-email.png")' }}>
-                <main className="grid min-h-full place-items-center bg-white bg-opacity-0 px-6 py-24 sm:py-32 lg:px-8">
-                    <div className="text-center">
-                        <Image
-                            className="h-10 w-auto mx-auto mb-10"
-                            src="/images/logo-dark.svg"
-                            alt="Wazend Logo"
-                            width={236} // Ajusta el ancho deseado
-                            height={60} // Ajusta la altura deseada
-                            
-                        />
-                        <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">¡Excelente! 🎉</h1>
-                        <p className="mt-6 text-2xl leading-7 text-gray-600">¡Ya casi terminas! Verifica tu correo electrónico para activar tu cuenta en Wazend.</p>
-                        <div className="mt-10 flex items-center justify-center gap-x-6">
-                            <Link href="/login"
-                                className="rounded-md bg-emerald-600 px-4 py-3 text-large font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-                            >
-                                Iniciar sesión
-                            </Link>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </>
-    )
-}
+        <Layout>
+      <div className="bg-white p-4 border border-gray-300 rounded-lg max-w-md w-full text-left mt-8 flex items-start">
+          <CheckCircleIcon className="h-auto w-20 text-green-400 mr-3" />
+          <div>
+            <p className="text-balance text-base font-semibold tracking-tight text-gray-900">
+              Te has registrado correctamente.
+            </p>
+            <p className="mt-2 text-sm font-medium text-gray-500">
+              Revisa tu correo electrónico para confirmar tu cuenta antes de iniciar sesión en el panel de control de Wazend.
+            </p>
+          </div>
+        </div>
+        </Layout>
+    );
+};
+
+export const getServerSideProps = async (context) => {
+    const session = await getSession(context);
+    // Check if session exists or not, if not, redirect
+    if (session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        };
+    }
+    return {
+        props: {},
+    };
+};
