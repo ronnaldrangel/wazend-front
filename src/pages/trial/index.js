@@ -1,4 +1,4 @@
-import Layout from '../../layout/dashboard';
+import Layout from '../../components/layout/dashboard';
 
 import ListTrialInstances from '../../components/trial/ListTrialInstances';
 

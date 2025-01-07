@@ -39,7 +39,7 @@ const UserSubscription = () => {
       }
 
       const data = await response.json();
-      console.log('Datos obtenidos de Strapi:', data); // Imprimir los datos de Strapi
+      //console.log('Datos obtenidos de Strapi:', data); // Imprimir los datos de Strapi
       return data;
     } catch (error) {
       console.error('Error al realizar el fetch:', error);
@@ -47,10 +47,10 @@ const UserSubscription = () => {
     }
   };
 
-  const fetchInstanceData = async (instanceId) => {
+  const fetchInstanceData = async (instanceName) => {
     try {
       const response = await fetch(
-        `https://api2.wazend.net/instance/fetchInstances?instanceId=${instanceId}`,
+        `https://api2.wazend.net/instance/fetchInstances?instanceName=${instanceName}`,
         {
           headers: {
             apiKey: 'UkVKATZZMZqZgtxMscKhfhbxORHDH41K', // Incluye el encabezado apiKey
@@ -59,15 +59,15 @@ const UserSubscription = () => {
       );
 
       if (!response.ok) {
-        console.error(`Error al obtener datos de la instancia: ${instanceId}`);
+        console.error(`Error al obtener datos de la instancia: ${instanceName}`);
         return null;
       }
 
       const data = await response.json();
-      //console.log(`Datos obtenidos de Wazend para ${instanceId}:`, data); // Imprimir los datos obtenidos
+      //console.log(`Datos obtenidos de Wazend para ${instanceName}:`, data); // Imprimir los datos obtenidos
       return data;
     } catch (error) {
-      console.error(`Error al realizar la solicitud para ${instanceId}:`, error);
+      console.error(`Error al realizar la solicitud para ${instanceName}:`, error);
       return null;
     }
   };
@@ -91,15 +91,15 @@ const UserSubscription = () => {
   useEffect(() => {
     if (data?.subscriptions) {
       data.subscriptions.forEach(async (subscription) => {
-        const { instanceId } = subscription;
+        const { instanceName } = subscription;
 
-        // Verificar si instanceId es válido antes de realizar la solicitud
-        if (instanceId && !instanceData[instanceId]) {
-          const instanceInfo = await fetchInstanceData(instanceId);
+        // Verificar si instanceName es válido antes de realizar la solicitud
+        if (instanceName && !instanceData[instanceName]) {
+          const instanceInfo = await fetchInstanceData(instanceName);
           if (instanceInfo && instanceInfo.length > 0) {
             setInstanceData((prev) => ({
               ...prev,
-              [instanceId]: instanceInfo[0], // Solo el primer objeto
+              [instanceName]: instanceInfo[0], // Solo el primer objeto
             }));
           }
         }
@@ -133,7 +133,7 @@ const UserSubscription = () => {
   return (
     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {filteredSubscriptions.map((subscription) => {
-        const instanceInfo = instanceData[subscription.instanceId] || {};
+        const instanceInfo = instanceData[subscription.instanceName] || {};
 
         return (
           <li

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import Layout from '../../layout/dashboard';
+import Layout from '../../components/layout/dashboard';
 import LayoutInstance from '../../components/instances/LayoutInstance'; // Asegúrate de que la ruta sea correcta
 
 

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/router';
 
-import Layout from '../../layout/auth';
+import Layout from '../../components/layout/auth';
 
 import { getSession } from 'next-auth/react';
 

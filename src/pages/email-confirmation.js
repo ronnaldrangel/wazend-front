@@ -1,4 +1,4 @@
-import Layout from '../layout/auth';
+import Layout from '../components/layout/auth';
 import { getSession } from 'next-auth/react';
 
 import { CheckCircleIcon } from '@heroicons/react/20/solid';

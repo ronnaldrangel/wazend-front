@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { signIn } from "next-auth/react";
 import { getSession } from 'next-auth/react';
-import Layout from '../../layout/auth';
+import Layout from '../../components/layout/auth';
 
 export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);

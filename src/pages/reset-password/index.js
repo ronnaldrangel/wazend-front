@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import axios from 'axios';
-import Layout from '../../layout/auth';
+import Layout from '../../components/layout/auth';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import {

@@ -8,7 +8,7 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 
-import Layout from '../../layout/auth';
+import Layout from '../../components/layout/auth';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -91,7 +91,7 @@ export default function SignUp() {
       <Layout>
 
         <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Crea una cuenta nueva
+          🎉 Crea una cuenta nueva
         </h2>
 
         <div className="mt-8">

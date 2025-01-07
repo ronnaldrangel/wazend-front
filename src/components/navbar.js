@@ -9,10 +9,10 @@ import Image from 'next/image'
 
 const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
-  { name: 'Mis servicios', href: '/' },
+  { name: 'Dashboard', href: '/' },
+  { name: 'API Docs', href: 'https://docs.wazend.net/', external: true },
+  { name: 'Integraciones', href: '/integrations'}
   //{ name: 'Herramientas', href: '/tools' },
-  { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
-  { name: 'Soporte', href: '/support'}
 ]
 
 const userNavigation = [
