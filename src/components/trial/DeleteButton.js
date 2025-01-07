@@ -42,7 +42,7 @@ const DeleteButton = ({ documentId, instanceName }) => {
   return (
     <>
       <button
-        className="hover:shadow-lg transition-shadow duration-300 bg-red-600 text-white px-6 py-2 rounded-lg text-lg font-semibold shadow-md w-full md:w-auto"
+        className="hover:shadow-lg transition-shadow duration-300 bg-red-600 text-white px-6 py-2 rounded-lg text-base font-semibold shadow-md w-full md:w-auto"
         onClick={() => setOpen(true)}
         disabled={isSubmitting}
       >

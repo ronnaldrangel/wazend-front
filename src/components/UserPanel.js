@@ -39,7 +39,7 @@ const UserSubscription = () => {
       }
 
       const data = await response.json();
-      console.log('Datos obtenidos de Strapi:', data); // Imprimir los datos de Strapi
+      //console.log('Datos obtenidos de Strapi:', data); // Imprimir los datos de Strapi
       return data;
     } catch (error) {
       console.error('Error al realizar el fetch:', error);
@@ -50,10 +50,10 @@ const UserSubscription = () => {
   const fetchInstanceData = async (instanceId) => {
     try {
       const response = await fetch(
-        `https://api2.wazend.net/instance/fetchInstances?instanceId=${instanceId}`,
+        `${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/fetchInstances?instanceId=${instanceId}`,
         {
           headers: {
-            apiKey: 'UkVKATZZMZqZgtxMscKhfhbxORHDH41K', // Incluye el encabezado apiKey
+            apiKey: `${process.env.NEXT_PUBLIC_WAZEND_API_KEY}`, // Incluye el encabezado apiKey
           },
         }
       );
@@ -64,7 +64,7 @@ const UserSubscription = () => {
       }
 
       const data = await response.json();
-      //console.log(`Datos obtenidos de Wazend para ${instanceId}:`, data); // Imprimir los datos obtenidos
+      console.log(`Datos obtenidos de Wazend para ${instanceId}:`, data); // Imprimir los datos obtenidos
       return data;
     } catch (error) {
       console.error(`Error al realizar la solicitud para ${instanceId}:`, error);
@@ -107,13 +107,15 @@ const UserSubscription = () => {
     }
   }, [data]);
 
-  if (status === 'loading' || isLoading) return <OrderSkeleton />;
-  if (error || !data || !data.subscriptions) return <NoOrders />;
+  if (status === 'loading' || isLoading || error || !data || !data.subscriptions) return <OrderSkeleton />;
+  if (data.subscriptions.length === 0) return <NoOrders />;
+
 
   const filteredSubscriptions = data.subscriptions.filter(
     (subscription) => subscription.type === 'API'
   );
 
+  //if (filteredSubscriptions.length === 0) return <NoOrders />;
   if (filteredSubscriptions.length === 0) return <p>No hay suscripciones de tipo API.</p>;
 
   const toggleKeyVisibility = (id) => {
@@ -140,23 +142,24 @@ const UserSubscription = () => {
             key={subscription.id}
             className="flex flex-col bg-white rounded-xl p-6 shadow-lg gap-4"
           >
-            <div>
-              <div className="flex justify-between items-center mb-6">
-                <p className="text-lg font-bold">{subscription.instanceName}</p>
-                <div className="bg-green-200 px-2 py-1 rounded-sm inline-block">
-                  <p className="text-green-700 text-xs">
-                    Expira el{' '}
-                    {new Date(subscription.endDate).toLocaleDateString('es-ES', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                    })}
-                  </p>
-                </div>
-              </div>
 
-              {/* Información adicional de la instancia */}
-              {/* {instanceInfo.ownerJid && (
+
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-lg font-bold">{subscription.instanceName}</p>
+              <div className="bg-green-200 px-2 py-1 rounded-sm inline-block">
+                <p className="text-green-700 text-xs">
+                  Expira el{' '}
+                  {new Date(subscription.endDate).toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
+                </p>
+              </div>
+            </div>
+
+            {/* Información adicional de la instancia */}
+            {/* {instanceInfo.ownerJid && (
                 <div className="bg-blue-100 p-3 rounded-sm">
                   <p className="text-sm font-semibold text-blue-800">
                     Propietario: {instanceInfo.ownerJid}
@@ -164,34 +167,34 @@ const UserSubscription = () => {
                 </div>
               )} */}
 
-              {/* API Key con íconos de ojo y copiar */}
-              <div className="bg-gray-200 p-3 rounded-sm flex items-center justify-between">
-                <p className="text-black text-sm font-mono">
-                  {visibleKeys[subscription.id]
-                    ? subscription.apiKey
-                    : '********-****-****-****-************'}
-                </p>
-                <div className="flex space-x-4">
-                  <button
-                    onClick={() => toggleKeyVisibility(subscription.id)}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    {visibleKeys[subscription.id] ? (
-                      <EyeSlashIcon className="h-5 w-5" />
-                    ) : (
-                      <EyeIcon className="h-5 w-5" />
-                    )}
-                  </button>
-                  <button
-                    onClick={() => copyToClipboard(subscription.apiKey)}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    <ClipboardIcon className="h-5 w-5" />
-                  </button>
-                </div>
+            {/* API Key con íconos de ojo y copiar */}
+            <div className="bg-gray-200 p-3 rounded-sm flex items-center justify-between">
+              <p className="text-black text-sm font-mono">
+                {visibleKeys[subscription.id]
+                  ? subscription.apiKey
+                  : '********-****-****-****-************'}
+              </p>
+              <div className="flex space-x-4">
+                <button
+                  onClick={() => toggleKeyVisibility(subscription.id)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  {visibleKeys[subscription.id] ? (
+                    <EyeSlashIcon className="h-5 w-5" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5" />
+                  )}
+                </button>
+                <button
+                  onClick={() => copyToClipboard(subscription.apiKey)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <ClipboardIcon className="h-5 w-5" />
+                </button>
               </div>
             </div>
 
+            {/* WhatsApp */}
             <div className="mt-6 group block flex-shrink-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
@@ -230,12 +233,12 @@ const UserSubscription = () => {
 
               <p
                 className={`text-sm font-semibold px-3 py-1 rounded-2xl text-white ${instanceInfo.connectionStatus === "open"
-                    ? "bg-green-600"
-                    : instanceInfo.connectionStatus === "connecting"
-                      ? "bg-orange-500"
-                      : instanceInfo.connectionStatus === "close"
-                        ? "bg-red-600"
-                        : "bg-gray-600"
+                  ? "bg-green-600"
+                  : instanceInfo.connectionStatus === "connecting"
+                    ? "bg-orange-500"
+                    : instanceInfo.connectionStatus === "close"
+                      ? "bg-red-600"
+                      : "bg-gray-600"
                   }`}
               >
                 {instanceInfo.connectionStatus || "Cargando..."}

@@ -3,9 +3,15 @@ import { useSession, getSession } from 'next-auth/react';
 import useSWR from 'swr';
 //import NoOrders from '../NoOrders';
 import OrderSkeleton from '../OrderSkeleton';
-import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowTopRightOnSquareIcon, ArrowRightCircleIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowTopRightOnSquareIcon,
+  ArrowRightCircleIcon,
+  Cog6ToothIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  ClipboardIcon
+} from '@heroicons/react/24/outline';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -13,10 +19,14 @@ import NoInstances from './NoTrialInstances';
 import MessageTrial from './MessageTrial';
 import DeleteButton from './DeleteButton';
 
+import { toast } from 'sonner';
+
 const UserSubscription = () => {
   const { data: session, status } = useSession();
   const [jwt, setJwt] = useState(null);
   const [userId, setUserId] = useState(null);
+
+  const [visibleKeys, setVisibleKeys] = useState({});
 
   const fetcher = async (url) => {
     try {
@@ -71,56 +81,82 @@ const UserSubscription = () => {
   if (status === 'loading' || isLoading || error || !data || !data.freetrials) return <OrderSkeleton />;
   if (data.freetrials.length === 0) return <NoInstances />;
 
+
+  const toggleKeyVisibility = (id) => {
+    setVisibleKeys((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const copyToClipboard = (key) => {
+    if (key) {
+      navigator.clipboard.writeText(key);
+      toast.success('Copiado exitosamente.');
+    }
+  };
+
   return (
     <div>
       <ul className="space-y-4">
         {data.freetrials.map((order) => (
-          <li key={order.id} className="flex flex-col md:flex-row bg-white rounded-xl p-8 shadow-lg gap-4 md:items-center ">
-            {/* First Part: Image */}
-            <div className="hidden">
-              <Image
-                src='/images/pattern-1.jpg'
-                alt="Plan image"
-                className="w-32 h-30 object-cover rounded-lg"
-                width={118}
-                height={89}
-              />
+          <li key={order.id} className="flex flex-col bg-white rounded-xl p-6 shadow-lg gap-4">
+
+
+            {/* Titulo y fecha */}
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-lg font-bold">Instancia gratuita - {order.instanceName}</p>
+              <div className="bg-violet-200 px-2 py-1 rounded-sm inline-block">
+                <p className="text-violet-700 text-xs">
+                  Prueba gratis hasta el{' '}
+                  {new Date(order.endDate).toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
+                </p>
+              </div>
             </div>
 
-            {/* Second Part: Plan Content and Date */}
-            <div className="md:w-1/3 flex-grow">
-              {/* <Link href={`/instances/${order.instanceId}`} passHref>
-                <div className="flex-row items-center space-x-2 text-emerald-600 inline-flex">
-                  <p className="text-lg font-semibold hover:underline">Wazend-API</p>
-                  <ArrowTopRightOnSquareIcon className='h-4 w-4 text-emerald-700' />
-                </div>
-              </Link> */}
-              <p className="text-2xl font-bold">Instancia gratuita #{order.id}</p>
-              <div className="flex flex-row items-center space-x-2 mt-1 text-gray-500">
-                <div className={`w-3 h-3 rounded-full ${new Date(order.endDate) < new Date()
-                  ? 'bg-red-500'
-                  : 'bg-green-500'
-                  }`} />
-                <p className="text-sm font-bold uppercase">
-                  {new Date(order.endDate) < new Date() ? 'Cancelado' : 'Free Trial'}
-                </p>
-                <p className="text-sm">Expira el {new Date(order.endDate).toLocaleDateString('es-ES')}</p>
-                {/* <p className="text-sm">Expira el {order.createdAt}</p> */}
+
+            {/* API Key con íconos de ojo y copiar */}
+            <div className="bg-gray-200 p-3 rounded-sm flex items-center justify-between">
+              <p className="text-black text-sm font-mono">
+                {visibleKeys[order.id]
+                  ? order.apiKey
+                  : '********-****-****-****-************'}
+              </p>
+              <div className="flex space-x-4">
+                <button
+                  onClick={() => toggleKeyVisibility(order.id)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  {visibleKeys[order.id] ? (
+                    <EyeSlashIcon className="h-5 w-5" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5" />
+                  )}
+                </button>
+                <button
+                  onClick={() => copyToClipboard(order.apiKey)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <ClipboardIcon className="h-5 w-5" />
+                </button>
               </div>
             </div>
 
 
 
-
             {/* Third Part: Button */}
-            <div className="flex flex-col md:flex-row md:justify-end space-y-4 md:space-y-0 md:space-x-4">
+            <div className="mt-4 flex flex-col md:flex-row md:justify-end space-y-4 md:space-y-0 md:space-x-4">
               {new Date(order.endDate) >= new Date() ? (
                 <>
                   <Link href={`/instances/${order.instanceId}`} passHref>
                     <button
-                      className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-lg font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
+                      className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-base font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
                     >
-                      <ArrowRightCircleIcon className="h-6 w-6" />
+                      <Cog6ToothIcon className="h-6 w-6" />
                       <span>Acceder</span>
                     </button>
                   </Link>
