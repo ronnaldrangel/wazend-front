@@ -2,6 +2,8 @@ import React from 'react';
 import Navbar from "../navbar";
 import { PlusIcon } from '@heroicons/react/20/solid';
 
+import WhatsAppButton from "../../components/WhatsAppButton";
+
 export default function Layout({ children, title, showButton, NoTab }) {
     return (
         <>
@@ -32,6 +34,7 @@ export default function Layout({ children, title, showButton, NoTab }) {
 
                 <main>
                     <div className="mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:px-8">{children}</div>
+                    <WhatsAppButton />
                 </main>
 
             </div>
