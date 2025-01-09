@@ -1,10 +1,10 @@
 import Layout from '../../components/layout/dashboard';
 
 const integrationList = [
-    { name: 'Shopify', href: '/integrations/shopify', content: 'Conecta tu tienda Shopify para gestionar tus pedidos automáticamente.', icon: 'https://panel.whapi.cloud/img/icons/shopify.svg' },
-    { name: 'Make', href: '/integrations/make', content: 'Automatiza flujos de trabajo con Make y ahorra tiempo en tareas repetitivas.', icon: 'https://panel.whapi.cloud/img/icons/make.svg' },
-    { name: 'WooCommerce', href: '/integrations/woocommerce', content: 'Integra tu tienda WooCommerce para sincronizar productos y pedidos.', icon: 'https://panel.whapi.cloud/img/icons/woocommerce.svg' },
-    { name: 'n8n', href: '/integrations/n8n', content: 'Diseña flujos de integración personalizados con n8n.', icon: 'https://panel.whapi.cloud/img/icons/n8n.svg' },
+    { name: 'Make', href: 'https://docs.wazend.net/wazend/integraciones/make', content: 'Automatiza flujos de trabajo con Make y envía notificaciones a tus clientes vía WhatsApp.', icon: 'https://wazend.net/wp-content/uploads/2025/01/make.svg' },
+    { name: 'WooCommerce', href: 'https://docs.wazend.net/wazend/integraciones/woocommerce', content: 'Conecta tu tienda WooCommerce y notifica a tus clientes directamente en WhatsApp.', icon: 'https://wazend.net/wp-content/uploads/2025/01/woo.svg' },
+    { name: 'Shopify', href: 'https://docs.wazend.net/wazend/integraciones/shopify', content: 'Sincroniza tu tienda Shopify y envía actualizaciones automáticas a tus clientes por WhatsApp.', icon: 'https://wazend.net/wp-content/uploads/2025/01/shopify.svg' },
+    { name: 'n8n', href: 'https://docs.wazend.net/wazend/integraciones/n8n', content: 'Diseña flujos personalizados con n8n para integrar WhatsApp y mejorar la comunicación con tus clientes.', icon: 'https://wazend.net/wp-content/uploads/2025/01/n8n.svg' },
 ];
 
 export default function Index() {
