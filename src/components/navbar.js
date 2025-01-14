@@ -3,16 +3,17 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import md5 from 'md5'
+// import md5 from 'md5'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
+
+import LogoGravatar from '../components/LogoGravatar'
 
 const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
   { name: 'Dashboard', href: '/' },
   { name: 'API Docs', href: 'https://docs.wazend.net/', external: true },
   { name: 'Integraciones', href: '/integrations'}
-  //{ name: 'Herramientas', href: '/tools' },
 ]
 
 const userNavigation = [
@@ -30,14 +31,14 @@ export default function Navbar() {
   const [currentPath, setCurrentPath] = useState(router.pathname)
   const { data: session } = useSession()
 
-  // Avatar Retro
-  const getGravatarUrl = (email, size = 200) => {
-    const hash = md5(email.trim().toLowerCase())
-    return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=retro`
-  }
+  // // Avatar Retro
+  // const getGravatarUrl = (email, size = 200) => {
+  //   const hash = md5(email.trim().toLowerCase())
+  //   return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=retro`
+  // }
 
-  const userEmail = session?.user?.email || 'nulled'
-  const avatarUrl = getGravatarUrl(userEmail)
+  // const userEmail = session?.user?.email || 'nulled'
+  // const avatarUrl = getGravatarUrl(userEmail)
 
   useEffect(() => {
     const handleRouteChange = (url) => {
@@ -84,25 +85,6 @@ export default function Navbar() {
                       />
                     </Link>
                   </div>
-                  {/* <div className='hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8'>
-                    {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          currentPath === item.href
-                            ? 'border-emerald-500 text-gray-900'
-                            : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                          'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium'
-                        )}
-                        aria-current={currentPath === item.href ? 'page' : undefined}
-                        target={item.external ? '_blank' : undefined}
-                      >
-                        {item.name}
-                        {item.external && <ArrowTopRightOnSquareIcon className='h-4 w-4 ml-2 text-gray-500' />}
-                      </Link>
-                    ))}
-                  </div> */}
 
                   <div className='hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8'>
                     {navigation.map((item) => (
@@ -141,7 +123,8 @@ export default function Navbar() {
                       <div>
                         <Menu.Button className='relative flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2'>
                           <span className='sr-only'>Open user menu</span>
-                          <img className='h-8 w-8 rounded-full' src={avatarUrl} alt='' />
+                          {/* <img className='h-8 w-8 rounded-full' src={avatarUrl} alt='' /> */}
+                          <LogoGravatar email={session.user.email} size={40} />
                         </Menu.Button>
                       </div>
                       <Transition
@@ -218,7 +201,8 @@ export default function Navbar() {
                 <div className='border-t border-gray-200 pb-3 pt-4'>
                   <div className='flex items-center px-4'>
                     <div className='flex-shrink-0'>
-                      <img className='h-10 w-10 rounded-full' src={avatarUrl} alt='' />
+                      {/* <img className='h-10 w-10 rounded-full' src={avatarUrl} alt='' /> */}
+                      <LogoGravatar email={session.user.email} size={40} className='h-10 w-10 rounded-full' />
                     </div>
                     <div className='ml-3'>
                       <div className='text-base font-medium text-gray-800'>User #{session.id}</div>

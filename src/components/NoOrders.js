@@ -6,7 +6,7 @@ const NoOrders = () => {
 
   return (
     <>
-      <div className="bg-white rounded-xl px-6 py-20 text-center shadow-lg w-full max-w-4xl mx-auto">
+      <div className="bg-white rounded-xl px-6 py-20 text-center shadow-lg w-full mx-auto">
         <svg
           className="mx-auto h-12 w-12 text-gray-400"
           fill="none"

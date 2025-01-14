@@ -3,6 +3,8 @@ import { useSession } from 'next-auth/react';
 
 import OrderSkeleton from '../../components/OrderSkeleton';
 
+import LogoGravatar from '../../components/LogoGravatar'
+
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL; // URL del backend desde las variables de entorno
 
 export default function User() {
@@ -57,7 +59,9 @@ export default function User() {
       </div>
 
       <div className="flex flex-col items-center p-8">
-        <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center mb-4">
+
+        {/* <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center mb-4">
+
           {data.image ? (
             <img
               src={data.image}
@@ -72,12 +76,21 @@ export default function User() {
                 .join('') || 'NN'}
             </span>
           )}
-        </div>
+          
+        </div> */}
+
+        <LogoGravatar
+          email={session.user.email || 'usuario@example.com'}
+          className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mb-4"
+        />
+
+
 
         <h1 className="text-3xl font-bold text-slate-700 mb-2">{data.name || 'Nombre no disponible'}</h1>
         <p className="text-gray-400 text-sm mb-8">
-          Fecha de creación: {data.createdAt ? new Date(data.createdAt).toLocaleString() : 'No disponible'}
+          Fecha de creación: {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : 'No disponible'}
         </p>
+
 
         <div className="w-full space-y-6 bg-gray-100 p-6 rounded-lg">
           <div className="flex flex-col md:flex-row items-center">
