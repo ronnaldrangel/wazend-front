@@ -15,7 +15,7 @@ export default function NoInstances() {
 
     try {
       // Envía una solicitud POST al webhook de n8n, usando el correo del usuario autenticado
-      const response = await fetch("https://n8n.rangel.pro/webhook/1fd23cdf-f701-48aa-973d-31022d9e3948", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_CREATE_TRIAL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

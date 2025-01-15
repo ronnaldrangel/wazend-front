@@ -10,7 +10,7 @@ const DeleteButton = ({ documentId, instanceName }) => {
   const handleDelete = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch("https://n8n.rangel.pro/webhook/7cfe7da3-443a-4fc1-b72a-a6a500e75653", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_DELETE_TRIAL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

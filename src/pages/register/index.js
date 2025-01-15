@@ -73,6 +73,20 @@ export default function SignUp() {
       });
       console.log('Registration successful:', response.data);
       toast.success('Registro exitoso.');
+
+
+      // Enviar los datos al webhook de n8n
+      try {
+        await axios.post(process.env.NEXT_PUBLIC_REGISTER, {
+          username: username,
+          email: formData.email,
+        });
+        console.log('Datos enviados al webhook de n8n.');
+      } catch (webhookError) {
+        console.error('Error al enviar datos al webhook de n8n:', webhookError);
+      }
+      // Enviar los datos al webhook de n8n acaba
+
       router.replace('/email-confirmation');
     } catch (error) {
       console.error('Registration failed:', error);
