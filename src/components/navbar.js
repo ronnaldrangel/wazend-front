@@ -18,7 +18,7 @@ const navigation = [
 
 const userNavigation = [
   { name: 'Tu perfil', href: '/profile' },
-  { name: 'Facturación', href: 'https://pay.wazend.net/billing', external: true },
+  { name: 'Facturación', href: 'https://wazend.lemonsqueezy.com/billing', external: true },
   { name: 'Cerrar sesión', href: '/', signOut: true }
 ]
 
