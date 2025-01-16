@@ -1,7 +1,6 @@
 import Layout from '../components/layout/dashboard';
 import UserPanel from '../components/UserPanel';
 import React from 'react';
-
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -15,7 +14,6 @@ export default function Index() {
 
   return (
     <Layout title="Dashboard" showButton={true}>
-
 
       <div className="flex space-x-4">
         {/* Enlace Mis Servicios */}

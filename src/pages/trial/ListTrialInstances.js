@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import useSWR from 'swr';
 //import NoOrders from '../NoOrders';
-import OrderSkeleton from '../OrderSkeleton';
+import OrderSkeleton from '../../components/OrderSkeleton';
 import Link from 'next/link';
 import {
   ArrowTopRightOnSquareIcon,

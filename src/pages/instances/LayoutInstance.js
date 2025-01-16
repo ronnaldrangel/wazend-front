@@ -8,8 +8,8 @@ import { UserIcon, ChatBubbleLeftEllipsisIcon, EnvelopeIcon } from '@heroicons/r
 import { toast } from 'sonner';
 import ImagenQr from './ImagenQr';
 import ButtonControl from './ButtonControl';
-
 import WebhookControl from './WebhookControl';
+import Preload from '../../components/OrderSkeleton';
 
 
 // Función fetcher que usa axios y pasa instanceId como parámetro
@@ -32,7 +32,7 @@ const LayoutInstance = ({ instanceId }) => {
   );
 
   if (error) return <p>Error: {error.message}</p>;
-  if (!instanceData) return <p>Cargando...</p>;
+  if (!instanceData) return <Preload/>;
   if (instanceData.length === 0) return <p>No instance data available</p>;
 
   const instance = instanceData[0];
@@ -250,11 +250,12 @@ const LayoutInstance = ({ instanceId }) => {
 
               <div className='w-full md:w-[500px] h-[280px] border-2 border-gray-200 p-2 rounded-lg overflow-hidden'>
                 <Image
-                  src='/images/scan-wa.gif'
+                  src='/images/scan-wa.webp'
                   alt='Hand holding a phone with WhatsApp'
+                  className='w-full h-full object-cover rounded-md'
                   width={200}
                   height={50}
-                  className='w-full h-full object-cover rounded-md'
+                  unoptimized
                 />
               </div>
 

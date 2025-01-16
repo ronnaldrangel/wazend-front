@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Layout from '../../components/layout/dashboard';
-import LayoutInstance from '../../components/instances/LayoutInstance'; // Asegúrate de que la ruta sea correcta
+import LayoutInstance from './LayoutInstance';
 
 
 const InstancePage = () => {
@@ -8,7 +8,7 @@ const InstancePage = () => {
   const { id } = router.query; // Obtén el id de la ruta
 
   return (
-    <Layout title='Configuración de instancia' NoTab={true}>
+    <Layout>
       <LayoutInstance instanceId={id} />
     </Layout>
     //<LayoutInstance instanceId={id} />

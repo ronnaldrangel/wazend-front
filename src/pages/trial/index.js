@@ -1,6 +1,5 @@
 import Layout from '../../components/layout/dashboard';
-
-import ListTrialInstances from '../../components/trial/ListTrialInstances';
+import ListTrialInstances from './ListTrialInstances';
 
 export default function Index() {
 
