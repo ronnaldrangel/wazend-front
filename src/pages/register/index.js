@@ -6,8 +6,6 @@ import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
-
 import Layout from '../../components/layout/auth';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
