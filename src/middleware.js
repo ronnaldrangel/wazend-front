@@ -5,7 +5,9 @@ export const config = {
       "/instances/:path*",  // Esto bloqueará todas las rutas bajo /instances/ cualquiera que sea la subruta
       "/profile",
       "/trial",
-      "/support",
+      "/services",
+      "/dashboard",
+      "/upgrade",
       "/"
     ] 
   };

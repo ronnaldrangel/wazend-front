@@ -3,7 +3,8 @@ import Navbar from "../navbar";
 import Link from 'next/link'
 import { PlusIcon } from '@heroicons/react/20/solid';
 import WhatsAppButton from "../../components/WhatsAppButton";
-import ModalRegister from "../ModalRegister"
+import Biblia from "../Bible"
+
 
 export default function Layout({ children, title, showButton }) {
     return (
@@ -30,9 +31,15 @@ export default function Layout({ children, title, showButton }) {
                     )}
                 </header>
 
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4">
+                    <Biblia />
+                </div>
+
                 <main>
                     {/* <ModalRegister/> */}
-                    <div className="mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:px-8">{children}</div>
+                    <div className="mx-auto max-w-7xl py-10 px-4 sm:px-6 lg:px-8">
+                        {children}
+                    </div>
                     <WhatsAppButton />
                 </main>
 

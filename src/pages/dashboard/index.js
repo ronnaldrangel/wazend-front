@@ -1,5 +1,5 @@
 import Layout from '../../components/layout/dashboard';
-import UserPanel from '../../components/UserPanel';
+import UserPanel from './UserPanel';
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
