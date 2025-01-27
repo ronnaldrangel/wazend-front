@@ -111,12 +111,11 @@ const UserSubscription = () => {
   if (data.subscriptions.length === 0) return <NoOrders />;
 
 
-  const filteredSubscriptions = data.subscriptions.filter(
-    (subscription) => subscription.type === 'API'
-  );
+  // const filteredSubscriptions = data.subscriptions.filter(
+  //   (subscription) => subscription.type === 'API'
+  // );
 
-  //if (filteredSubscriptions.length === 0) return <NoOrders />;
-  if (filteredSubscriptions.length === 0) return <p>No hay suscripciones de tipo API.</p>;
+  //if (filteredSubscriptions.length === 0) return <p>No hay suscripciones de tipo API.</p>;
 
   const toggleKeyVisibility = (id) => {
     setVisibleKeys((prev) => ({
@@ -134,7 +133,8 @@ const UserSubscription = () => {
 
   return (
     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {filteredSubscriptions.map((subscription) => {
+      {/* {filteredSubscriptions.map((subscription) => { */}
+      {data.subscriptions.map((subscription) => {
         const instanceInfo = instanceData[subscription.instanceId] || {};
 
         return (
@@ -146,8 +146,8 @@ const UserSubscription = () => {
 
             <div className="flex justify-between items-center mb-2">
               <p className="text-lg font-bold">{subscription.instanceName}</p>
-              <div className="bg-green-200 px-2 py-1 rounded-sm inline-block">
-                <p className="text-green-700 text-xs">
+              <div className="bg-gray-200 px-2 py-1 rounded-sm inline-block">
+                <p className="text-gray-800 text-xs">
                   Expira el{' '}
                   {new Date(subscription.endDate).toLocaleDateString('es-ES', {
                     day: '2-digit',
@@ -246,7 +246,7 @@ const UserSubscription = () => {
 
 
               <div>
-                {new Date(subscription.endDate) >= new Date() ? (
+                {subscription.isActive ? (
                   <Link href={`/instances/${subscription.instanceId}`} passHref>
                     <button
                       className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-base font-semibold shadow-md flex items-center justify-center space-x-2"
@@ -256,10 +256,12 @@ const UserSubscription = () => {
                     </button>
                   </Link>
                 ) : (
-                  <span className="text-base font-semibold bg-red-500 text-white px-6 py-2 rounded-lg">Cancelado</span>
+                  <span className="text-base font-semibold bg-red-500 text-white px-6 py-2 rounded-lg">Tu servicio expiro por falta de pago.</span>
                 )}
               </div>
+
             </div>
+
           </li>
         );
       })}
