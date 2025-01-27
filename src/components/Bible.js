@@ -20,7 +20,7 @@ const RandomBibleText = () => {
 
   return (
     <div className="text-left font-sans text-gray-600">
-      <p className="text-sm italic">
+      <p className="text-xs italic">
         "{randomVerse.verse}" - <span className="font-bold">{randomVerse.reference}</span>
       </p>
     </div>

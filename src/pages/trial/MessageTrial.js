@@ -14,9 +14,8 @@ export default function MessageTrial() {
           <p className="text-sm font-semibold mb-4">Información importante:</p>
 
           <ul className="list-disc list-inside space-y-1 text-sm mb-4">
-            <li>La instancia vence en 3 días. Puedes crear una nueva después del vencimiento para realizar más pruebas.</li>
-            <li>La creación de API no está disponible para instancias de prueba.</li>
-            <li>Limitado a interacciones con su número de prueba de WhatsApp designado únicamente.</li>
+            <li>La instancia vence en 3 días.</li>
+            <li>La instancia puede eliminarse en cualquier momento por abuso.</li>
             <li>Límite de uso: 10 acciones o solicitudes cada 5 minutos.</li>
           </ul>
         </div>

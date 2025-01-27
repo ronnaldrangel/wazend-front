@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import useSWR, { mutate } from 'swr';
-import NoOrders from './NoOrders';
-import OrderSkeleton from './OrderSkeleton';
+import NoOrders from '../pages/dashboard/NoOrders';
+import OrderSkeleton from './loaders/OrderSkeleton';
 import Image from 'next/image';
 
 import Link from 'next/link';

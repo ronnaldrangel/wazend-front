@@ -33,7 +33,14 @@ export default function ResetPassword() {
       }
 
       setLoading(true); // Establecer el estado de carga como verdadero al iniciar la solicitud
-      await axios.post(`${strapiUrl}/api/auth/reset-password`, { code, password, passwordConfirmation }); // Envía tanto password como confirmPassword
+      await axios.post(`${strapiUrl}/api/auth/reset-password`, { code, password, passwordConfirmation },
+        {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      ); // Envía tanto password como confirmPassword
       setLoading(false); // Establecer el estado de carga como falso cuando la solicitud se completa
       toast.success('Contraseña restablecida con éxito.');
       router.replace('/login');
@@ -45,15 +52,18 @@ export default function ResetPassword() {
 
   return (
     <Layout>
-      <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+      <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
         Restablecer contraseña
       </h2>
 
       <div className="mt-8">
         <form className="space-y-6" onSubmit={handleResetPassword}> {/* Usar onSubmit en lugar de onClick */}
-
+          {/* Contraseña */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+            >
               Contraseña
             </label>
             <div className="mt-2 relative">
@@ -66,11 +76,11 @@ export default function ResetPassword() {
                 onChange={(e) => setPassword(e.target.value)}
                 minLength={6} // Validación de longitud mínima
                 required
-                className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 pr-10 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 focus:outline-none"
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 dark:text-gray-300 focus:outline-none"
                 onClick={() => setShowPassword(!showPassword)} // Alternar entre mostrar y ocultar la contraseña
               >
                 {showPassword ? (
@@ -82,25 +92,29 @@ export default function ResetPassword() {
             </div>
           </div>
 
+          {/* Confirmar contraseña */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+            <label
+              htmlFor="passwordConfirmation"
+              className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+            >
               Confirmar contraseña
             </label>
             <div className="mt-2 relative">
               <input
-                id="password"
-                name="password"
+                id="passwordConfirmation"
+                name="passwordConfirmation"
                 type={showPassword ? 'text' : 'password'} // Alternar entre tipo de entrada password y text
                 placeholder="••••••••"
                 value={passwordConfirmation}
                 onChange={(e) => setpasswordConfirmation(e.target.value)}
                 minLength={6} // Validación de longitud mínima
                 required
-                className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 pr-10 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 focus:outline-none"
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 dark:text-gray-300 focus:outline-none"
                 onClick={() => setShowPassword(!showPassword)} // Alternar entre mostrar y ocultar la contraseña
               >
                 {showPassword ? (
@@ -112,24 +126,31 @@ export default function ResetPassword() {
             </div>
           </div>
 
+          {/* Botón */}
           <button
-            type="submit" // Cambiar el tipo de botón a submit
+            type="submit"
             disabled={loading} // Desactivar el botón mientras se carga la solicitud
-            className={`text-white flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600'}`}
+            className={`text-white flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ${loading
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600'
+              }`}
           >
-            {loading ? 'Cargando...' : 'Restablecer contraseña'} {/* Cambiar el texto del botón según el estado de carga */}
+            {loading ? 'Cargando...' : 'Restablecer contraseña'}
           </button>
-
         </form>
 
-        <p className="mt-10 text-sm text-center leading-6 text-gray-500">
-          <Link href="/login" className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500">
+        {/* Enlace */}
+        <p className="mt-10 text-sm text-center leading-6 text-gray-500 dark:text-gray-400">
+          <Link
+            href="/login"
+            className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500 dark:hover:text-emerald-400"
+          >
             Volver al inicio de sesión
           </Link>
         </p>
-
       </div>
     </Layout>
+
   );
 };
 

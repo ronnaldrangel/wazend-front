@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import ImagenQr from './ImagenQr';
 import ButtonControl from './ButtonControl';
 import WebhookControl from './WebhookControl';
-import Preload from '../../components/OrderSkeleton';
+import Preload from '../../components/loaders/OrderSkeleton';
 
 
 // Función fetcher que usa axios y pasa instanceId como parámetro

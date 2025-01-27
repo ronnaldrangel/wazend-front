@@ -7,6 +7,7 @@ import { getSession } from 'next-auth/react';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Layout from '../../components/layout/auth';
+import Spin from '../../components/loaders/spin';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -68,7 +69,14 @@ export default function SignUp() {
         username,
         email: formData.email,
         password: formData.password
-      });
+      },
+        {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       console.log('Registration successful:', response.data);
       toast.success('Registro exitoso.');
 
@@ -101,8 +109,7 @@ export default function SignUp() {
   return (
     <>
       <Layout>
-
-        <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
           🎉 Crea una cuenta nueva
         </h2>
 
@@ -111,7 +118,10 @@ export default function SignUp() {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+              >
                 Correo electrónico
               </label>
               <div className="mt-2">
@@ -124,14 +134,17 @@ export default function SignUp() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
 
             {/* Contraseña */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+              >
                 Contraseña
               </label>
               <div className="mt-2 relative">
@@ -144,11 +157,11 @@ export default function SignUp() {
                   value={formData.password}
                   onChange={handleChange}
                   onFocus={handlePasswordFocus}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 focus:outline-none"
+                  className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 dark:text-gray-300 focus:outline-none"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -161,35 +174,35 @@ export default function SignUp() {
             </div>
 
             {/* Condiciones de contraseña */}
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
               {showPasswordConditions && (
                 <ul>
-                  <li className={`${passwordConditions.uppercase ? 'text-green-600' : 'text-gray-500'}`}>
-                    <div className='inline-flex items-center'>
+                  <li className={`${passwordConditions.uppercase ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                    <div className="inline-flex items-center">
                       <CheckCircleIcon className="h-4 w-4 mr-1" aria-hidden="true" />
                       Una letra mayúscula
                     </div>
                   </li>
-                  <li className={`${passwordConditions.lowercase ? 'text-green-600' : 'text-gray-500'}`}>
-                    <div className='inline-flex items-center'>
+                  <li className={`${passwordConditions.lowercase ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                    <div className="inline-flex items-center">
                       <CheckCircleIcon className="h-4 w-4 mr-1" aria-hidden="true" />
                       Una letra minúscula
                     </div>
                   </li>
-                  <li className={`${passwordConditions.number ? 'text-green-600' : 'text-gray-500'}`}>
-                    <div className='inline-flex items-center'>
+                  <li className={`${passwordConditions.number ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                    <div className="inline-flex items-center">
                       <CheckCircleIcon className="h-4 w-4 mr-1" aria-hidden="true" />
                       Un número
                     </div>
                   </li>
-                  <li className={`${passwordConditions.specialChar ? 'text-green-600' : 'text-gray-500'}`}>
-                    <div className='inline-flex items-center'>
+                  <li className={`${passwordConditions.specialChar ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                    <div className="inline-flex items-center">
                       <CheckCircleIcon className="h-4 w-4 mr-1" aria-hidden="true" />
                       Un carácter especial
                     </div>
                   </li>
-                  <li className={`${passwordConditions.length ? 'text-green-600' : 'text-gray-500'}`}>
-                    <div className='inline-flex items-center'>
+                  <li className={`${passwordConditions.length ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                    <div className="inline-flex items-center">
                       <CheckCircleIcon className="h-4 w-4 mr-1" aria-hidden="true" />
                       6 caracteres o más
                     </div>
@@ -202,14 +215,12 @@ export default function SignUp() {
               <button
                 type="submit"
                 disabled={isSubmitting || !isPasswordValid()}
-                className={`text-white w-full justify-center inline-flex items-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${isSubmitting || !isPasswordValid() ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600'}`}
+                className={`text-white w-full justify-center inline-flex items-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${isSubmitting || !isPasswordValid() ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600'
+                  }`}
               >
                 {isSubmitting ? (
                   <>
-                    <svg className="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM20 12a8 8 0 01-8 8v4c6.627 0 12-5.373 12-12h-4zm-2-7.291A7.962 7.962 0 0120 12h4c0-3.042-1.135-5.824-3-7.938l-3 2.647z"></path>
-                    </svg>
+                    <Spin />
                     Regístrate
                   </>
                 ) : (
@@ -219,15 +230,18 @@ export default function SignUp() {
             </div>
           </form>
 
-          <p className="mt-10 text-sm text-center leading-6 text-gray-500">
+          <p className="mt-10 text-sm text-center leading-6 text-gray-500 dark:text-gray-400">
             ¿Tienes una cuenta?{' '}
-            <Link href="/login" className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500">
+            <Link
+              href="/login"
+              className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500 dark:hover:text-emerald-400"
+            >
               Iniciar sesión
             </Link>
           </p>
         </div>
-
       </Layout>
+
     </>
   );
 };

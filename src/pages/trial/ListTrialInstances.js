@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import useSWR from 'swr';
 //import NoOrders from '../NoOrders';
-import OrderSkeleton from '../../components/OrderSkeleton';
+import OrderSkeleton from '../../components/loaders/OrderSkeleton';
 import Link from 'next/link';
 import {
   ArrowTopRightOnSquareIcon,
@@ -168,9 +168,9 @@ const UserSubscription = () => {
         </span> */}
                 </>
               )}
-              <div className="w-full md:w-auto">
+              {/* <div className="w-full md:w-auto">
                 <DeleteButton documentId={order.documentId} instanceName={order.instanceName} />
-              </div>
+              </div> */}
             </div>
 
           </li>

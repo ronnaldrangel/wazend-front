@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import useSWR, { mutate } from 'swr';
-import NoOrders from '../../components/NoOrders';
-import OrderSkeleton from '../../components/OrderSkeleton';
+import NoOrders from '../dashboard/NoOrders';
+import OrderSkeleton from '../../components/loaders/OrderSkeleton';
 import Link from 'next/link';
 import { ArrowRightCircleIcon, EyeIcon, EyeSlashIcon, ClipboardIcon } from '@heroicons/react/24/outline';
 

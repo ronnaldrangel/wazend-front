@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { PlusIcon } from '@heroicons/react/20/solid';
 import WhatsAppButton from "../../components/WhatsAppButton";
 import Biblia from "../Bible"
+import ToggleMode from "../ui/toggle-mode"
 
 
 export default function Layout({ children, title, showButton }) {
@@ -11,6 +12,7 @@ export default function Layout({ children, title, showButton }) {
         <>
             <div className="min-h-full">
 
+                {/* <ToggleMode /> */}
                 <Navbar />
 
                 <header className="bg-white shadow-sm">

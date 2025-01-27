@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import useSWR from 'swr';
 import Link from 'next/link';
-import NoOrders from '../../components/NoOrders';
-import OrderSkeleton from '../../components/OrderSkeleton';
+import NoOrders from './NoOrders';
+import OrderSkeleton from '../../components/loaders/OrderSkeleton';
 import {
   UserCircleIcon,
   ChatBubbleOvalLeftIcon,

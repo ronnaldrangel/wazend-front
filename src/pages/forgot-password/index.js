@@ -25,6 +25,7 @@ export default function ForgotPassword (){
       const response = await fetch(`${strapiUrl}/api/auth/forgot-password`, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
@@ -51,57 +52,67 @@ export default function ForgotPassword (){
   };
 
   return (
-    <Layout>
-      <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        Recuperar contraseña
-      </h2>
+<Layout>
+  <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
+    Recuperar contraseña
+  </h2>
 
-      <p className="mt-2 text-sm leading-6 text-gray-500">
-        Escribe tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
-      </p>
+  <p className="mt-2 text-sm leading-6 text-gray-500 dark:text-gray-400">
+    Escribe tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+  </p>
 
-      <div className="mt-8">
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-              Correo electrónico
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="tu@ejemplo.com"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            {/* Deshabilitar el botón de envío mientras se está enviando el formulario */}
-            <button
-              type="submit"
-              className={`text-white flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600'}`}
-              disabled={isSubmitting} // Deshabilitar el botón si se está enviando el formulario
-            >
-              {isSubmitting ? 'Enviando...' : 'Enviar correo de reinicio'}
-            </button>
-          </div>
-        </form>
-
-        <p className="mt-10 text-sm text-center leading-6 text-gray-500">
-          ¿Ya tienes una cuenta?{' '}
-          <Link href="/login" className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500">
-            Iniciar sesión
-          </Link>
-        </p>
-
+  <div className="mt-8">
+    <form className="space-y-6" onSubmit={handleSubmit}>
+      <div>
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+        >
+          Correo electrónico
+        </label>
+        <div className="mt-2">
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="tu@ejemplo.com"
+            required
+            className="block w-full rounded-md border-0 py-1.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+          />
+        </div>
       </div>
-    </Layout>
+
+      <div>
+        {/* Deshabilitar el botón de envío mientras se está enviando el formulario */}
+        <button
+          type="submit"
+          className={`text-white flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${
+            isSubmitting
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600'
+          }`}
+          disabled={isSubmitting} // Deshabilitar el botón si se está enviando el formulario
+        >
+          {isSubmitting ? 'Enviando...' : 'Enviar correo de reinicio'}
+        </button>
+      </div>
+    </form>
+
+    <p className="mt-10 text-sm text-center leading-6 text-gray-500 dark:text-gray-400">
+      ¿Ya tienes una cuenta?{' '}
+      <Link
+        href="/login"
+        className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500 dark:hover:text-emerald-400"
+      >
+        Iniciar sesión
+      </Link>
+    </p>
+  </div>
+</Layout>
+
   );
 };
 
