@@ -16,10 +16,10 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       </Head>
       <ThemeProvider
         attribute="class"
-        // defaultTheme="system"
-        // enableSystem
         defaultTheme="light"
-        enableSystem={false}
+        enableSystem
+        // defaultTheme="light"
+        // enableSystem={false}
         disableTransitionOnChange>
       <SessionProvider session={session}>
         <ProgressBar

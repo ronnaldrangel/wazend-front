@@ -18,10 +18,10 @@ export default function MyComponent() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
-            className="p-2 rounded-full hover:bg-zinc-700 transition duration-200"
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-200"
           >
-            <Sun className="h-6 w-6 text-white transition-all dark:hidden" />
-            <Moon className="hidden h-6 w-6 text-white transition-all dark:block" />
+            <Sun className="h-5 w-5 transition-all dark:hidden" />
+            <Moon className="hidden h-5 w-5 transition-all dark:block" />
             <span className="sr-only">Toggle theme</span>
           </button>
         </DropdownMenuTrigger>
