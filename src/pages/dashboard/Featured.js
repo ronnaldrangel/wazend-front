@@ -27,7 +27,7 @@ export default function Example() {
                                     🎉 Activa tus 30 dias gratis
                                 </p>
                                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 mb-6">
-                                    ¿Fuiste parte del MASTER DE AUTOMATIZACIÓN en BIGSEO? Activa tu prueba gratis en el boton de abajo.
+                                    ¿Fuiste parte del Master de Inteligencia Artificial? Activa tu prueba gratis en el boton de abajo.
                                 </p>
 
                                 <a
