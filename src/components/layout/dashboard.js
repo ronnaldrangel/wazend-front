@@ -7,7 +7,7 @@ import Biblia from "../Bible"
 import ToggleMode from "../ui/toggle-mode"
 
 
-export default function Layout({ children, title, showButton }) {
+export default function Layout({ children, title}) {
     return (
         <>
             <div className="min-h-full">
@@ -16,7 +16,7 @@ export default function Layout({ children, title, showButton }) {
                 <Navbar />
 
                 {title && (
-                    <header className="bg-white shadow-sm dark:bg-gray-900">
+                    <header className="bg-white shadow-sm shadow-gray-300 dark:bg-gray-900">
                         <div className="mx-auto max-w-7xl py-5 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
                             <h1 className="text-xl sm:text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{title}</h1>
                             <Link

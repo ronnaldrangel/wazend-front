@@ -15,7 +15,6 @@ export default function SignUp() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: ''
   });
@@ -68,7 +67,6 @@ export default function SignUp() {
       const username = generateUsername(formData.email);
       const response = await axios.post(`${strapiUrl}/api/auth/local/register`, {
         username,
-        name: formData.name,
         email: formData.email,
         password: formData.password
       },
@@ -87,7 +85,6 @@ export default function SignUp() {
       try {
         await axios.post(process.env.NEXT_PUBLIC_REGISTER, {
           username: username,
-          name: formData.name,
           email: formData.email,
         });
         console.log('Datos enviados al webhook de n8n.');
@@ -118,30 +115,6 @@ export default function SignUp() {
 
         <div className="mt-8">
           <form className="space-y-6" onSubmit={handleSubmit}>
-
-
-            {/* Nombre */}
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
-              >
-                Nombre completo
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  placeholder="Tu nombre completo"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="block w-full rounded-md border-0 py-1.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
 
             {/* Email */}
             <div>

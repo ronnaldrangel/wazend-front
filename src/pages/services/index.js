@@ -12,7 +12,7 @@ export default function Index() {
     const router = useRouter();
 
     return (
-        <Layout title="Dashboard" showButton={true}>
+        <Layout title="Dashboard">
 
             <div className="flex space-x-4">
                 {/* Enlace Mis Servicios */}

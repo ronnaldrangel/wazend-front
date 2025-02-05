@@ -11,7 +11,7 @@ import ToggleMode from '../components/ui/toggle-mode'
 
 const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
-  { name: 'Dashboard', href: '/' },
+  { name: 'Tus instancias', href: '/' },
   { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
   { name: 'Integraciones', href: '/integrations' }
 ]
@@ -114,7 +114,7 @@ export default function Navbar() {
                     <>
                       <div className="relative">
                         <p className="text-gray-500 text-sm font-medium lg:block hidden dark:text-gray-300">
-                          {session.user.email}
+                          {session.user.name}
                         </p>
                       </div>
 
@@ -205,7 +205,7 @@ export default function Navbar() {
                       <LogoGravatar email={session.user.email} size={40} className="h-10 w-10 rounded-full" />
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800 dark:text-white">User #{session.id}</div>
+                      <div className="text-base font-medium text-gray-800 dark:text-white">{session.user.name}</div>
                       <div className="text-sm font-medium text-gray-500 dark:text-gray-400">{session.user.email}</div>
                     </div>
                   </div>

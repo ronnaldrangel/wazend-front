@@ -14,7 +14,7 @@ export default function Index() {
 
 
   return (
-    <Layout title="Dashboard" showButton={true}>
+    <Layout title="Tus instancias">
 
       <ListInstances />
       <Featured/>

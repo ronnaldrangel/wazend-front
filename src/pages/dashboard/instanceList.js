@@ -256,7 +256,7 @@ const UserSubscription = () => {
                     </button>
                   </Link>
                 ) : (
-                  <span className="text-base font-semibold bg-red-500 text-white px-6 py-2 rounded-lg">Tu servicio expiro por falta de pago.</span>
+                  <span className="text-base font-semibold bg-red-500 text-white px-6 py-2 rounded-lg">Tu servicio expiro.</span>
                 )}
               </div>
 

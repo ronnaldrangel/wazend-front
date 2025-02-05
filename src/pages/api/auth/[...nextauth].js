@@ -48,6 +48,7 @@ export default NextAuth({
     session: async ({ session, token }) => {
       session.id = token.id;
       session.jwt = token.jwt;
+      session.user.name = token.name; // Agregar el nombre del usuario a la sesión
       return Promise.resolve(session);
     },
     jwt: async ({ token, user }) => {
@@ -55,6 +56,7 @@ export default NextAuth({
       if (isSignIn) {
         token.id = user.id;
         token.jwt = user.jwt;
+        token.name = user.name; // Agregar el nombre del usuario al token
       }
       return Promise.resolve(token);
     },
