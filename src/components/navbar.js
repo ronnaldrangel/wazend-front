@@ -19,6 +19,7 @@ const navigation = [
 const userNavigation = [
   { name: 'Tu perfil', href: '/profile' },
   { name: 'Facturación', href: 'https://wazend.net/my-account/', external: true },
+  { name: 'Reportes', href: 'https://status.wazend.net/', external: true },
   { name: 'Cerrar sesión', href: '/', signOut: true }
 ]
 
