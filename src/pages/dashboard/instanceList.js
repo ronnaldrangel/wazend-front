@@ -233,16 +233,23 @@ const UserSubscription = () => {
 
               <p
                 className={`text-sm font-semibold px-3 py-1 rounded-2xl text-white ${instanceInfo.connectionStatus === "open"
-                  ? "bg-green-600"
-                  : instanceInfo.connectionStatus === "connecting"
-                    ? "bg-orange-500"
-                    : instanceInfo.connectionStatus === "close"
-                      ? "bg-red-600"
-                      : "bg-gray-600"
+                    ? "bg-green-600"
+                    : instanceInfo.connectionStatus === "connecting"
+                      ? "bg-orange-500"
+                      : instanceInfo.connectionStatus === "close"
+                        ? "bg-red-600"
+                        : "bg-gray-600"
                   }`}
               >
-                {instanceInfo.connectionStatus || "Cargando..."}
+                {instanceInfo.connectionStatus === "open"
+                  ? "Conectado"
+                  : instanceInfo.connectionStatus === "connecting"
+                    ? "Conectando"
+                    : instanceInfo.connectionStatus === "close"
+                      ? "Desconectado"
+                      : "Cargando..."}
               </p>
+
 
 
               <div>
