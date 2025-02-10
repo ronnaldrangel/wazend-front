@@ -8,6 +8,8 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
+import SignSocial from '../../components/SignSocial';
+
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -256,6 +258,10 @@ export default function SignUp() {
               </button>
             </div>
           </form>
+
+          {/* Botón para iniciar sesión con GitHub */}
+          <SignSocial />
+
 
           <p className="mt-10 text-sm text-center leading-6 text-gray-500 dark:text-gray-400">
             ¿Tienes una cuenta?{' '}

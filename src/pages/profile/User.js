@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-
+import { toast } from 'sonner';
 import OrderSkeleton from '../../components/loaders/OrderSkeleton';
+import LogoGravatar from '../../components/LogoGravatar';
 
-import LogoGravatar from '../../components/LogoGravatar'
-
-const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL; // URL del backend desde las variables de entorno
+const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function User() {
   const { data: session, status } = useSession();
@@ -13,13 +12,18 @@ export default function User() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (status === 'authenticated' && session?.jwt) {
           const response = await fetch(`${strapiUrl}/api/users/me`, {
             headers: {
-              Authorization: `Bearer ${session.jwt}`, // JWT de la sesión
+              Authorization: `Bearer ${session.jwt}`,
             },
           });
 
@@ -28,7 +32,7 @@ export default function User() {
           }
 
           const result = await response.json();
-          setData(result); // Guarda los datos en el estado
+          setData(result);
         }
       } catch (err) {
         setError(err.message);
@@ -40,78 +44,149 @@ export default function User() {
     fetchData();
   }, [status, session]);
 
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+
+    if (newPassword !== confirmPassword) {
+      toast.error('Las contraseñas no coinciden');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`${strapiUrl}/api/auth/change-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.jwt}`,
+        },
+        body: JSON.stringify({
+          currentPassword,
+          password: newPassword,
+          passwordConfirmation: confirmPassword,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result?.error?.message || 'Error al actualizar la contraseña');
+      }
+
+      toast.success('Contraseña actualizada con éxito');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (status === 'loading' || loading) return <OrderSkeleton />;
   if (error) return <div>Error: {error}</div>;
-
-  // Asegúrate de que `data` no sea nulo antes de renderizar
-  if (!data) {
-    return <OrderSkeleton />;
-  }
+  if (!data) return <OrderSkeleton />;
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-lg">
-      <div className="border-b border-gray-200 pt-8 px-6">
-        <div className="flex gap-8 justify-center">
-          <button className="pb-4 px-1 border-b-2 border-emerald-600 text-emerald-600 font-bold">
-            Cuenta
-          </button>
-        </div>
+    <>
+      <div className="w-full max-w-3xl mx-auto mb-6">
+        <p className="text-2xl font-semibold">Mi perfil</p>
       </div>
 
-      <div className="flex flex-col items-center p-8">
-
-        {/* <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center mb-4">
-
-          {data.image ? (
-            <img
-              src={data.image}
-              alt={data.name || 'Usuario'}
-              className="w-full h-full rounded-full object-cover"
+      <div className="w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-lg">
+        <div className="flex flex-col p-10">
+          <div className="flex items-center space-x-4">
+            <LogoGravatar
+              email={session.user.email}
+              className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center"
             />
-          ) : (
-            <span className="text-white text-4xl font-medium">
-              {data.name
-                ?.split(' ')
-                .map((word) => word[0])
-                .join('') || 'NN'}
-            </span>
-          )}
-          
-        </div> */}
-
-        <LogoGravatar
-          email={session.user.email || 'usuario@example.com'}
-          className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mb-4"
-        />
-
-
-
-        <h1 className="text-3xl font-bold text-slate-700 mb-2">{data.name || 'Nombre no disponible'}</h1>
-        <p className="text-gray-400 text-sm mb-8">
-          Fecha de creación: {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : 'No disponible'}
-        </p>
-
-
-        <div className="w-full space-y-6 bg-gray-100 p-6 rounded-lg">
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="w-full md:w-1/4 mb-2 md:mb-0">
-              <label className="text-base font-semibold text-black">Username</label>
-            </div>
-            <div className="w-full md:w-3/4">
-              <p className="text-gray-700">{data.username || 'Username no disponible'}</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="w-full md:w-1/4 mb-2 md:mb-0">
-              <label className="text-base font-semibold text-black">Email</label>
-            </div>
-            <div className="w-full md:w-3/4">
-              <p className="text-gray-700">{data.email || 'Correo no disponible'}</p>
+            <div>
+              <p className="text-base font-bold text-gray-800">{data.name || 'Nombre no disponible'}</p>
+              <p className="text-gray-800 text-sm">{data.email || 'Email no disponible'}</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="mt-6 w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-lg">
+        <div className="flex flex-col p-10">
+          <p className="text-lg font-semibold text-black mb-2">Actualizar contraseña</p>
+          <p className="text-gray-500 text-sm mb-8">
+            Asegúrese de que su cuenta utilice una contraseña larga y aleatoria para mantenerla segura.
+          </p>
+
+          <form className="space-y-6" onSubmit={handlePasswordUpdate}>
+            <div className="w-full space-y-6">
+              {/* Contraseña actual */}
+              <div>
+                <label htmlFor="current-password" className="block text-sm font-medium text-black">
+                  Contraseña actual
+                </label>
+                <input
+                  id="current-password"
+                  name="currentPassword"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                  placeholder="Ingresa tu contraseña actual"
+                />
+              </div>
+
+              {/* Nueva contraseña */}
+              <div>
+                <label htmlFor="new-password" className="block text-sm font-medium text-black">
+                  Nueva contraseña
+                </label>
+                <input
+                  id="new-password"
+                  name="newPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                  placeholder="Ingresa tu nueva contraseña"
+                />
+              </div>
+
+              {/* Confirmar contraseña */}
+              <div>
+                <label htmlFor="confirm-password" className="block text-sm font-medium text-black">
+                  Confirmar contraseña
+                </label>
+                <input
+                  id="confirm-password"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                  placeholder="Confirma tu nueva contraseña"
+                />
+              </div>
+
+              {/* Botón de enviar */}
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:bg-gray-400"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Guardando...' : 'Guardar cambios'}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
   );
 }
