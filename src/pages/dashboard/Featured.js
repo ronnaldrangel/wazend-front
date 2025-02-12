@@ -1,4 +1,12 @@
+
+import { useSession } from 'next-auth/react'; // Importa el hook de NextAuth
+
 export default function Example() {
+    const { data: session } = useSession(); // Obtén la sesión
+    const email = session?.user?.email || ''; // Accede al email de la sesión, si está disponible
+  
+    const checkoutUrl = `https://wazend.net/checkouts/checkout/?aero-add-to-checkout=9390&aero-qty=1&billing_email=${encodeURIComponent(email)}`;
+
     return (
         <div className="py-20">
             <div className="mx-auto">
@@ -31,7 +39,7 @@ export default function Example() {
                                 </p>
 
                                 <a
-                                    href="https://wazend.net/checkouts/checkout/?aero-add-to-checkout=9390&aero-qty=1"
+                                    href={checkoutUrl}
                                     className="rounded-md bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
                                 >
                                     Activar prueba gratis
@@ -63,7 +71,7 @@ export default function Example() {
                                 </p>
 
                                 <a
-                                    href="https://www.youtube.com/@wazend-es"
+                                    href={checkoutUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"

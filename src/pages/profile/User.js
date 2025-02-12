@@ -12,10 +12,13 @@ export default function User() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
+  const [isSubmittingPassword, setIsSubmittingPassword] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +36,8 @@ export default function User() {
 
           const result = await response.json();
           setData(result);
+          setName(result.name || '');
+          setPhone(result.phone || '');
         }
       } catch (err) {
         setError(err.message);
@@ -44,15 +49,41 @@ export default function User() {
     fetchData();
   }, [status, session]);
 
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setIsSubmittingProfile(true);
+
+    try {
+      const response = await fetch(`${strapiUrl}/api/users/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        },
+        body: JSON.stringify({ name, phone }),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result?.error?.message || 'Error al actualizar perfil');
+      }
+
+      toast.success('Perfil actualizado con éxito');
+      setData(result);
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setIsSubmittingProfile(false);
+    }
+  };
+
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
-
     if (newPassword !== confirmPassword) {
       toast.error('Las contraseñas no coinciden');
       return;
     }
-
-    setIsSubmitting(true);
+    setIsSubmittingPassword(true);
 
     try {
       const response = await fetch(`${strapiUrl}/api/auth/change-password`, {
@@ -69,7 +100,6 @@ export default function User() {
       });
 
       const result = await response.json();
-
       if (!response.ok) {
         throw new Error(result?.error?.message || 'Error al actualizar la contraseña');
       }
@@ -81,7 +111,7 @@ export default function User() {
     } catch (err) {
       toast.error(err.message);
     } finally {
-      setIsSubmitting(false);
+      setIsSubmittingPassword(false);
     }
   };
 
@@ -109,6 +139,67 @@ export default function User() {
           </div>
         </div>
       </div>
+
+
+      <div className="mt-6 w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-lg">
+        <div className="flex flex-col p-10">
+          <p className="text-lg font-semibold text-black mb-2">Información del perfil</p>
+          <p className="text-gray-500 text-sm mb-8">
+            Actualice la información del perfil y la dirección de correo electrónico de su cuenta.
+          </p>
+
+          <form className="space-y-6" onSubmit={handleProfileUpdate}>
+            <div className="w-full space-y-6">
+              {/* Contraseña actual */}
+              <div>
+                <label htmlFor="current-password" className="block text-sm font-medium text-black">
+                  Nombre
+                </label>
+                <input
+                  className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Ingrese su nombre"
+                />
+              </div>
+
+              {/* Confirmar contraseña */}
+              <div>
+                <label className="block text-sm font-medium text-black">Teléfono</label>
+                <input
+                  type="tel"
+                  pattern="[0-9]*"
+                  inputMode="numeric"
+                  className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
+                  value={phone}
+                  onChange={(e) => {
+                    const regex = /^[0-9\b]+$/;
+                    if (e.target.value === '' || regex.test(e.target.value)) {
+                      setPhone(e.target.value);
+                    }
+                  }}
+                  placeholder="Ingrese su teléfono"
+                />
+              </div>
+
+              {/* Botón de enviar */}
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:bg-gray-400"
+                  disabled={isSubmittingProfile}
+                >
+                  {isSubmittingProfile ? 'Guardando...' : 'Guardar cambios'}
+                </button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+
+
 
       <div className="mt-6 w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-lg">
         <div className="flex flex-col p-10">
@@ -178,9 +269,9 @@ export default function User() {
                 <button
                   type="submit"
                   className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:bg-gray-400"
-                  disabled={isSubmitting}
+                  disabled={isSubmittingPassword}
                 >
-                  {isSubmitting ? 'Guardando...' : 'Guardar cambios'}
+                  {isSubmittingPassword ? 'Guardando...' : 'Actualizar contraseña'}
                 </button>
               </div>
             </div>
