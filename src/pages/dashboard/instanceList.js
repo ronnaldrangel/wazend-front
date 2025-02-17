@@ -12,8 +12,6 @@ import {
   EyeSlashIcon,
   ClipboardIcon,
 } from '@heroicons/react/24/outline';
-
-
 import { toast } from 'sonner';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -111,12 +109,6 @@ const UserSubscription = () => {
   if (data.subscriptions.length === 0) return <NoOrders />;
 
 
-  // const filteredSubscriptions = data.subscriptions.filter(
-  //   (subscription) => subscription.type === 'API'
-  // );
-
-  //if (filteredSubscriptions.length === 0) return <p>No hay suscripciones de tipo API.</p>;
-
   const toggleKeyVisibility = (id) => {
     setVisibleKeys((prev) => ({
       ...prev,
@@ -157,15 +149,6 @@ const UserSubscription = () => {
                 </p>
               </div>
             </div>
-
-            {/* Información adicional de la instancia */}
-            {/* {instanceInfo.ownerJid && (
-                <div className="bg-blue-100 p-3 rounded-sm">
-                  <p className="text-sm font-semibold text-blue-800">
-                    Propietario: {instanceInfo.ownerJid}
-                  </p>
-                </div>
-              )} */}
 
             {/* API Key con íconos de ojo y copiar */}
             <div className="bg-gray-200 p-3 rounded-sm flex items-center justify-between">
@@ -233,12 +216,12 @@ const UserSubscription = () => {
 
               <p
                 className={`text-sm font-semibold px-3 py-1 rounded-2xl text-white ${instanceInfo.connectionStatus === "open"
-                    ? "bg-green-600"
-                    : instanceInfo.connectionStatus === "connecting"
-                      ? "bg-orange-500"
-                      : instanceInfo.connectionStatus === "close"
-                        ? "bg-red-600"
-                        : "bg-gray-600"
+                  ? "bg-green-600"
+                  : instanceInfo.connectionStatus === "connecting"
+                    ? "bg-orange-500"
+                    : instanceInfo.connectionStatus === "close"
+                      ? "bg-red-600"
+                      : "bg-gray-600"
                   }`}
               >
                 {instanceInfo.connectionStatus === "open"
@@ -254,7 +237,7 @@ const UserSubscription = () => {
 
               <div>
                 {subscription.isActive ? (
-                  <Link href={`/instances/${subscription.instanceId}`} passHref>
+                  <Link href={`/instances/${subscription.instanceId}/dashboard`} passHref>
                     <button
                       className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-base font-semibold shadow-md flex items-center justify-center space-x-2"
                     >

@@ -14,13 +14,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       <Head>
         <title>Wazend</title>
       </Head>
-      <ThemeProvider
+      {/* <ThemeProvider
         attribute="class"
         defaultTheme="light"
         enableSystem
         // defaultTheme="light"
         // enableSystem={false}
-        disableTransitionOnChange>
+        disableTransitionOnChange> */}
       <SessionProvider session={session}>
         <ProgressBar
           height="4px"
@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         <Toaster closeButton richColors position="top-right" />
         <Component {...pageProps} />
       </SessionProvider>
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
     </>
   );
 }

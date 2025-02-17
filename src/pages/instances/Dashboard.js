@@ -15,7 +15,6 @@ import Preload from '../../components/loaders/OrderSkeleton';
 // Función fetcher que usa axios y pasa instanceId como parámetro
 const fetcher = (url, instanceId) =>
   axios.get(url, {
-    //headers: { apiKey: 'UkVKATZZMZqZgtxMscKhfhbxORHDH41K' },
     headers: {
       apiKey: process.env.NEXT_PUBLIC_WAZEND_API_KEY,
     },
@@ -50,19 +49,7 @@ const LayoutInstance = ({ instanceId }) => {
     <>
       <div className='space-y-8'>
 
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">Instancia #{instance.name}</h1>
-
-        <div>
-          <a
-            href="https://docs.wazend.net/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          >
-            Documentación
-          </a>
-        </div>
-
+        {/* <h1 className="text-2xl font-bold tracking-tight text-gray-900">Instancia #{instance.name}</h1> */}
 
         <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
           <div className='flex flex-col md:flex-row'>
@@ -124,7 +111,7 @@ const LayoutInstance = ({ instanceId }) => {
               <div className='flex-1 flex-col p-4'>
 
                 <div className='mb-8 md:mb-11'>
-                  <h3 className='text-sm font-base'>Token</h3>
+                  <h3 className='text-sm font-base'>Token (ApiKey)</h3>
                   <div className="flex items-center space-x-2">
                     <p className='text-lg font-medium text-green-600'>
                       {isTokenVisible ? instance.token : '••••••••••'}
@@ -284,79 +271,7 @@ const LayoutInstance = ({ instanceId }) => {
 
         {/* Seccion de ajustes*/}
         <WebhookControl instanceName={instance.name} />
-
-        {/* <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
-          <div className='flex justify-start p-4 mb-4 border-b-2'>
-            <h2 className='text-xl font-semibold'>Ajustes de instancia (Proximamente)</h2>
-          </div>
-          <div className='mt-2 mb-2 p-4'>
-            <h3 className='text-sm font-semibold text-gray-800 mb-2'>Webhook URL</h3>
-            <input
-              type='text'
-              placeholder='https://your-domain.com/instance/22735/webhook'
-              className='w-full rounded-md border border-gray-300 p-2'
-            />
-          </div>
-          
-          <div className='p-4'>
-            <h3 className='text-sm font-semibold text-gray-800 mb-4'>Webhook Events</h3>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-              {[
-                "APPLICATION_STARTUP",
-                "CALL",
-                "CHATS_DELETE",
-                "CHATS_SET",
-                "CHATS_UPDATE",
-                "CHATS_UPSERT",
-                "CONNECTION_UPDATE",
-                "CONTACTS_SET",
-                "CONTACTS_UPDATE",
-                "CONTACTS_UPSERT",
-                "GROUP_PARTICIPANTS_UPDATE",
-                "GROUP_UPDATE",
-                "GROUPS_UPSERT",
-                "LABELS_ASSOCIATION",
-                "LABELS_EDIT",
-                "LOGOUT_INSTANCE",
-                "MESSAGES_DELETE",
-                "MESSAGES_SET",
-                "MESSAGES_UPDATE",
-                "MESSAGES_UPSERT",
-                "PRESENCE_UPDATE",
-                "QRCODE_UPDATED",
-                "REMOVE_INSTANCE",
-                "SEND_MESSAGE",
-              ].map((event) => (
-                <div key={event} className='flex items-center'>
-                  <input
-                    type='checkbox'
-                    id={event}
-                    className='mr-2 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-600'
-                  />
-                  <label htmlFor={event} className='text-sm font-semibold text-gray-600 flex items-center'>
-                    {event}{' '}
-                    <span className='ml-2 h-3 w-3 border border-gray-600 rounded-full text-gray-600 text-[0.5rem] font-semibold flex items-center justify-center'>
-                      &#105;
-                    </span>
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className='py-2 px-4'>
-            <p className='text-sm text-gray-500 mb-1'>
-              Tan pronto como ocurra uno de estos eventos, se llamará la URL del webhook anterior con los datos del evento.
-            </p>
-            <p className='text-sm text-blue-500 mb-6'>
-              <Link href='https://docs.wazend.net/'>Consulte la documentación para obtener más información sobre los webhooks.</Link>
-
-            </p>
-          </div>
-          <div className='px-4 pb-4'>
-            <button className='rounded-md bg-emerald-600 text-white px-4 py-2 hover:bg-emerald-700 font-medium'>Guardar</button>
-          </div>
-        </section> */}
-
+ 
 
       </div>
     </>

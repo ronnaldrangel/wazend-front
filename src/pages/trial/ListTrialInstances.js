@@ -152,7 +152,7 @@ const UserSubscription = () => {
             <div className="mt-4 flex flex-col md:flex-row md:justify-end space-y-4 md:space-y-0 md:space-x-4">
               {new Date(order.endDate) >= new Date() ? (
                 <>
-                  <Link href={`/instances/${order.instanceId}`} passHref>
+                  <Link href={`/instances/${order.instanceId}/dashboard`} passHref>
                     <button
                       className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-base font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
                     >

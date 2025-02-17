@@ -4,7 +4,7 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 
 const tiers = [
     {
-        name: 'Paquete mensual',
+        name: 'Pago mensual',
         id: '7737',
         price: '$15.9/mes',
         description: 'Facturación cada 30 días',
@@ -19,7 +19,7 @@ const tiers = [
         featured: false,
     },
     {
-        name: 'Paquete anual',
+        name: 'Pago anual',
         id: '8565',
         price: '$159/año',
         description: 'Facturación cada 365 días',
