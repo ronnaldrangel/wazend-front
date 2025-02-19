@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Layout from '@/components/layout/dashboard';
-import LayoutInstance from '@/pages/instances/Dashboard';
 import LayoutGeneral from '../../layoutGeneral';
+import Dashboard from '@/pages/instances/[id]/dashboard/Dashboard';
 
 
 const InstancePage = () => {
@@ -16,7 +16,7 @@ const InstancePage = () => {
           <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
         </div>
 
-        <LayoutInstance instanceId={id} />
+        <Dashboard instanceId={id} />
       </LayoutGeneral>
     </Layout>
   );

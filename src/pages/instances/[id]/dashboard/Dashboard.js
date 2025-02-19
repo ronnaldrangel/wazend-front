@@ -6,10 +6,10 @@ import Image from 'next/image';
 import { EyeIcon, EyeSlashIcon, ClipboardIcon } from '@heroicons/react/24/outline';
 import { UserIcon, ChatBubbleLeftEllipsisIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
-import ImagenQr from './ImagenQr';
-import ButtonControl from './ButtonControl';
-import WebhookControl from './WebhookControl';
-import Preload from '../../components/loaders/OrderSkeleton';
+import ImagenQr from '../../ImagenQr';
+import ButtonControl from '../../ButtonControl';
+import WebhookControl from '../../WebhookControl';
+import Preload from '../../../../components/loaders/OrderSkeleton';
 
 
 // Función fetcher que usa axios y pasa instanceId como parámetro
@@ -50,6 +50,77 @@ const LayoutInstance = ({ instanceId }) => {
       <div className='space-y-8'>
 
         {/* <h1 className="text-2xl font-bold tracking-tight text-gray-900">Instancia #{instance.name}</h1> */}
+
+
+       {/* Seccion de conexion*/}
+
+       {instance.connectionStatus === 'open' && (
+          <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
+            <h2 className='mb-4 text-xl font-semibold'>Tu número de WhatsApp conectado</h2>
+            <div className="group block flex-shrink-0">
+              <div className="flex items-center">
+                <div>
+                  <img
+                    className="inline-block h-12 w-12 rounded-full"
+                    src={instance.profilePicUrl}
+                    alt={instance.profileName}
+                  />
+                </div>
+                <div className="ml-3">
+                  <p className="text-md font-semibold text-black">{instance.profileName}</p>
+                  <p className="text-sm font-base text-gray-500">{instance.ownerJid}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end space-x-2">
+              <ButtonControl instanceName={instance.name} />
+            </div>
+
+          </section>
+        )}
+
+        {instance.connectionStatus !== 'open' && (
+          <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
+            <h2 className='mb-4 text-xl font-semibold'>Conecta tu WhatsApp</h2>
+            <p className='mb-1'>Escanee el código QR para conectar su número de teléfono de WhatsApp con esta instancia.</p>
+            <p className='mb-8'>Después de eso, podrá enviar y recibir mensajes de WhatsApp.</p>
+            <div className='flex flex-col md:flex-row md:space-x-4'>
+
+              <div className='w-full md:w-[500px] h-[280px] border-2 border-gray-200 p-2 rounded-lg overflow-hidden'>
+                <Image
+                  src='/images/scan-wa.webp'
+                  alt='Hand holding a phone with WhatsApp'
+                  className='w-full h-full object-cover rounded-md'
+                  width={200}
+                  height={50}
+                  unoptimized
+                />
+              </div>
+
+
+            </div>
+
+            <div className="mt-6 flex flex-col sm:flex-row sm:justify-end sm:space-x-2 space-y-2 sm:space-y-0">
+              <button
+                onClick={handleShowQr}
+                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+              >
+                Mostrar QR
+              </button>
+
+              {showQr && (
+                <div className="mt-4">
+                  <ImagenQr instanceName={instance.name} />
+                </div>
+              )}
+
+              <ButtonControl instanceName={instance.name} />
+            </div>
+
+          </section>
+        )}
+
 
         <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
           <div className='flex flex-col md:flex-row'>
@@ -199,75 +270,6 @@ const LayoutInstance = ({ instanceId }) => {
           </div>
         </section>
 
-
-        {/* Seccion de conexion*/}
-
-        {instance.connectionStatus === 'open' && (
-          <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
-            <h2 className='mb-4 text-xl font-semibold'>Tu número de WhatsApp conectado</h2>
-            <div className="group block flex-shrink-0">
-              <div className="flex items-center">
-                <div>
-                  <img
-                    className="inline-block h-12 w-12 rounded-full"
-                    src={instance.profilePicUrl}
-                    alt={instance.profileName}
-                  />
-                </div>
-                <div className="ml-3">
-                  <p className="text-md font-semibold text-black">{instance.profileName}</p>
-                  <p className="text-sm font-base text-gray-500">{instance.ownerJid}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 flex justify-end space-x-2">
-              <ButtonControl instanceName={instance.name} />
-            </div>
-
-          </section>
-        )}
-
-        {instance.connectionStatus !== 'open' && (
-          <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
-            <h2 className='mb-4 text-xl font-semibold'>Conecta tu WhatsApp</h2>
-            <p className='mb-1'>Escanee el código QR para conectar su número de teléfono de WhatsApp con esta instancia.</p>
-            <p className='mb-8'>Después de eso, podrá enviar y recibir mensajes de WhatsApp.</p>
-            <div className='flex flex-col md:flex-row md:space-x-4'>
-
-              <div className='w-full md:w-[500px] h-[280px] border-2 border-gray-200 p-2 rounded-lg overflow-hidden'>
-                <Image
-                  src='/images/scan-wa.webp'
-                  alt='Hand holding a phone with WhatsApp'
-                  className='w-full h-full object-cover rounded-md'
-                  width={200}
-                  height={50}
-                  unoptimized
-                />
-              </div>
-
-
-            </div>
-
-            <div className="mt-6 flex flex-col sm:flex-row sm:justify-end sm:space-x-2 space-y-2 sm:space-y-0">
-              <button
-                onClick={handleShowQr}
-                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-              >
-                Mostrar QR
-              </button>
-
-              {showQr && (
-                <div className="mt-4">
-                  <ImagenQr instanceName={instance.name} />
-                </div>
-              )}
-
-              <ButtonControl instanceName={instance.name} />
-            </div>
-
-          </section>
-        )}
 
         {/* Seccion de ajustes*/}
         <WebhookControl instanceName={instance.name} />

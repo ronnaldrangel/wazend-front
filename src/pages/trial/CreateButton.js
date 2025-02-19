@@ -2,8 +2,6 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-import MessageTrial from '../trial/MessageTrial';
-
 import { toast } from 'sonner';
 
 export default function NoInstances() {
@@ -45,8 +43,7 @@ export default function NoInstances() {
 
   return (
     <>
-      <MessageTrial />
-      <div className="mt-4 flex justify-end">
+      <div className="mt-4 flex">
         <button
           type="button"
           onClick={handleButtonClick}

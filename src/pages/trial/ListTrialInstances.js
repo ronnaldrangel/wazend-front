@@ -1,187 +1,81 @@
-import { useEffect, useState } from 'react';
-import { useSession, getSession } from 'next-auth/react';
 import useSWR from 'swr';
-//import NoOrders from '../NoOrders';
+import { useSession } from 'next-auth/react';
+import InstanceCard from '../dashboard/instanceCard';
 import OrderSkeleton from '../../components/loaders/OrderSkeleton';
-import Link from 'next/link';
-import {
-  ArrowTopRightOnSquareIcon,
-  ArrowRightCircleIcon,
-  Cog6ToothIcon,
-  EyeIcon,
-  EyeSlashIcon,
-  ClipboardIcon
-} from '@heroicons/react/24/outline';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
+import CreateButton from './CreateButton';
+import DeleteButton from './DeleteButton';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-import NoInstances from './NoTrialInstances';
-import MessageTrial from './MessageTrial';
-import DeleteButton from './DeleteButton';
+const fetcher = async (url, jwt) => {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
 
-import { toast } from 'sonner';
+    if (!response.ok) throw new Error(`❌ Error en la solicitud: ${response.statusText}`);
 
-const UserSubscription = () => {
-  const { data: session, status } = useSession();
-  const [jwt, setJwt] = useState(null);
-  const [userId, setUserId] = useState(null);
+    return await response.json();
+  } catch (error) {
+    console.error('❌ Error al obtener datos de Strapi:', error);
+    throw error;
+  }
+};
 
-  const [visibleKeys, setVisibleKeys] = useState({});
+const FetchStrapi = () => {
+  const { data: session } = useSession();
+  const jwt = session?.jwt;
 
-  const fetcher = async (url) => {
-    try {
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+  const { data, error, isLoading } = useSWR(
+    jwt ? `${strapiUrl}/api/users/me?populate=freetrials` : null,
+    (url) => fetcher(url, jwt)
+  );
 
-      if (!response.ok) {
-        return null;
-      }
+  // Muestra el loader mientras está cargando
+  if (isLoading) return <OrderSkeleton />;
 
-      return response.json();
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    const getTokenAndUserId = async () => {
-      const session = await getSession();
-      if (session) {
-        setJwt(session.jwt);
-        try {
-          const response = await fetch(`${strapiUrl}/api/users/me`, {
-            headers: {
-              Authorization: `Bearer ${session.jwt}`,
-            },
-          });
-          if (response.ok) {
-            const userData = await response.json();
-            setUserId(userData.id);
-          } else {
-            console.error('Error fetching user data');
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      }
-    };
-
-    getTokenAndUserId();
-  }, []);
-
-  const { data, error, isLoading } = useSWR(jwt ? `${strapiUrl}/api/users/me?populate=freetrials` : null, fetcher);
-
-  // Log the data to the console to inspect the response structure
-  //console.log("API Response Data:", data);
-
-  if (status === 'loading' || isLoading || error || !data || !data.freetrials) return <OrderSkeleton />;
-  if (data.freetrials.length === 0) return <NoInstances />;
-
-
-  const toggleKeyVisibility = (id) => {
-    setVisibleKeys((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  const copyToClipboard = (key) => {
-    if (key) {
-      navigator.clipboard.writeText(key);
-      toast.success('Copiado exitosamente.');
-    }
-  };
+  // Muestra error si ocurre
+  if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
   return (
-    <div>
-      <ul className="space-y-4">
-        {data.freetrials.map((order) => (
-          <li key={order.id} className="flex flex-col bg-white rounded-xl p-6 shadow-lg gap-4">
+    <>
+      {data?.freetrials?.length > 0 ? (
+        <div className="grid grid-cols-1">
+          {data.freetrials.map((sub, index) => (
+            <div key={index}>
+              <InstanceCard instanceId={sub.instanceId} instanceName={`Instancia gratis - ${sub.instanceName}`} isActive={true} endDate={sub.endDate} />
+              {/* <DeleteButton documentId={sub.documentId} instanceName={sub.instanceName} /> */}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <CreateButton />
+      )}
 
-
-            {/* Titulo y fecha */}
-            <div className="flex justify-between items-center mb-2">
-              <p className="text-lg font-bold">Instancia gratuita - {order.instanceName}</p>
-              <div className="bg-violet-200 px-2 py-1 rounded-sm inline-block">
-                <p className="text-violet-700 text-xs">
-                  Prueba gratis hasta el{' '}
-                  {new Date(order.endDate).toLocaleDateString('es-ES', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                  })}
-                </p>
-              </div>
+      <div className="mt-8">
+        <div className="w-full">
+          <div className="rounded-lg shadow-md bg-blue-100 text-blue-900 p-6">
+            <div className="flex items-center font-bold text-xl mb-4">
+              <ExclamationTriangleIcon className="h-6 w-6 text-yellow-500 mr-2" />
+              Su instancia de prueba
             </div>
 
+            <p className="text-sm font-semibold mb-4">Información importante:</p>
 
-            {/* API Key con íconos de ojo y copiar */}
-            <div className="bg-gray-200 p-3 rounded-sm flex items-center justify-between">
-              <p className="text-black text-sm font-mono">
-                {visibleKeys[order.id]
-                  ? order.apiKey
-                  : '********-****-****-****-************'}
-              </p>
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => toggleKeyVisibility(order.id)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  {visibleKeys[order.id] ? (
-                    <EyeSlashIcon className="h-5 w-5" />
-                  ) : (
-                    <EyeIcon className="h-5 w-5" />
-                  )}
-                </button>
-                <button
-                  onClick={() => copyToClipboard(order.apiKey)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <ClipboardIcon className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-
-
-            {/* Third Part: Button */}
-            <div className="mt-4 flex flex-col md:flex-row md:justify-end space-y-4 md:space-y-0 md:space-x-4">
-              {new Date(order.endDate) >= new Date() ? (
-                <>
-                  <Link href={`/instances/${order.instanceId}/dashboard`} passHref>
-                    <button
-                      className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-base font-semibold shadow-md w-full md:w-auto flex items-center justify-center space-x-2"
-                    >
-                      <Cog6ToothIcon className="h-6 w-6" />
-                      <span>Acceder</span>
-                    </button>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  {/* <span className="text-lg font-semibold text-red-500">
-          Tu servicio fue cancelado
-        </span> */}
-                </>
-              )}
-              {/* <div className="w-full md:w-auto">
-                <DeleteButton documentId={order.documentId} instanceName={order.instanceName} />
-              </div> */}
-            </div>
-
-          </li>
-        ))}
-      </ul>
-
-      <div className='mt-8'>
-        <MessageTrial />
+            <ul className="list-disc list-inside space-y-1 text-sm mb-4">
+              <li>La instancia vence en 3 días.</li>
+              <li>No es necesaria tarjeta de crédito o débito.</li>
+              <li>La instancia puede eliminarse en cualquier momento por abuso.</li>
+              <li>Límite de uso: 10 acciones o solicitudes cada 5 minutos.</li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default UserSubscription;
+export default FetchStrapi;
