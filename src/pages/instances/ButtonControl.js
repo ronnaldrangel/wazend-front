@@ -2,7 +2,7 @@
 import { toast } from 'sonner';
 
 const ButtonControl = ({ instanceName }) => {
-  
+
   const handleRestart = async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/restart/${instanceName}`, {
@@ -55,16 +55,18 @@ const ButtonControl = ({ instanceName }) => {
     <>
       <button
         onClick={handleRestart}
-        className="inline-flex w-full justify-center rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 sm:ml-3 sm:w-auto"
+        className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 text-sm font-semibold text-white bg-amber-600 rounded-lg shadow-md transition-all duration-200 ease-in-out hover:bg-amber-500 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
       >
         Reiniciar
       </button>
+
       <button
         onClick={handleDisconnect}
-        className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+        className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 text-sm font-semibold text-white bg-red-600 rounded-lg shadow-md transition-all duration-200 ease-in-out hover:bg-red-500 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2"
       >
         Desconectar
       </button>
+
     </>
   );
 };

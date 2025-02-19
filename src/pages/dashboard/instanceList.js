@@ -44,6 +44,9 @@ const FetchStrapi = () => {
     return <p className="text-red-500">Error: {error.message}</p>;
   }
 
+  if (!data) return <OrderSkeleton />;
+
+
   if (!data?.subscriptions?.length) {
     return <>
       <div className="bg-white rounded-xl px-6 py-10 text-center shadow-lg w-full mx-auto border border-gray-200 min-h-[400px] flex flex-col justify-center items-center">

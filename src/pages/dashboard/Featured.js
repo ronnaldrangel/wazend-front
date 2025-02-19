@@ -17,7 +17,7 @@ export default function Example() {
             title: "🛟 ¿Necesitas tutoriales?",
             description: "Hemos creado un canal de YouTube en donde creamos contenido de automatización gratuito para que le saques el juego a Wazend.",
             buttonText: "Ir al canal de YouTube",
-            buttonUrl: checkoutUrl,
+            buttonUrl: "https://www.youtube.com/@wazend-es",
             buttonColor: "bg-red-600 hover:bg-red-500 focus-visible:outline-red-600"
         }
     ];

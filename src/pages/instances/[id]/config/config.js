@@ -101,6 +101,8 @@ const InstancePage = ({ name }) => {
         <>
             <div className="rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)] p-6">
                 <div className="space-y-4">
+
+                <p className='mb-4 text-lg font-semibold'>Ajustes de WhatsApp</p>
                     {/* Rechazar llamadas con el campo de mensaje justo debajo */}
                     <div className="py-3 border-b">
                         <div className="flex justify-between items-center">
@@ -165,6 +167,7 @@ const InstancePage = ({ name }) => {
                     {isLoading ? 'Guardando...' : 'Guardar'}
                 </button>
             </div>
+
         </>
     );
 };

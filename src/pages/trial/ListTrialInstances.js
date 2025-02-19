@@ -34,11 +34,13 @@ const FetchStrapi = () => {
     (url) => fetcher(url, jwt)
   );
 
-  // Muestra el loader mientras está cargando
+  // Muestra el loader mientras está cargando y no muestra nada más
   if (isLoading) return <OrderSkeleton />;
 
   // Muestra error si ocurre
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
+
+  if (!data) return <OrderSkeleton />;
 
   return (
     <>

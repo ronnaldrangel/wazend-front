@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import Layout from '@/components/layout/dashboard';
 import LayoutGeneral from '../../layoutGeneral';
 import Preload from '@/components/loaders/OrderSkeleton';
-import Config from '../config/config';
+import Proxy from './proxy';
 
 const fetcher = (url) =>
   fetch(url, {
@@ -26,7 +26,7 @@ const InstancePage = () => {
       <LayoutGeneral>
 
         <div className="rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)] p-6 mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Configuraciones</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Proxy</h2>
         </div>
 
         {error ? (
@@ -37,7 +37,7 @@ const InstancePage = () => {
           <p>No instance data available</p>
         ) : (
           <>
-          <Config name={instanceData[0].name} />
+          <Proxy name={instanceData[0].name}/>
           </>
         )}
       </LayoutGeneral>

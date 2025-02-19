@@ -1,6 +1,5 @@
-import Layout from '@/components/layout/dashboard';
 import { CommandLineIcon } from '@heroicons/react/24/outline';
-import { UserCircleIcon, Cog6ToothIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
+import { UserCircleIcon, Cog6ToothIcon, DocumentTextIcon, SignalIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 
 export default function Profile({ children }) {
@@ -14,6 +13,7 @@ export default function Profile({ children }) {
   const menuItems = [
     { name: 'Dashboard', icon: UserCircleIcon, path: `${baseRoute}/dashboard` },
     { name: 'Configuraciones', icon: Cog6ToothIcon, path: `${baseRoute}/config` },
+    { name: 'Proxy', icon: SignalIcon, path: `${baseRoute}/proxy` },
     { name: 'Integraciones', icon: CommandLineIcon, path: `${baseRoute}/integrations` },
     { name: 'Documentación', icon: DocumentTextIcon, path: `https://docs.wazend.net/wazend` },
   ];
