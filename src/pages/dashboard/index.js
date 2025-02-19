@@ -15,9 +15,7 @@ export default function Index() {
   return (
     <Layout title="Dashboard">
 
-      <div className="mt-8">
-        <InstanceList />
-      </div>
+      <InstanceList />
 
     </Layout>
   );

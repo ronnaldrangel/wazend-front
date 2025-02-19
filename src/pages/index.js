@@ -16,8 +16,12 @@ export default function Index() {
   return (
     <Layout title="Tus instancias">
 
-      <ListInstances />
-      <Featured/>
+
+      <div className="flex flex-col space-y-10">
+        <ListInstances />
+        <Featured />
+      </div>
+
 
     </Layout>
   );

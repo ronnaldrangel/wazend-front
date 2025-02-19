@@ -23,8 +23,7 @@ export default function Example() {
     ];
 
     return (
-        <div className="py-20">
-            <div className="mx-auto grid gap-4 lg:grid-cols-2 lg:grid-rows-2">
+            <div className="grid gap-4 lg:grid-cols-2">
                 {cards.map((card, index) => (
                     <div key={index} className="flex flex-col bg-white rounded-xl p-6 shadow-lg gap-4">
                         <p className="text-xl font-semibold tracking-tight text-gray-950">{card.title}</p>
@@ -40,6 +39,5 @@ export default function Example() {
                     </div>
                 ))}
             </div>
-        </div>
     );
 }
