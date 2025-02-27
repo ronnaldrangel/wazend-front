@@ -36,6 +36,8 @@ const FetchStrapi = () => {
     (url) => fetcher(url, jwt)
   );
 
+  // console.log(data);
+
   if (isLoading) {
     return <OrderSkeleton />;
   }

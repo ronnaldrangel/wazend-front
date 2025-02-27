@@ -14,9 +14,7 @@ export default function Index() {
 
   return (
     <Layout title="Dashboard">
-
       <InstanceList />
-
     </Layout>
   );
 };
