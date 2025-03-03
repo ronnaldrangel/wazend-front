@@ -10,7 +10,7 @@ const SubsPage = () => {
     const token = session?.jwt; // Extraemos el token JWT de la sesión
 
     // Usamos el hook que creamos para obtener los datos de 'orders'
-    const { data, error, isLoading } = useStrapiData('users/me?populate=subscritions_woos', token);
+    const { data, error, isLoading } = useStrapiData('users/me?populate=subscriptions', token);
 
     // Imprimir la data en consola
     console.log('Data:', data); // Aquí imprimimos la data que obtenemos
@@ -32,7 +32,7 @@ const SubsPage = () => {
     }
 
     // Accedemos a subscritions_woos
-    const subscriptions = data?.subscritions_woos || [];
+    const subscriptions = data?.subscriptions || [];
 
     const formatFecha = (fecha) => {
         return format(new Date(fecha), "dd/MM/yyyy");
