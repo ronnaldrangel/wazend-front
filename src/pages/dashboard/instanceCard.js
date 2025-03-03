@@ -34,9 +34,9 @@ const fetchInstanceData = async (url) => {
   }
 };
 
-const InstanceCard = ({ instanceId, instanceName, isActive, endDate }) => {
+const InstanceCard = ({ instanceId, instanceName, isActive, endDate, serverUrl }) => {
   const { data, error, isLoading } = useSWR(
-    instanceId ? `${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/fetchInstances?instanceId=${instanceId}` : null,
+    instanceId ? `${serverUrl}/instance/fetchInstances?instanceId=${instanceId}` : null,
     fetchInstanceData
   );
 

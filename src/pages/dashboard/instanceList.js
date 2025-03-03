@@ -93,6 +93,7 @@ const FetchStrapi = () => {
           instanceName={sub.instanceName}
           isActive={sub.isActive}
           endDate={sub.endDate}
+          serverUrl={sub.server_url}
         />
       ))}
     </div>
