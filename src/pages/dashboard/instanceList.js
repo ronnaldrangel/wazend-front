@@ -32,7 +32,7 @@ const FetchStrapi = () => {
   const jwt = session?.jwt;
 
   const { data, error, isLoading } = useSWR(
-    jwt ? `${strapiUrl}/api/users/me?populate=subscriptions` : null,
+    jwt ? `${strapiUrl}/api/users/me?populate=instances` : null,
     (url) => fetcher(url, jwt)
   );
 
@@ -49,7 +49,7 @@ const FetchStrapi = () => {
   if (!data) return <OrderSkeleton />;
 
 
-  if (!data?.subscriptions?.length) {
+  if (!data?.instances?.length) {
     return <>
       <div className="bg-white rounded-xl px-6 py-10 text-center shadow-lg w-full mx-auto border border-gray-200 min-h-[400px] flex flex-col justify-center items-center">
         <svg
@@ -86,7 +86,7 @@ const FetchStrapi = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {data.subscriptions.map((sub, index) => (
+      {data.instances.map((sub, index) => (
         <InstanceCard
           key={index}
           instanceId={sub.instanceId}

@@ -12,13 +12,13 @@ import ToggleMode from '../components/ui/toggle-mode'
 const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
   { name: 'Tus instancias', href: '/' },
-  { name: 'Facturación', href: '/billing' },
+  { name: 'Integraciones', href: '/integrations' },
   { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
 ]
 
 const userNavigation = [
   { name: 'Tu perfil', href: '/profile' },
-  // { name: 'Facturación', href: 'https://wazend.net/my-account/', external: true },
+  { name: 'Facturación', href: '/billing' },
   { name: 'Reportes', href: 'https://status.wazend.net/', external: true },
   { name: 'Cerrar sesión', href: '/', signOut: true }
 ]
