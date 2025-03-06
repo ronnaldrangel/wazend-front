@@ -2,7 +2,7 @@ import Layout from '../components/layout/dashboard';
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Featured from './dashboard/featured';
+import Featured from './dashboard/Featured';
 import ListInstances from './dashboard/subsList';
 
 function classNames(...classes) {
