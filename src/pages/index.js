@@ -1,9 +1,9 @@
 import Layout from '../components/layout/dashboard';
-import ListInstances from './dashboard/instanceList';
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Featured from './dashboard/Featured';
+import Featured from './dashboard/featured';
+import ListInstances from './dashboard/subsList';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

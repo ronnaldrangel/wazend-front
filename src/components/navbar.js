@@ -14,6 +14,7 @@ const navigation = [
   { name: 'Tus instancias', href: '/' },
   { name: 'Servicios', href: '/services' },
   { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
+  { name: 'Facturación', href: '/billing' },
 ]
 
 const userNavigation = [
@@ -94,14 +95,14 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           currentPath === item.href
-                            ? "border-emerald-500 text-gray-900 dark:text-white"
+                            ? "border-emerald-600 text-gray-900 dark:text-white"
                             : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-200",
                           "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium"
                         )}
                         aria-current={currentPath === item.href ? "page" : undefined}
                         target={item.external ? "_blank" : undefined}
                       >
-                        <span className={item.trial ? "bg-green-600 text-white px-2 py-1 rounded-lg" : ""}>
+                        <span className={item.trial ? "bg-emerald-600 text-white px-2 py-1 rounded-lg" : ""}>
                           {item.name}
                         </span>
                       </Link>

@@ -50,8 +50,6 @@ export default function BuscarCliente() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Historial de pagos</h1>
-
       {loading ? (
         <Loader/>
       ) : error ? (

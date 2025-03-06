@@ -15,7 +15,7 @@ export default function Profile({ children }) {
     { name: 'Configuraciones', icon: Cog6ToothIcon, path: `${baseRoute}/config` },
     { name: 'Proxy', icon: SignalIcon, path: `${baseRoute}/proxy` },
     { name: 'Integraciones', icon: CommandLineIcon, path: `${baseRoute}/integrations` },
-    { name: 'Documentación', icon: DocumentTextIcon, path: `https://docs.wazend.net/wazend` },
+    { name: 'Documentación', icon: DocumentTextIcon, path: `https://docs.wazend.net/wazend`, external: true },
   ];
 
   return (
@@ -25,33 +25,36 @@ export default function Profile({ children }) {
         <div className="w-full md:w-1/5">
           <div className="flex flex-col gap-2">
             {menuItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => router.push(item.path)}
-                className={`w-full px-2 py-2.5 text-left text-sm font-medium rounded-md flex items-center gap-x-2 transition-colors duration-200 ease-in-out border-l-0 ${currentRoute === item.path
+              item.external ? (
+                <a
+                  key={item.name}
+                  href={item.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full px-2 py-2.5 text-left text-sm font-medium rounded-md flex items-center gap-x-2 transition-colors duration-200 ease-in-out border-l-0 text-gray-700 hover:bg-gray-200 hover:underline border-transparent"
+                >
+                  <item.icon className="h-5 w-5 text-gray-700" strokeWidth="2" />
+                  {item.name}
+                </a>
+              ) : (
+                <button
+                  key={item.name}
+                  onClick={() => router.push(item.path)}
+                  className={`w-full px-2 py-2.5 text-left text-sm font-medium rounded-md flex items-center gap-x-2 transition-colors duration-200 ease-in-out border-l-0 ${currentRoute === item.path
                     ? 'bg-gray-300 text-emerald-700 border-emerald-700'
                     : 'text-gray-700 hover:bg-gray-200 hover:underline border-transparent'
-                  }`}
-              >
-                <item.icon className={`h-5 w-5 ${currentRoute === item.path ? 'text-emerald-700' : 'text-gray-700'}`} strokeWidth="2" />
-                {item.name}
-              </button>
+                    }`}
+                >
+                  <item.icon className={`h-5 w-5 ${currentRoute === item.path ? 'text-emerald-700' : 'text-gray-700'}`} strokeWidth="2" />
+                  {item.name}
+                </button>
+              )
             ))}
           </div>
         </div>
 
         {/* Contenido de la sección */}
         <div className="w-full md:w-4/5">
-
-          {/* <a
-            href="https://docs.wazend.net/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          >
-            Documentación
-          </a> */}
-
           {children}
         </div>
       </div>
