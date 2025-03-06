@@ -89,7 +89,7 @@ const FetchStrapi = () => {
     {data.subscriptions.map((sub, index) => (
       <div key={index}>
         <h2 className="text-lg font-semibold text-gray-800">
-          Suscripción #{sub.id_woo} - {sub.status_woo.toUpperCase()}
+          Suscripción #{sub.id_woo} - {sub.status_woo}
         </h2>
         {/* <p className="text-sm text-gray-600">Inicio: {sub.start_date_gmt}</p>
         <p className="text-sm text-gray-600">Siguiente pago: {sub.next_payment_date_gmt}</p> */}
