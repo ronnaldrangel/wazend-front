@@ -59,7 +59,7 @@ const InstanceCard = ({ instanceId, instanceName, isActive, endDate, serverUrl }
       {/* Encabezado */}
       <div className="flex justify-between items-center mb-2">
         <p className="text-lg font-bold">{instanceName}</p>
-        <div className="bg-gray-200 px-2 py-1 rounded-sm inline-block">
+        {/* <div className="bg-gray-200 px-2 py-1 rounded-sm inline-block">
           <p className="text-gray-800 text-xs">
             Expira el{' '}
             {new Date(endDate).toLocaleDateString(undefined, {
@@ -68,7 +68,7 @@ const InstanceCard = ({ instanceId, instanceName, isActive, endDate, serverUrl }
               year: 'numeric',
             })}
           </p>
-        </div>
+        </div> */}
       </div>
 
       {/* API Key con íconos de ojo y copiar */}
