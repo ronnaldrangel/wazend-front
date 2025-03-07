@@ -116,11 +116,11 @@ export default NextAuth({
       return session;
     },
   },
-  session: {
-    strategy: 'jwt',
-    // 2) Definimos el tiempo máximo de vida del token en segundos
-    maxAge: 60*60*24*5, // Ej: 72 horas
-  },
+  // session: {
+  //   strategy: 'jwt',
+  //   // 2) Definimos el tiempo máximo de vida del token en segundos
+  //   maxAge: 60*60*24*5, // Ej: 72 horas
+  // },
 
   pages: {
     signIn: '/login',
