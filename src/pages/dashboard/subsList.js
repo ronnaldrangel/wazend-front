@@ -3,7 +3,9 @@ import { useSession } from 'next-auth/react';
 import InstanceCard from './instanceCard';
 import OrderSkeleton from '../../components/loaders/OrderSkeleton';
 import Link from 'next/link';
+import { format } from "date-fns";
 import { PlusIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -86,33 +88,40 @@ const FetchStrapi = () => {
 
   return (
     <div className="space-y-6">
-    {data.subscriptions.map((sub, index) => (
-      <div key={index}>
-        <h2 className="text-lg font-semibold text-gray-800">
-          Suscripción #{sub.id_woo} - {sub.status_woo}
-        </h2>
-        {/* <p className="text-sm text-gray-600">Inicio: {sub.start_date_gmt}</p>
-        <p className="text-sm text-gray-600">Siguiente pago: {sub.next_payment_date_gmt}</p> */}
+      {data.subscriptions.map((sub, index) => (
+        <div key={index}>
+          <h2 className="text-lg font-semibold text-gray-800">
+            Suscripción #{sub.id_woo} - {sub.status_woo}
+          </h2>
 
-        {sub.instances?.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            {sub.instances.map((instance, idx) => (
-              <InstanceCard
-                key={idx}
-                instanceId={instance.instanceId}
-                instanceName={instance.instanceName}
-                isActive={true} // Puedes ajustar según la API
-                endDate={instance.endDate}
-                serverUrl={instance.server_url}
-              />
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-gray-500 mt-2">Esta suscripción no tiene instancias asociadas.</p>
-        )}
-      </div>
-    ))}
-  </div>
+          <p className="text-sm text-gray-600">
+            Próximo pago:{" "}
+            <span className="font-medium">
+              {sub.next_payment_date_gmt
+                ? format(new Date(sub.next_payment_date_gmt), "dd/MM/yy")
+                : "Sin fecha"}
+            </span>
+          </p>
+
+          {sub.instances?.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              {sub.instances.map((instance, idx) => (
+                <InstanceCard
+                  key={idx}
+                  instanceId={instance.instanceId}
+                  instanceName={instance.instanceName}
+                  isActive={true} // Puedes ajustar según la API
+                  endDate={sub.next_payment_date_gmt}
+                  serverUrl={instance.server_url}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-500 mt-2">Esta suscripción no tiene instancias asociadas.</p>
+          )}
+        </div>
+      ))}
+    </div>
   );
 };
 
