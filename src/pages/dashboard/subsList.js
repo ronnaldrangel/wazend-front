@@ -89,7 +89,11 @@ const FetchStrapi = () => {
   return (
     <div className="space-y-6">
       {data.subscriptions
-        .sort((a, b) => (a.status_woo === "active" ? -1 : 1)) // Ordena los activos primero
+        .sort((a, b) => {
+          if (a.status_woo === "active" && b.status_woo !== "active") return -1; // Activos primero
+          if (a.status_woo !== "active" && b.status_woo === "active") return 1;
+          return a.id_woo - b.id_woo; // Ordenar por ID de menor a mayor
+        })
         .map((sub, index) => (
           <div key={index}>
             <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
@@ -124,7 +128,9 @@ const FetchStrapi = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-gray-500 mt-2">Esta suscripción no tiene instancias asociadas.</p>
+              <p className="text-sm text-gray-500 mt-2">
+                Esta suscripción no tiene instancias asociadas.
+              </p>
             )}
           </div>
         ))}
