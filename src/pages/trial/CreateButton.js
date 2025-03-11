@@ -1,7 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-
 import { toast } from 'sonner';
 
 export default function NoInstances() {

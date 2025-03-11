@@ -10,23 +10,6 @@ export default function Index() {
     return (
         <Layout>
 
-            <div className="mb-6 ">
-                <h2 className="text-lg font-semibold text-gray-800 mb-2">Panel de Facturación</h2>
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                    Accede al panel de suscripciones para gestionar tus métodos de pago y mantener todo bajo control de manera sencilla y eficiente.
-                </p>
-                <a
-                    href="https://wazend.net/my-account/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100 transition-all shadow-sm"
-                >
-                    Ir a gestionar suscripciones
-                </a>
-            </div>
-
-
-
             <div className="flex bg-gray-200 p-1 rounded-lg w-fit">
                 <button
                     onClick={() => setActiveTab("subscriptions")}
@@ -52,6 +35,24 @@ export default function Index() {
             <div className="mt-4">
                 {activeTab === 'subscriptions' ? <Subscription /> : <Billing />}
             </div>
+
+
+            <div className="mt-6">
+                <h2 className="text-lg font-semibold text-gray-800 mb-2">¿Quieres gestionar tus suscripciones?</h2>
+                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                    Accede al panel de suscripciones para gestionar tus métodos de pago y mantener todo bajo control de manera sencilla y eficiente.
+                </p>
+                <a
+                    href="https://wazend.net/my-account/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md  transition-all shadow-sm"
+                >
+                    Ir a gestionar suscripciones
+                </a>
+            </div>
+
+
         </Layout>
     );
 }

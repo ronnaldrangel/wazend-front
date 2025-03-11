@@ -48,7 +48,7 @@ const FetchStrapi = () => {
         <div className="grid grid-cols-1">
           {data.freetrials.map((sub, index) => (
             <div key={index}>
-              <InstanceCard instanceId={sub.instanceId} instanceName={`Instancia gratis - ${sub.instanceName}`} isActive={true} endDate={sub.endDate} />
+              <InstanceCard serverUrl="https://api2.wazend.net" instanceId={sub.instanceId} instanceName={`Instancia gratis - ${sub.instanceName}`} isActive={true} endDate={sub.endDate} />
               {/* <DeleteButton documentId={sub.documentId} instanceName={sub.instanceName} /> */}
             </div>
           ))}

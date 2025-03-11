@@ -59,7 +59,8 @@ const InstanceCard = ({ instanceId, instanceName, isActive, endDate, serverUrl }
       {/* Encabezado */}
       <div className="flex justify-between items-center mb-2">
         <p className="text-lg font-bold">{instanceName}</p>
-        {/* <div className="bg-gray-200 px-2 py-1 rounded-sm inline-block">
+
+        <div className="bg-violet-200 px-2 py-1 rounded-sm inline-block">
           <p className="text-gray-800 text-xs">
             Expira el{' '}
             {new Date(endDate).toLocaleDateString(undefined, {
@@ -68,7 +69,8 @@ const InstanceCard = ({ instanceId, instanceName, isActive, endDate, serverUrl }
               year: 'numeric',
             })}
           </p>
-        </div> */}
+        </div>
+
       </div>
 
       {/* API Key con íconos de ojo y copiar */}
@@ -95,9 +97,9 @@ const InstanceCard = ({ instanceId, instanceName, isActive, endDate, serverUrl }
               alt="WhatsApp"
             />
             <div className="ml-3">
-              <p className="text-md font-semibold text-black">{instance.profileName || "Cargando..."}</p>
+              <p className="text-md font-semibold text-black">{instance.profileName || "Esperando conexión"}</p>
               <p className="text-sm font-base text-gray-500">
-                {instance.ownerJid ? instance.ownerJid.split('@')[0] : "Cargando..."}
+                {instance.ownerJid ? instance.ownerJid.split('@')[0] : "-"}
               </p>
             </div>
           </div>
@@ -136,7 +138,7 @@ const InstanceCard = ({ instanceId, instanceName, isActive, endDate, serverUrl }
               ? "Conectando"
               : instance.connectionStatus === "close"
                 ? "Desconectado"
-                : "Cargando..."}
+                : "Desconectado"}
         </p>
 
         {/* Botón de ajustes con Link funcional */}
