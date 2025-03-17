@@ -32,7 +32,7 @@ const fetcher = async (url, jwt) => {
   }
 };
 
-const handleCreateInstance = async (documentId, setLoading) => {
+const handleCreateInstance = async (documentId, email, setLoading) => {
   setLoading(true);
   try {
     const response = await fetch(createInstanceUrl, {
@@ -40,7 +40,7 @@ const handleCreateInstance = async (documentId, setLoading) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ documentId }),
+      body: JSON.stringify({ documentId, email }), // Se agrega el email al payload
     });
 
     if (!response.ok) {
@@ -62,6 +62,7 @@ const handleCreateInstance = async (documentId, setLoading) => {
 const FetchStrapi = () => {
   const { data: session } = useSession();
   const jwt = session?.jwt;
+  const email = session?.user?.email; // Obtener el email del usuario autenticado
   const [loading, setLoading] = useState(false);
 
   const { data, error, isLoading } = useSWR(
@@ -69,18 +70,12 @@ const FetchStrapi = () => {
     (url) => fetcher(url, jwt)
   );
 
-  if (isLoading) {
-    return <OrderSkeleton />;
-  }
-
-  if (error) {
-    return <p className="text-red-500">Error: {error.message}</p>;
-  }
-
+  if (isLoading) return <OrderSkeleton />;
+  if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (!data) return <OrderSkeleton />;
 
   if (!data?.subscriptions?.length) {
-    return <>
+    return (
       <div className="bg-white rounded-xl px-6 py-10 text-center shadow-lg w-full mx-auto border border-gray-200 min-h-[400px] flex flex-col justify-center items-center">
         <svg
           className="mx-auto h-12 w-12 text-gray-400"
@@ -111,7 +106,7 @@ const FetchStrapi = () => {
           <span className="ml-3">Crea una instancia</span>
         </Link>
       </div>
-    </>;
+    );
   }
 
   return (
@@ -135,7 +130,7 @@ const FetchStrapi = () => {
             </h2>
 
             <p className="text-sm text-gray-600">
-              Próximo pago: {" "}
+              Próximo pago:{" "}
               <span className="font-medium">
                 {sub.next_payment_date_gmt
                   ? format(new Date(sub.next_payment_date_gmt), "dd/MM/yyyy")
@@ -164,7 +159,7 @@ const FetchStrapi = () => {
                 </p>
                 <button
                   className="mt-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
-                  onClick={() => handleCreateInstance(sub.id, setLoading)}
+                  onClick={() => handleCreateInstance(sub.id, email, setLoading)}
                 >
                   Crear instancia
                 </button>
