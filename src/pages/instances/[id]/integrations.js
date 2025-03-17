@@ -1,6 +1,3 @@
-import { useRouter } from 'next/router';
-import Layout from '@/components/layout/dashboard';
-import LayoutGeneral from '../../layoutGeneral';
 import Image from 'next/image';
 
 const integrationList = [
@@ -12,13 +9,7 @@ const integrationList = [
 
 export default function Index() {
     return (
-        <Layout>
-            <LayoutGeneral>
-
-                <div className="rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)] p-6 mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900">Integraciones</h2>
-                </div>
-
+        <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {integrationList.map((item, index) => (
                         <a
@@ -43,7 +34,6 @@ export default function Index() {
                         </a>
                     ))}
                 </div>
-            </LayoutGeneral>
-        </Layout>
+        </>
     );
 }

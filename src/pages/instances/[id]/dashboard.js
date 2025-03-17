@@ -6,10 +6,10 @@ import Image from 'next/image';
 import { EyeIcon, EyeSlashIcon, ClipboardIcon } from '@heroicons/react/24/outline';
 import { UserIcon, ChatBubbleLeftEllipsisIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
-import ImagenQr from '../../ImagenQr';
-import ButtonControl from '../../ButtonControl';
-import WebhookControl from '../../WebhookControl';
-import Preload from '../../../../components/loaders/OrderSkeleton';
+import ImagenQr from '../ImagenQr';
+import ButtonControl from '../ButtonControl';
+import WebhookControl from '../WebhookControl';
+import Preload from '../../../components/loaders/OrderSkeleton';
 
 
 // Función fetcher que usa axios y pasa instanceId como parámetro
@@ -21,7 +21,7 @@ const fetcher = (url, instanceId) =>
     params: { instanceId },
   }).then((res) => res.data);
 
-const LayoutInstance = ({ instanceId }) => {
+const LayoutInstance = ({ instanceId, serverUrl }) => {
   const [isTokenVisible, setIsTokenVisible] = useState(false);
   const [showQr, setShowQr] = useState(false);
 
@@ -31,7 +31,7 @@ const LayoutInstance = ({ instanceId }) => {
   );
 
   if (error) return <p>Error: {error.message}</p>;
-  if (!instanceData) return <Preload/>;
+  if (!instanceData) return <Preload />;
   if (instanceData.length === 0) return <p>No instance data available</p>;
 
   const instance = instanceData[0];
@@ -51,10 +51,9 @@ const LayoutInstance = ({ instanceId }) => {
 
         {/* <h1 className="text-2xl font-bold tracking-tight text-gray-900">Instancia #{instance.name}</h1> */}
 
+        {/* Seccion de conexion*/}
 
-       {/* Seccion de conexion*/}
-
-       {instance.connectionStatus === 'open' && (
+        {instance.connectionStatus === 'open' && (
           <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
             <h2 className='mb-4 text-xl font-semibold'>Tu número de WhatsApp conectado</h2>
             <div className="group block flex-shrink-0">
@@ -79,6 +78,12 @@ const LayoutInstance = ({ instanceId }) => {
 
           </section>
         )}
+
+        <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
+          <h3 className='text-sm font-base'>URL del servidor</h3>
+          <p className='text-lg font-medium text-green-600'>{serverUrl}</p>
+
+        </section>
 
         {instance.connectionStatus !== 'open' && (
           <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
@@ -273,7 +278,7 @@ const LayoutInstance = ({ instanceId }) => {
 
         {/* Seccion de ajustes*/}
         <WebhookControl instanceName={instance.name} />
- 
+
 
       </div>
     </>

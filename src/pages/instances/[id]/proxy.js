@@ -33,11 +33,11 @@ const fetcher = async (url) => {
   }
 };
 
-const ProxySettings = ({ name }) => {
+const ProxySettings = ({ instanceId }) => {
   // console.log(`🆕 Componente montado con name: ${name}`);
 
   // Cargar datos con SWR
-  const { data, error } = useSWR(`${API_URL}/proxy/find/${name}`, fetcher);
+  const { data, error } = useSWR(`${API_URL}/proxy/find/${instanceId}`, fetcher);
 
   // Estado inicial con valores predeterminados
   const [proxyData, setProxyData] = useState({
@@ -91,7 +91,7 @@ const ProxySettings = ({ name }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/proxy/set/${name}`, {
+      const response = await fetch(`${API_URL}/proxy/set/${instanceId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

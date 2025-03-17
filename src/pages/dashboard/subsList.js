@@ -148,11 +148,12 @@ const FetchStrapi = () => {
                 {sub.instances.map((instance, idx) => (
                   <InstanceCard
                     key={idx}
+                    endDate={sub.next_payment_date_gmt}
+                    documentId={instance.documentId}
                     instanceId={instance.instanceId}
                     instanceName={instance.instanceName}
-                    isActive={true}
-                    endDate={sub.next_payment_date_gmt}
                     serverUrl={instance.server_url}
+                    isActive={true}
                   />
                 ))}
               </div>

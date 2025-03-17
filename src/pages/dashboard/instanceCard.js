@@ -34,7 +34,7 @@ const fetchInstanceData = async (url) => {
   }
 };
 
-const InstanceCard = ({ instanceId, instanceName, isActive, endDate, serverUrl }) => {
+const InstanceCard = ({ documentId, endDate, instanceId, instanceName, serverUrl, isActive }) => {
   const { data, error, isLoading } = useSWR(
     instanceId ? `${serverUrl}/instance/fetchInstances?instanceId=${instanceId}` : null,
     fetchInstanceData
@@ -143,7 +143,7 @@ const InstanceCard = ({ instanceId, instanceName, isActive, endDate, serverUrl }
 
         {/* Botón de ajustes con Link funcional */}
         {isActive ? (
-          <Link href={`/instances/${instanceId}/dashboard`} passHref>
+          <Link href={`/instances/${documentId}`} passHref>
             <button className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-base font-semibold shadow-md flex items-center justify-center space-x-2">
               <Cog6ToothIcon className="h-6 w-6" />
               <span>Ajustes</span>

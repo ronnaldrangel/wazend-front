@@ -1,5 +1,5 @@
 import Layout from '../../components/layout/dashboard';
-import InstanceList from './instanceList';
+import SubsList from './subsList';
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ export default function Index() {
 
   return (
     <Layout title="Dashboard">
-      <InstanceList />
+      <SubsList />
     </Layout>
   );
 };
