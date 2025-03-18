@@ -79,12 +79,6 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
           </section>
         )}
 
-        <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
-          <h3 className='text-sm font-base'>URL del servidor</h3>
-          <p className='text-lg font-medium text-green-600'>{serverUrl}</p>
-
-        </section>
-
         {instance.connectionStatus !== 'open' && (
           <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
             <h2 className='mb-4 text-xl font-semibold'>Conecta tu WhatsApp</h2>
@@ -125,6 +119,11 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
 
           </section>
         )}
+
+        <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
+          <h3 className='text-sm font-base'>URL del servidor</h3>
+          <p className='text-lg font-medium text-green-600'>{serverUrl}</p>
+        </section>
 
 
         <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>

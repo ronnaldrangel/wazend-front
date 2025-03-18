@@ -97,7 +97,7 @@ const InstanceCard = ({ documentId, endDate, instanceId, instanceName, serverUrl
               alt="WhatsApp"
             />
             <div className="ml-3">
-              <p className="text-md font-semibold text-black">{instance.profileName || "Esperando conexión"}</p>
+              <p className="text-md font-semibold text-black">{instance.profileName || "Sin nombre"}</p>
               <p className="text-sm font-base text-gray-500">
                 {instance.ownerJid ? instance.ownerJid.split('@')[0] : "-"}
               </p>
