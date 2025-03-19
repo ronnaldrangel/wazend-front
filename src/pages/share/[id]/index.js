@@ -2,16 +2,15 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { CommandLineIcon } from '@heroicons/react/24/outline';
 import { UserCircleIcon, Cog6ToothIcon, DocumentTextIcon, SignalIcon } from '@heroicons/react/24/outline';
-import Layout from '@/components/layout/dashboard';
+import Layout from '../layout';
 import Loader from '@/components/loaders/OrderSkeleton';
 import { useStrapiData } from '@/services/strapiServiceId';
-import { toast } from 'sonner';
 
 // Importación de los componentes de cada sección
-import Dashboard from './dashboard';
-import Config from './config';
-import Proxy from './proxy';
-import Integrations from './integrations';
+import Dashboard from '../../instances/[id]/dashboard';
+import Config from '../../instances/[id]/config';
+import Proxy from '../../instances/[id]/proxy';
+import Integrations from '../../instances/[id]/integrations';
 
 export default function Profile() {
     const { query } = useRouter();
@@ -21,9 +20,6 @@ export default function Profile() {
     // Estado para la data cargada
     const [instanceData, setInstanceData] = useState(null);
     const [activeComponent, setActiveComponent] = useState('Dashboard');
-
-    // Estado para manejar el modal
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { data, error, isLoading } = useStrapiData(`instances/${documentId}`);
     const instance = data?.data || {}; // Asegurar que siempre sea un objeto
@@ -56,16 +52,6 @@ export default function Profile() {
         { name: 'Integraciones', icon: CommandLineIcon, component: 'Integrations' },
         { name: 'Documentación', icon: DocumentTextIcon, path: `https://docs.wazend.net/wazend`, external: true },
     ];
-
-    // Función para copiar el enlace al portapapeles
-    const copyToClipboard = () => {
-        const shareUrl = `https://app.wazend.net/share/${documentId}`; // Construir la URL de compartir
-        navigator.clipboard.writeText(shareUrl).then(() => {
-            toast.success('Copiado exitosamente.');
-        }).catch(err => {
-            console.error('Error al copiar:', err);
-        });
-    };    
 
     // Renderiza el componente activo
     const renderComponent = () => {
@@ -113,41 +99,6 @@ export default function Profile() {
                 </div>
 
                 <div className="w-full md:w-4/5">
-                    {/* Botón "Compartir instancia" */}
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="mb-6 px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md text-base font-medium shadow-md hover:shadow-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                        Compartir instancia
-                    </button>
-
-
-                    {/* Modal */}
-                    {isModalOpen && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-                            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                                <h3 className="text-xl font-semibold mb-4">Enlace para compartir</h3>
-                                <input
-                                    type="text"
-                                    value={`https://app.wazend.net/share/${documentId}`}
-                                    readOnly
-                                    className="w-full p-2 border rounded-md mb-4"
-                                />
-                                <button
-                                    onClick={copyToClipboard}
-                                    className="w-full px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out">
-                                    Copiar enlace
-                                </button>
-
-                                <button
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="w-full px-6 py-3 mt-4 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out">
-                                    Cerrar
-                                </button>
-
-                            </div>
-                        </div>
-                    )}
-
                     <div className="rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)] p-6 mb-6">
                         <h2 className="text-2xl font-bold text-gray-900">{activeComponent}</h2>
                     </div>
