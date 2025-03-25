@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { CommandLineIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { CommandLineIcon } from '@heroicons/react/24/outline';
 import { UserCircleIcon, Cog6ToothIcon, DocumentTextIcon, SignalIcon } from '@heroicons/react/24/outline';
 import Layout from '@/components/layout/dashboard';
 import Loader from '@/components/loaders/OrderSkeleton';
@@ -8,11 +8,10 @@ import { useStrapiData } from '@/services/strapiServiceId';
 import { toast } from 'sonner';
 
 // Importación de los componentes de cada sección
-import Dashboard from './dashboard';
-import Config from './config';
-import Proxy from './proxy';
-import Integrations from './integrations';
-import Group from './group';
+import Dashboard from '@/pages/instances/[id]/dashboard';
+import Config from '@/pages/instances/[id]/config';
+import Proxy from '@/pages/instances/[id]/proxy';
+import Integrations from '@/pages/instances/[id]/integrations';
 
 export default function Profile() {
     const { query } = useRouter();
@@ -26,7 +25,7 @@ export default function Profile() {
     // Estado para manejar el modal
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { data, error, isLoading } = useStrapiData(`instances/${documentId}`);
+    const { data, error, isLoading } = useStrapiData(`freetrials/${documentId}`);
     const instance = data?.data || {}; // Asegurar que siempre sea un objeto
 
     if (isLoading) {
@@ -54,7 +53,6 @@ export default function Profile() {
         { name: 'Dashboard', icon: UserCircleIcon, component: 'Dashboard' },
         { name: 'Configuraciones', icon: Cog6ToothIcon, component: 'Config' },
         { name: 'Proxy', icon: SignalIcon, component: 'Proxy' },
-        { name: 'Grupos', icon: UserGroupIcon, component: 'Grupos' },
         { name: 'Integraciones', icon: CommandLineIcon, component: 'Integrations' },
         { name: 'Documentación', icon: DocumentTextIcon, path: `https://docs.wazend.net/wazend`, external: true },
     ];
@@ -67,7 +65,7 @@ export default function Profile() {
         }).catch(err => {
             console.error('Error al copiar:', err);
         });
-    };
+    };    
 
     // Renderiza el componente activo
     const renderComponent = () => {
@@ -78,13 +76,11 @@ export default function Profile() {
             case 'Dashboard':
                 return <Dashboard instanceId={instanceData.instanceId} serverUrl={instanceData.server_url} />;
             case 'Config':
-                return <Config instanceId={instanceData.instanceName} serverUrl={instanceData.server_url} />;
+                return <Config instanceId={instanceData.instanceName} serverUrl={instanceData.server_url}/>;
             case 'Proxy':
-                return <Proxy instanceId={instanceData.instanceName} serverUrl={instanceData.server_url} />;
+                return <Proxy instanceId={instanceData.instanceName} serverUrl={instanceData.server_url}/>;
             case 'Integrations':
-                return <Integrations instanceId={instanceData.instanceName} serverUrl={instanceData.server_url} />;
-            case 'Grupos':
-                return <Group groupList={instanceData.groupList} />;
+                return <Integrations instanceId={instanceData.instanceName} serverUrl={instanceData.server_url}/>;
             default:
                 return <Dashboard instanceId={instanceData.instanceId} serverUrl={instanceData.server_url} />;
         }
@@ -117,13 +113,6 @@ export default function Profile() {
                 </div>
 
                 <div className="w-full md:w-4/5">
-                    {/* Botón "Compartir instancia" */}
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="mb-6 px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md text-base font-medium shadow-md hover:shadow-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                        Compartir instancia
-                    </button>
-
 
                     {/* Modal */}
                     {isModalOpen && (
