@@ -33,8 +33,8 @@ const fetcher = async (url) => {
     }
 };
 
-const InstancePage = ({ instanceId }) => {
-    const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/settings/find/${instanceId}`, fetcher);
+const InstancePage = ({ instanceId, serverUrl }) => {
+    const { data, error } = useSWR(`${serverUrl}/settings/find/${instanceId}`, fetcher);
 
     const [settings, setSettings] = useState({
         rejectCall: false,
@@ -63,7 +63,7 @@ const InstancePage = ({ instanceId }) => {
     const updateSettings = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/settings/set/${instanceId}`, {
+            const response = await fetch(`${serverUrl}/settings/set/${instanceId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

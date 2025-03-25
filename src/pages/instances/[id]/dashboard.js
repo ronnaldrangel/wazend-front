@@ -26,7 +26,7 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
   const [showQr, setShowQr] = useState(false);
 
   const { data: instanceData, error } = useSWR(
-    instanceId ? [`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/fetchInstances`, instanceId] : null,
+    instanceId ? [`${serverUrl}/instance/fetchInstances`, instanceId] : null,
     ([url, id]) => fetcher(url, id)
   );
 
@@ -110,11 +110,11 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
 
               {showQr && (
                 <div className="mt-4">
-                  <ImagenQr instanceName={instance.name} />
+                  <ImagenQr instanceName={instance.name} serverUrl={serverUrl} />
                 </div>
               )}
 
-              <ButtonControl instanceName={instance.name} />
+              <ButtonControl instanceName={instance.name} serverUrl={serverUrl} />
             </div>
 
           </section>
@@ -276,7 +276,7 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
 
 
         {/* Seccion de ajustes*/}
-        <WebhookControl instanceName={instance.name} />
+        <WebhookControl instanceName={instance.name} serverUrl={serverUrl} />
 
 
       </div>

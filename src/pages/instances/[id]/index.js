@@ -76,13 +76,13 @@ export default function Profile() {
             case 'Dashboard':
                 return <Dashboard instanceId={instanceData.instanceId} serverUrl={instanceData.server_url} />;
             case 'Config':
-                return <Config instanceId={instanceData.instanceName} />;
+                return <Config instanceId={instanceData.instanceName} serverUrl={instanceData.server_url}/>;
             case 'Proxy':
-                return <Proxy instanceId={instanceData.instanceName} />;
+                return <Proxy instanceId={instanceData.instanceName} serverUrl={instanceData.server_url}/>;
             case 'Integrations':
-                return <Integrations instanceId={instanceData.instanceId} />;
+                return <Integrations instanceId={instanceData.instanceName} serverUrl={instanceData.server_url}/>;
             default:
-                return <Dashboard instanceId={instanceData.instanceId} />;
+                return <Dashboard instanceId={instanceData.instanceId} serverUrl={instanceData.server_url} />;
         }
     };
 

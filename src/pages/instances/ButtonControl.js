@@ -1,11 +1,11 @@
 
 import { toast } from 'sonner';
 
-const ButtonControl = ({ instanceName }) => {
+const ButtonControl = ({ instanceName, serverUrl }) => {
 
   const handleRestart = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/restart/${instanceName}`, {
+      const response = await fetch(`${serverUrl}/instance/restart/${instanceName}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ const ButtonControl = ({ instanceName }) => {
 
   const handleDisconnect = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/logout/${instanceName}`, {
+      const response = await fetch(`${serverUrl}/instance/logout/${instanceName}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

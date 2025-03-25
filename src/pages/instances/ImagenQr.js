@@ -2,14 +2,14 @@ import { useState, useEffect, Fragment } from 'react';
 import Image from 'next/image';
 import { Dialog, Transition } from '@headlessui/react';
 
-const QRCodeComponent = ({ instanceName }) => {
+const QRCodeComponent = ({ instanceName, serverUrl }) => {
   const [qrBase64, setQrBase64] = useState('');
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
     const fetchQRCode = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/instance/connect/${instanceName}`, {
+        const response = await fetch(`${serverUrl}/instance/connect/${instanceName}`, {
           method: 'GET',
           headers: {
             apiKey: process.env.NEXT_PUBLIC_WAZEND_API_KEY,

@@ -12,8 +12,8 @@ const fetcher = (url) =>
         },
     }).then((res) => res.json());
 
-const WebhookControl = ({ instanceName }) => {
-    const { data: webhookData, error, mutate } = useSWR(`${process.env.NEXT_PUBLIC_WAZEND_API_URL}/webhook/find/${instanceName}`, fetcher);
+const WebhookControl = ({ instanceName, serverUrl }) => {
+    const { data: webhookData, error, mutate } = useSWR(`${serverUrl}/webhook/find/${instanceName}`, fetcher);
     const [webhookUrl, setWebhookUrl] = useState('');
     const [selectedEvents, setSelectedEvents] = useState([]);
 
