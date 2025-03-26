@@ -113,7 +113,7 @@ export default function Index({ groupList, loading, documentId }) {
                             )}
                             <div>
                                 {/* Mostrar nombre del grupo */}
-                                <h3 className="text-base font-semibold truncate">{item.subject}</h3>
+                                <h3 className="text-base font-semibold">{item.subject}</h3>
                                 {/* Mostrar fecha de creación */}
                                 <p className="text-xs text-gray-400">Creado: {formatDate(item.creation)}</p>
                             </div>
