@@ -6,6 +6,7 @@ import Layout from '@/components/layout/dashboard';
 import Loader from '@/components/loaders/OrderSkeleton';
 import { useStrapiData } from '@/services/strapiServiceId';
 import { toast } from 'sonner';
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 // Importación de los componentes de cada sección
 import Dashboard from './dashboard';
@@ -84,7 +85,7 @@ export default function Profile() {
             case 'Integrations':
                 return <Integrations instanceId={instanceData.instanceName} serverUrl={instanceData.server_url} />;
             case 'Grupos':
-                return <Group groupList={instanceData.groupList} />;
+                return <Group groupList={instanceData.groupList} documentId={instanceData.documentId} />;
             default:
                 return <Dashboard instanceId={instanceData.instanceId} serverUrl={instanceData.server_url} />;
         }
@@ -120,7 +121,9 @@ export default function Profile() {
                     {/* Botón "Compartir instancia" */}
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="mb-6 px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md text-base font-medium shadow-md hover:shadow-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        className="mb-6 inline-flex items-center px-4 py-2 bg-white text-gray-800 border border-gray-300 hover:bg-gray-100 rounded-md text-sm font-medium shadow-sm hover:shadow transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50"
+                    >
+                        <PaperAirplaneIcon className="w-4 h-4 mr-2" />
                         Compartir instancia
                     </button>
 
