@@ -19,13 +19,13 @@ export default function Layout({ children, title}) {
                     <header className="bg-white shadow-sm shadow-gray-300 dark:bg-gray-900">
                         <div className="mx-auto max-w-7xl py-5 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
                             <h1 className="text-xl sm:text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{title}</h1>
-                            {/* <Link
+                            <Link
                                 href="/upgrade/"
                                 className="inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
                             >
                                 <PlusIcon className="h-5 w-auto" aria-hidden="true" />
                                 <span className="ml-2 hidden sm:block text-sm font-medium">Crea una instancia</span>
-                            </Link> */}
+                            </Link>
                         </div>
                     </header>
                 )}
