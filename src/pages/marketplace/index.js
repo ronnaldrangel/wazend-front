@@ -6,7 +6,7 @@ import Store from './store';
 export default function Index() {
 
     return (
-        <Layout title="Servicios">
+        <Layout title="Marketplace">
             <Store/>
         </Layout>
     );
