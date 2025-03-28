@@ -16,6 +16,20 @@ export default function EmailConfirm() {
           <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
             Revisa tu correo electrónico para confirmar tu cuenta antes de iniciar sesión en el panel de control de Wazend.
           </p>
+
+          <p className="mt-2 text-sm font-medium text-red-500">
+            Si no recibes el correo, por favor revisa tu carpeta de Spam o contacta con{' '}
+            <a
+              href="https://wazend.net/contact/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              soporte
+            </a>
+          </p>
+
+
         </div>
       </div>
     </Layout>

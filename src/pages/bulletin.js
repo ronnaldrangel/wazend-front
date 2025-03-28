@@ -37,7 +37,7 @@ const Index = () => {
                     return (
                         <div key={store.id} className="flex flex-col bg-white rounded-lg shadow-md p-6 gap-4">
                             {/* Imagen de la tarjeta */}
-                            {store.img?.url && (
+                            {store.img.url && (
                                 <img
                                     src={store.img.url}
                                     alt={store.title}

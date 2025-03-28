@@ -115,7 +115,7 @@ export default function SignUp() {
     <>
       <Layout>
         <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
-          🎉 Crea una cuenta nueva
+          🎉 Registrate y obtén tu prueba gratis
         </h2>
 
         <div className="mt-8">

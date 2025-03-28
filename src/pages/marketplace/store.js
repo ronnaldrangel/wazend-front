@@ -2,12 +2,13 @@ import { useSession } from 'next-auth/react';
 import Loader from '../../components/loaders/OrderSkeleton';
 import { useStrapiData } from '../../services/strapiService';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Services = () => {
     // Obtenemos los datos de 'stores' de la API
-    const { data: stores, error, isLoading } = useStrapiData('stores');
+    const { data: stores, error, isLoading } = useStrapiData('marketplaces?populate=*');
 
-    // console.log('Data:', stores);
+    console.log('Data:', stores);
 
     if (isLoading) {
         return <Loader />;
@@ -21,40 +22,94 @@ const Services = () => {
         );
     }
 
+    // Filtrar los datos por tipo de producto
+    const plugins = stores.filter(store => store.type === "plugin");
+    const templates = stores.filter(store => store.type === "template");
+
     return (
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {stores.map((store) => (
-        <div
-            key={store.id}
-            className="bg-white shadow-md rounded-lg p-6"
-        >
-            <div className="flex items-center mb-2">
-                {store.image ? (
-                    <Image
-                        src={store.image} // asumiendo que la imagen se encuentra en store.image.url
-                        alt={store.name}
-                        width={200}
-                        height={100}
-                        className="h-10 w-10 mr-4"
-                    />
-                ) : (
-                    // Muestra un placeholder en caso de no existir imagen
-                    <div className="h-10 w-10 mr-4 bg-gray-200" />
-                )}
-                <h3 className="text-base font-semibold">{store.name}</h3>
+        <div>
+            {/* Sección de complementos */}
+            <div className="mb-8">
+                <h2 className="text-xl font-bold mb-4">Complementos</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {plugins.map((store) => (
+                        <Link key={store.id} href={`/marketplace/${store.documentId}`}>
+                            <div className="bg-white shadow-md rounded-lg cursor-pointer">
+                                <div className="flex items-center">
+                                    {store.img.url ? (
+                                        <img
+                                            src={store.img.url} // asumiendo que la imagen se encuentra en store.image.url
+                                            alt={store.title}
+                                            width={300}  // Ajustamos el tamaño de la imagen
+                                            height={150}  // Ajustamos el tamaño de la imagen
+                                            className="h-auto w-full object-cover rounded-t-lg"
+                                        />
+                                    ) : (
+                                        <div className="h-40 w-full bg-gray-200 rounded-t-lg" />
+                                    )}
+                                </div>
+
+                                <div className="p-4">
+                                    <p className="text-sm text-gray-600">{store.title}</p>
+                                    <p className="mt-1 text-sm">
+                                        {store.price === 0 ? 'Gratis' : `$${store.price}`}
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
             </div>
-            <hr className="border-t border-gray-100 mb-4" />
-            <p className="text-sm text-gray-600">{store.description}</p>
-            <p className="mt-2 text-sm font-bold">Desde {store.price}</p>
-            <button
-                onClick={() => window.open(store.button, '_blank')}
-                className="mt-4 w-full bg-emerald-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:bg-emerald-700 transition shadow-md"
-            >
-                Más información
-            </button>
+
+            {/* Sección de plantillas */}
+            <div>
+                <h2 className="text-xl font-bold mb-4">Plantillas</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {templates.map((store) => (
+                        <Link key={store.id} href={`/marketplace/${store.documentId}`}>
+                            <div className="bg-white shadow-md rounded-lg cursor-pointer">
+                                <div className="flex items-center">
+                                    {store.img.url ? (
+                                        <img
+                                            src={store.img.url} // asumiendo que la imagen se encuentra en store.image.url
+                                            alt={store.title}
+                                            width={300}  // Ajustamos el tamaño de la imagen
+                                            height={150}  // Ajustamos el tamaño de la imagen
+                                            className="h-auto w-full object-cover rounded-t-lg"
+                                        />
+                                    ) : (
+                                        <div className="h-40 w-full bg-gray-200 rounded-t-lg" />
+                                    )}
+                                </div>
+
+                                <div className="p-4">
+                                    <p className="text-sm text-gray-600">{store.title}</p>
+                                    <p className="mt-1 text-sm">
+                                        {store.price === 0 ? 'Gratis' : `$${store.price}`}
+                                    </p>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+
+            {/* Banner para invitar a ser parte del marketplace */}
+            <div className="bg-gradient-to-r from-emerald-800 to-emerald-600 text-white py-16 px-6 text-center mt-16 rounded-lg">
+                <h2 className="text-3xl font-bold mb-4">Conviértete en creador hoy</h2>
+                <p className="text-lg mb-6">
+                    Envía una plantilla o complemento, hazte destacar y gana dinero, todo en solo unos clics.
+                </p>
+                <Link href="https://wa.link/5se5ao" passHref>
+                    <button className="bg-white text-emerald-600 py-4 px-10 rounded-full shadow-lg hover:bg-emerald-100 transition duration-300 text-lg font-semibold focus:outline-none focus:ring-4 focus:ring-emerald-300">
+                        Únete ahora
+                    </button>
+                </Link>
+            </div>
+
+
+
         </div>
-    ))}
-</div>
     );
 };
 
