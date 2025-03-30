@@ -78,28 +78,26 @@ const FetchStrapi = () => {
   const email = session?.user?.email;
   const [loading, setLoading] = useState(false);
   const [expandedSubscriptions, setExpandedSubscriptions] = useState([]);
+
   const { data, error, isLoading } = useSWR(
     jwt ? `${strapiUrl}/api/users/me?populate[subscriptions][populate]=instances` : null,
     (url) => fetcher(url, jwt)
   );
 
+  // Cargar el estado desde localStorage cuando se monta el componente
   useEffect(() => {
-    if (data) {
-      const savedState = localStorage.getItem('expandedSubscriptions');
-      if (savedState) {
-        setExpandedSubscriptions(JSON.parse(savedState));
-      } else {
-        const allExpanded = data?.subscriptions?.map(() => true) || [];
-        setExpandedSubscriptions(allExpanded);
-      }
+    const savedState = localStorage.getItem('expandedSubscriptions');
+    if (savedState) {
+      setExpandedSubscriptions(JSON.parse(savedState));
     }
-  }, [data]);
+  }, []);
 
+  // Guardar el estado de expandedSubscriptions en localStorage cuando cambia
   useEffect(() => {
-    if (data) {
+    if (expandedSubscriptions.length > 0) {
       localStorage.setItem('expandedSubscriptions', JSON.stringify(expandedSubscriptions));
     }
-  }, [expandedSubscriptions, data]);
+  }, [expandedSubscriptions]);
 
   if (isLoading) return <OrderSkeleton />;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
@@ -125,7 +123,7 @@ const FetchStrapi = () => {
               onClick={() => {
                 const newExpanded = [...expandedSubscriptions];
                 newExpanded[index] = !newExpanded[index];
-                setExpandedSubscriptions(newExpanded);
+                setExpandedSubscriptions(newExpanded); // Actualiza el estado
               }}
             >
               <h2 className="text-lg font-semibold text-gray-800 flex items-center justify-between gap-2">
@@ -180,7 +178,6 @@ const FetchStrapi = () => {
                     {sub.instances.map((instance, idx) => (
                       <InstanceCard
                         key={idx}
-                        endDate={sub.next_payment_date_gmt}
                         documentId={instance.documentId}
                         instanceId={instance.instanceId}
                         instanceName={instance.instanceName}

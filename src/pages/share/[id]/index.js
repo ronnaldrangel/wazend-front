@@ -72,8 +72,13 @@ export default function Profile() {
         }
     };
 
+
+    // Verificar si instanceData está cargado antes de pasarlo a Layout
+    const isReseller = instanceData ? instanceData.isReseller : true;
+    const resellerName = instanceData ? instanceData.resellerName : '';
+
     return (
-        <Layout>
+        <Layout isReseller={isReseller} resellerName={resellerName}>
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="w-full md:w-1/5">
                     <div className="flex flex-col gap-2">

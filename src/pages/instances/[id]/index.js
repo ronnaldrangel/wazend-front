@@ -1,4 +1,11 @@
-import { useState } from 'react';
+// Importación de los componentes de cada sección
+import Dashboard from './dashboard';
+import Config from './config';
+import Proxy from './proxy';
+import Integrations from './integrations';
+import Group from './group';
+
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CommandLineIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { UserCircleIcon, Cog6ToothIcon, DocumentTextIcon, SignalIcon } from '@heroicons/react/24/outline';
@@ -6,14 +13,8 @@ import Layout from '@/components/layout/dashboard';
 import Loader from '@/components/loaders/OrderSkeleton';
 import { useStrapiData } from '@/services/strapiServiceId';
 import { toast } from 'sonner';
-import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
-
-// Importación de los componentes de cada sección
-import Dashboard from './dashboard';
-import Config from './config';
-import Proxy from './proxy';
-import Integrations from './integrations';
-import Group from './group';
+import { PaperAirplaneIcon, ClipboardIcon } from '@heroicons/react/24/outline';
+import { Switch } from '@headlessui/react';
 
 export default function Profile() {
     const { query } = useRouter();
@@ -26,9 +27,20 @@ export default function Profile() {
 
     // Estado para manejar el modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [resellerName, setResellerName] = useState(''); // Nombre del reseller
+    const [isReseller, setIsReseller] = useState(false); // Estado del modo reseller
 
     const { data, error, isLoading } = useStrapiData(`instances/${documentId}`);
     const instance = data?.data || {}; // Asegurar que siempre sea un objeto
+
+    useEffect(() => {
+        if (instance && instance.isReseller !== undefined) {
+            setIsReseller(instance.isReseller); // Actualizar el estado al valor de la API
+        }
+        if (instance && instance.resellerName) {
+            setResellerName(instance.resellerName); // Asegurar que el nombre del reseller se cargue al inicializar
+        }
+    }, [instance]); // Se ejecuta cada vez que la instancia cambia
 
     if (isLoading) {
         return <Layout><Loader /></Layout>;
@@ -50,6 +62,10 @@ export default function Profile() {
         console.log("Instance Data Loaded:", instance);
     }
 
+    // Establecer las variables de estado de acuerdo con la data
+    const isResellerMode = instance.isReseller; // Establecer si es reseller
+    const resellerNameFromInstance = instance.resellerName; // Establecer el nombre del reseller
+
     // Lista de botones con información de cada uno
     const menuItems = [
         { name: 'Dashboard', icon: UserCircleIcon, component: 'Dashboard' },
@@ -68,6 +84,37 @@ export default function Profile() {
         }).catch(err => {
             console.error('Error al copiar:', err);
         });
+    };
+
+    // Función para realizar la actualización PUT en Strapi
+    const saveSettings = async () => {
+        const updatedData = {
+            data: {
+                isReseller, // Estado del modo reseller
+                resellerName, // Nombre del reseller
+            }
+        };
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/instances/${documentId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`, // API Key en los headers
+                },
+                body: JSON.stringify(updatedData),
+            });
+
+            if (response.ok) {
+                toast.success('Configuración guardada');
+                setIsModalOpen(false); // Cerrar el modal después de guardar
+            } else {
+                toast.error('Error al guardar la configuración');
+            }
+        } catch (error) {
+            console.error('Error al actualizar Strapi:', error);
+            toast.error('Error al guardar la configuración');
+        }
     };
 
     // Renderiza el componente activo
@@ -127,30 +174,67 @@ export default function Profile() {
                         Compartir instancia
                     </button>
 
-
                     {/* Modal */}
                     {isModalOpen && (
                         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
                             <div className="bg-white p-6 rounded-lg shadow-lg w-96">
                                 <h3 className="text-xl font-semibold mb-4">Enlace para compartir</h3>
-                                <input
-                                    type="text"
-                                    value={`https://app.wazend.net/share/${documentId}`}
-                                    readOnly
-                                    className="w-full p-2 border rounded-md mb-4"
-                                />
-                                <button
-                                    onClick={copyToClipboard}
-                                    className="w-full px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out">
-                                    Copiar enlace
-                                </button>
+                                <div className="flex items-center mb-4">
+                                    <input
+                                        type="text"
+                                        value={`https://app.wazend.net/share/${documentId}`}
+                                        readOnly
+                                        className="w-full p-2 border rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+                                    />
+                                    <button
+                                        onClick={copyToClipboard}
+                                        className="ml-2 p-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
+                                    >
+                                        <ClipboardIcon className="w-6 h-6" />
+                                    </button>
+                                </div>
 
-                                <button
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="w-full px-6 py-3 mt-4 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out">
-                                    Cerrar
-                                </button>
+                                <div className="mt-4 mb-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Modo Reseller</label>
+                                    <Switch
+                                        checked={isReseller}
+                                        onChange={setIsReseller}
+                                        className={`${isReseller ? 'bg-emerald-600' : 'bg-gray-300'}
+                                            relative inline-flex items-center h-6 rounded-full w-11`}
+                                    >
+                                        <span
+                                            className={`${isReseller ? 'translate-x-6' : 'translate-x-1'}
+                                                inline-block w-4 h-4 transform bg-white rounded-full transition-transform duration-200`}
+                                        />
+                                    </Switch>
+                                </div>
 
+                                {isReseller && (
+                                    <div className="mt-4 mb-4">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Nombre del Reseller</label>
+                                        <input
+                                            type="text"
+                                            value={resellerName}  // Asegúrate de que esté vinculado al estado correcto
+                                            onChange={(e) => setResellerName(e.target.value)}  // Maneja el cambio de valor
+                                            className="w-full p-2 border rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Botones en dos columnas */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <button
+                                        onClick={saveSettings}
+                                        className="w-full px-6 py-3 bg-emerald-600 text-white text-md font-medium rounded-lg shadow-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out">
+                                        Guardar
+                                    </button>
+
+                                    <button
+                                        onClick={() => setIsModalOpen(false)}
+                                        className="w-full px-6 py-3 bg-white text-gray-600 text-md font-medium border border-gray-300 rounded-lg shadow-md hover:bg-gray-100 hover:shadow focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50 transition-colors duration-200 ease-in-out">
+                                        Cerrar
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}

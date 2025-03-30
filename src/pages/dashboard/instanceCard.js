@@ -60,16 +60,19 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
       <div className="flex justify-between items-center mb-2">
         <p className="text-lg font-bold">{instanceName}</p>
 
-        <div className="bg-violet-200 px-2 py-1 rounded-sm inline-block">
-          <p className="text-gray-800 text-xs">
-            Expira el{' '}
-            {new Date(endDate).toLocaleDateString(undefined, {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-            })}
-          </p>
-        </div>
+        {endDate && (
+          <div className="bg-violet-200 px-2 py-1 rounded-sm inline-block">
+            <p className="text-gray-800 text-xs">
+              Expira el{' '}
+              {new Date(endDate).toLocaleDateString(undefined, {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })}
+            </p>
+          </div>
+        )}
+
 
       </div>
 
@@ -124,12 +127,12 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
       <div className="mt-4 flex justify-between items-center">
         <p
           className={`text-sm font-semibold px-3 py-1 rounded-2xl text-white ${instance.connectionStatus === "open"
-              ? "bg-green-600"
-              : instance.connectionStatus === "connecting"
-                ? "bg-orange-500"
-                : instance.connectionStatus === "close"
-                  ? "bg-red-600"
-                  : "bg-gray-600"
+            ? "bg-green-600"
+            : instance.connectionStatus === "connecting"
+              ? "bg-orange-500"
+              : instance.connectionStatus === "close"
+                ? "bg-red-600"
+                : "bg-gray-600"
             }`}
         >
           {instance.connectionStatus === "open"
