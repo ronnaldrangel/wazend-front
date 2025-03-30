@@ -37,9 +37,9 @@ const Services = () => {
                         <Link key={store.id} href={`/marketplace/${store.documentId}`}>
                             <div className="bg-white shadow-md rounded-lg cursor-pointer">
                                 <div className="flex items-center">
-                                    {store.img.url ? (
+                                    {store.img && store.img.url ? (
                                         <img
-                                            src={store.img.url} // asumiendo que la imagen se encuentra en store.image.url
+                                            src={store.img.url} // Asegurando que store.img no sea null
                                             alt={store.title}
                                             width={300}  // Ajustamos el tamaño de la imagen
                                             height={150}  // Ajustamos el tamaño de la imagen

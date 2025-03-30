@@ -23,10 +23,10 @@ export default function Index() {
                     />
                 </svg>
                 <h3 className="mt-4 text-lg font-semibold text-gray-800">
-                    ¡Crea tu primera instancia en Wazend!
+                    ¡Empieza ahora a usar Wazend!
                 </h3>
                 <p className="mt-2 text-sm text-gray-600">
-                    Comience contratando uno de nuestros planes.
+                    Comience creando una instancia para WhatsApp.
                 </p>
                 <Link
                     href="/upgrade/"
