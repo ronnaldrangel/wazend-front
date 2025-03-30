@@ -1,8 +1,9 @@
 import { useSession } from 'next-auth/react';
 import Layout from '../components/layout/dashboard';
 import Link from 'next/link';
-import { ChevronRightIcon, GlobeAltIcon, PaperClipIcon } from '@heroicons/react/24/outline';
+import { WindowIcon, GlobeAltIcon, PaperClipIcon } from '@heroicons/react/24/outline';
 import Bulletin from './bulletin';
+import NoInstancesIndex from './noInstances';
 
 export default function Example() {
   const { data: session } = useSession();
@@ -15,7 +16,7 @@ export default function Example() {
       description: "Administra y configura tus instancias de WhatsApp",
       buttonText: "GESTIONAR",
       buttonUrl: "/dashboard", // Ajusta esta URL según sea necesario
-      icon: <ChevronRightIcon className="w-6 h-6 text-emerald-600" />,
+      icon: <WindowIcon className="w-6 h-6 text-emerald-600" />,
     },
     {
       name: "MARKETPLACE",
@@ -37,7 +38,7 @@ export default function Example() {
     <>
       <Layout title="Inicio">
 
-        <div className="mx-auto mb-10">
+        {/* <div className="mx-auto mb-10">
           <h1 className="text-xl font-semibold mb-4">Mis instancias y servicios</h1>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {services.map((service, index) => (
@@ -55,9 +56,13 @@ export default function Example() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
-        <Bulletin />
+
+        <div className="space-y-10">
+          <NoInstancesIndex />
+          <Bulletin />
+        </div>
 
       </Layout>
     </>

@@ -3,6 +3,7 @@ import Loader from '../../components/loaders/OrderSkeleton';
 import { useStrapiData } from '../../services/strapiService';
 import Image from 'next/image';
 import Link from 'next/link';
+import Banner from './banner';
 
 const Services = () => {
     // Obtenemos los datos de 'stores' de la API
@@ -64,7 +65,7 @@ const Services = () => {
             {/* Sección de plantillas */}
             <div>
                 <h2 className="text-xl font-bold mb-4">Plantillas</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
                     {templates.map((store) => (
                         <Link key={store.id} href={`/marketplace/${store.documentId}`}>
                             <div className="bg-white shadow-md rounded-lg cursor-pointer">
@@ -94,18 +95,7 @@ const Services = () => {
                 </div>
             </div>
 
-            {/* Banner para invitar a ser parte del marketplace */}
-            <div className="bg-gradient-to-r from-emerald-800 to-emerald-600 text-white py-16 px-6 text-center mt-16 rounded-lg">
-                <h2 className="text-3xl font-bold mb-4">Conviértete en creador hoy</h2>
-                <p className="text-lg mb-6">
-                    Envía una plantilla o complemento, hazte destacar y gana dinero, todo en solo unos clics.
-                </p>
-                <Link href="https://wa.link/5se5ao" passHref>
-                    <button className="bg-white text-emerald-600 py-4 px-10 rounded-full shadow-lg hover:bg-emerald-100 transition duration-300 text-lg font-semibold focus:outline-none focus:ring-4 focus:ring-emerald-300">
-                        Únete ahora
-                    </button>
-                </Link>
-            </div>
+            <Banner />
 
 
 

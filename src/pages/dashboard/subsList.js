@@ -5,10 +5,11 @@ import OrderSkeleton from '../../components/loaders/OrderSkeleton';
 import Link from 'next/link';
 import { format } from "date-fns";
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, XCircleIcon, ChevronDownIcon, ChevronUpIcon, ExclamationCircleIcon, ClockIcon } from '@heroicons/react/24/solid';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from '../../components/loaders/modal';
+import NoInstances from './noInstances';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const createInstanceUrl = process.env.NEXT_PUBLIC_CREATE_INSTANCE;
@@ -40,7 +41,7 @@ const handleCreateInstance = async (documentId, email, setLoading) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ documentId, email }), // Se agrega el email al payload
+      body: JSON.stringify({ documentId, email }),
     });
 
     if (!response.ok) {
@@ -59,54 +60,53 @@ const handleCreateInstance = async (documentId, email, setLoading) => {
   }
 };
 
+const getStatusText = (status) => {
+  const statusMap = {
+    "active": "Activa",
+    "on-hold": "En espera",
+    "pending": "Pendiente",
+    "cancelled": "Cancelada",
+    "pending-cancel": "Cancelación pendiente"
+  };
+
+  return statusMap[status] || status;
+};
+
 const FetchStrapi = () => {
   const { data: session } = useSession();
   const jwt = session?.jwt;
-  const email = session?.user?.email; // Obtener el email del usuario autenticado
+  const email = session?.user?.email;
   const [loading, setLoading] = useState(false);
-
+  const [expandedSubscriptions, setExpandedSubscriptions] = useState([]);
   const { data, error, isLoading } = useSWR(
     jwt ? `${strapiUrl}/api/users/me?populate[subscriptions][populate]=instances` : null,
     (url) => fetcher(url, jwt)
   );
+
+  useEffect(() => {
+    if (data) {
+      const savedState = localStorage.getItem('expandedSubscriptions');
+      if (savedState) {
+        setExpandedSubscriptions(JSON.parse(savedState));
+      } else {
+        const allExpanded = data?.subscriptions?.map(() => true) || [];
+        setExpandedSubscriptions(allExpanded);
+      }
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      localStorage.setItem('expandedSubscriptions', JSON.stringify(expandedSubscriptions));
+    }
+  }, [expandedSubscriptions, data]);
 
   if (isLoading) return <OrderSkeleton />;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   if (!data) return <OrderSkeleton />;
 
   if (!data?.subscriptions?.length) {
-    return (
-      <div className="bg-white rounded-xl px-6 py-10 text-center shadow-lg w-full mx-auto border border-gray-200 min-h-[400px] flex flex-col justify-center items-center">
-        <svg
-          className="mx-auto h-12 w-12 text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            vectorEffect="non-scaling-stroke"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2z"
-          />
-        </svg>
-        <h3 className="mt-4 text-lg font-semibold text-gray-800">
-          ¡Crea tu primera instancia en Wazend!
-        </h3>
-        <p className="mt-2 text-sm text-gray-600">
-          Comience contratando uno de nuestros planes.
-        </p>
-        <Link
-          href="/upgrade/"
-          className="mt-6 inline-flex items-center rounded-lg bg-emerald-600 px-5 py-3 text-white text-base font-medium shadow-md hover:bg-emerald-500 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-        >
-          <PlusIcon className="h-6 w-6" aria-hidden="true" />
-          <span className="ml-3">Crea una instancia</span>
-        </Link>
-      </div>
-    );
+    return <NoInstances />;
   }
 
   return (
@@ -119,55 +119,95 @@ const FetchStrapi = () => {
           return a.id_woo - b.id_woo;
         })
         .map((sub, index) => (
-          <div key={index}>
-            <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-              {sub.status_woo === "active" ? (
-                <CheckCircleIcon className="w-6 h-6 text-emerald-600" />
-              ) : (
-                <XCircleIcon className="w-6 h-6 text-red-500" />
-              )}
-              Suscripción #{sub.id_woo}
-            </h2>
+          <div key={index} className="pb-0">
+            <div
+              className="p-4 bg-white rounded-lg shadow-md cursor-pointer mb-6"
+              onClick={() => {
+                const newExpanded = [...expandedSubscriptions];
+                newExpanded[index] = !newExpanded[index];
+                setExpandedSubscriptions(newExpanded);
+              }}
+            >
+              <h2 className="text-lg font-semibold text-gray-800 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  {sub.status_woo === "active" ? (
+                    <CheckCircleIcon className="w-6 h-6 text-emerald-600" />
+                  ) : sub.status_woo === "on-hold" ? (
+                    <ExclamationCircleIcon className="w-6 h-6 text-orange-500" />
+                  ) : sub.status_woo === "pending" ? (
+                    <ClockIcon className="w-6 h-6 text-yellow-500" />
+                  ) : sub.status_woo === "cancelled" ? (
+                    <XCircleIcon className="w-6 h-6 text-red-600" />
+                  ) : sub.status_woo === "pending-cancel" ? (
+                    <XCircleIcon className="w-6 h-6 text-gray-500" />
+                  ) : (
+                    <XCircleIcon className="w-6 h-6 text-red-500" />
+                  )}
+                  <span>Suscripción #{sub.id_woo}</span>
+                </div>
+                {expandedSubscriptions[index] ? (
+                  <ChevronUpIcon className="w-7 h-7 text-gray-800" />
+                ) : (
+                  <ChevronDownIcon className="w-7 h-7 text-gray-800" />
+                )}
+              </h2>
 
-            <p className="text-sm text-gray-600">
-              Próximo pago:{" "}
-              <span className="font-medium">
-                {sub.next_payment_date_gmt
-                  ? format(new Date(sub.next_payment_date_gmt), "dd/MM/yyyy")
-                  : "Sin fecha"}
-              </span>
-            </p>
-
-            {sub.instances?.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                {sub.instances.map((instance, idx) => (
-                  <InstanceCard
-                    key={idx}
-                    endDate={sub.next_payment_date_gmt}
-                    documentId={instance.documentId}
-                    instanceId={instance.instanceId}
-                    instanceName={instance.instanceName}
-                    serverUrl={instance.server_url}
-                    isActive={true}
-                  />
-                ))}
-              </div>
-            ) : sub.status_woo === "active" ? (
-              <div className="mt-4">
-                <p className="text-sm text-gray-500">
-                  Esta suscripción no tiene instancias asociadas.
+              <div className="flex justify-between items-center mt-2">
+                <p className="text-sm text-gray-600">
+                  Estado: <span className={`font-medium ${sub.status_woo === "active" ? "text-emerald-600" :
+                    sub.status_woo === "on-hold" ? "text-orange-500" :
+                      sub.status_woo === "pending" ? "text-yellow-500" :
+                        sub.status_woo === "cancelled" ? "text-red-600" :
+                          sub.status_woo === "pending-cancel" ? "text-gray-500" :
+                            "text-red-500"
+                    }`}>{getStatusText(sub.status_woo)}</span>
                 </p>
-                <button
-                  className="mt-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
-                  onClick={() => handleCreateInstance(sub.id, email, setLoading)}
-                >
-                  Crear instancia
-                </button>
+                <p className="text-sm text-gray-600">
+                  Próximo pago:{" "}
+                  <span className="font-medium">
+                    {sub.next_payment_date_gmt
+                      ? format(new Date(sub.next_payment_date_gmt), "dd/MM/yyyy")
+                      : "Sin fecha"}
+                  </span>
+                </p>
               </div>
-            ) : (
-              <p className="text-sm text-gray-500 mt-2">
-                Esta suscripción no tiene instancias asociadas.
-              </p>
+            </div>
+
+            {expandedSubscriptions[index] && (
+              <div className="mt-4 transition-all duration-300 ease-in-out max-h-screen">
+                {sub.instances?.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {sub.instances.map((instance, idx) => (
+                      <InstanceCard
+                        key={idx}
+                        endDate={sub.next_payment_date_gmt}
+                        documentId={instance.documentId}
+                        instanceId={instance.instanceId}
+                        instanceName={instance.instanceName}
+                        serverUrl={instance.server_url}
+                        isActive={true}
+                      />
+                    ))}
+                  </div>
+                ) : sub.status_woo === "active" ? (
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-500">
+                      Esta suscripción no tiene instancias asociadas.
+                    </p>
+                    <button
+                      className="mt-4 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg shadow-md transform transition-all duration-200 ease-in-out hover:bg-emerald-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 active:scale-95 flex items-center justify-center gap-2"
+                      onClick={() => handleCreateInstance(sub.id, email, setLoading)}
+                    >
+                      <PlusIcon className="w-5 h-5" />
+                      Crear instancia
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500 mt-2">
+                    Esta suscripción no tiene instancias asociadas.
+                  </p>
+                )}
+              </div>
             )}
           </div>
         ))}
