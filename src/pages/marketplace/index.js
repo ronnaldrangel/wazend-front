@@ -10,10 +10,11 @@ export default function Index() {
 
 
             {/* Título */}
-            <h1 className="text-4xl font-bold text-center mb-4">
+            {/* <h1 className="text-4xl font-bold text-center mb-4">
                 Marketplace
-            </h1>
-            <p className="text-xl text-center mb-20">
+            </h1> */}
+
+            <p className="text-xl mb-20">
                 Las mejores plantillas y complementos de la comunidad Wazend.
             </p>
 

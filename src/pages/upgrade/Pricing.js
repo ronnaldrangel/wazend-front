@@ -5,7 +5,7 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 const plans = [
     {
         name: 'Pago mensual',
-        id: '7737',
+        woo_id: '7737',
         price: '$15.9/mes',
         description: 'Facturación cada 30 días',
         features: [
@@ -15,12 +15,11 @@ const plans = [
             'Soporte de webhook',
             'Atención al cliente vía WhatsApp',
         ],
-        url: 'https://wazend.net/plan-api-mensual/',
         featured: false,
     },
     {
         name: 'Pago anual',
-        id: '8565',
+        woo_id: '8565',
         price: '$159/año',
         description: 'Facturación cada 365 días',
         features: [
@@ -30,7 +29,6 @@ const plans = [
             'Soporte de webhook',
             'Atención al cliente vía WhatsApp',
         ],
-        url: 'https://wazend.net/plan-api-anual/',
         featured: true,
     },
 ];
@@ -41,18 +39,47 @@ export default function Pricing() {
     const [loading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
-    const handleCheckout = (url) => {
+    const handleCheckout = async (woo_id) => {
         if (!email) {
             alert('Debes iniciar sesión para continuar.');
             return;
         }
+        
         setLoading(true);
         setShowModal(true);
-        setTimeout(() => {
+        
+        try {
+            // Hacer el POST request al endpoint con autorización en el encabezado
+            const response = await fetch('https://wazend.net/wp-json/magic-login/v1/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ZGV2b3A6WXp3dyBBaXJtIE9NdTIgNjFZRyBNYzAzIFdGS1Y=', // Autorización
+                },
+                body: JSON.stringify({
+                    user: email,
+                    send: false,
+                    redirect_to: `https://wazend.net/checkouts/checkout/?aero-add-to-checkout=${woo_id}&aero-qty=1&billing_email=${encodeURIComponent(email)}`,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data?.link) {
+                // Redirigir al usuario al link proporcionado en la respuesta
+                window.location.href = data.link;
+            } else {
+                // Si no hay link en la respuesta, redirigir al checkout directamente
+                window.location.href = `https://wazend.net/checkouts/checkout/?aero-add-to-checkout=${woo_id}&aero-qty=1&billing_email=${encodeURIComponent(email)}`;
+            }
+        } catch (error) {
+            console.error('Error al realizar el post:', error);
+            // Si ocurre un error, redirigir al checkout directamente
+            window.location.href = `https://wazend.net/checkouts/checkout/?aero-add-to-checkout=${woo_id}&aero-qty=1&billing_email=${encodeURIComponent(email)}`;
+        } finally {
             setLoading(false);
             setShowModal(false);
-            window.location.href = `${url}?billing_email=${encodeURIComponent(email)}`;
-        }, 2000);
+        }
     };
 
     return (
@@ -67,7 +94,7 @@ export default function Pricing() {
 
             <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
                 {plans.map((plan) => (
-                    <div key={plan.id} className={`relative p-8 rounded-xl shadow-lg border ${plan.featured ? 'bg-gradient-to-b from-emerald-100 to-white' : 'bg-white'} transform hover:scale-105 transition-all duration-300`}>
+                    <div key={plan.woo_id} className={`relative p-8 rounded-xl shadow-lg border ${plan.featured ? 'bg-gradient-to-b from-emerald-100 to-white' : 'bg-white'} transform hover:scale-105 transition-all duration-300`}>
                         {plan.featured && (
                             <span className="absolute top-4 right-4 px-4 py-2 text-sm bg-emerald-700 text-white font-semibold rounded-full shadow-lg">
                                 Más popular
@@ -78,7 +105,7 @@ export default function Pricing() {
                         <p className="mt-2 text-gray-600">{plan.description}</p>
 
                         <button
-                            onClick={() => handleCheckout(plan.url)}
+                            onClick={() => handleCheckout(plan.woo_id)}
                             disabled={loading}
                             className={`mt-6 w-full py-3 rounded-md font-semibold text-white text-lg transition ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-700 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-opacity-50'}`}
                         >
