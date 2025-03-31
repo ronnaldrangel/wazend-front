@@ -5,7 +5,7 @@ import MyAccount from './myaccount';
 export default function Index() {
 
     return (
-        <Layout>
+        <Layout title="Facturación">
             <MyAccount/>
         </Layout>
     );
