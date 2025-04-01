@@ -41,7 +41,7 @@ const WebhookControl = ({ instanceName, serverUrl }) => {
     };
 
     const handleSave = async () => {
-        const url = `${process.env.NEXT_PUBLIC_WAZEND_API_URL}/webhook/set/${instanceName}`;
+        const url = `${serverUrl}/webhook/set/${instanceName}`;
         const params = {
             webhook: {
                 enabled: selectedEvents.length > 0, // Si no hay eventos, "enabled" será false
