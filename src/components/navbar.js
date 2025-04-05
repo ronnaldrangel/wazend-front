@@ -11,8 +11,8 @@ import ToggleMode from '../components/ui/toggle-mode'
 
 const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
-  { name: 'Inicio', href: '/' },
-  { name: 'Tus instancias', href: '/dashboard' },
+  { name: 'Tus instancias', href: '/' },
+  // { name: 'Tus instancias', href: '/dashboard' },
   { name: 'Marketplace', href: '/marketplace' },
   { name: 'Facturación', href: '/billing' },
   { name: 'Docs', href: 'https://docs.wazend.net/', external: true },

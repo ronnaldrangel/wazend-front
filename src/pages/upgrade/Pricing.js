@@ -4,32 +4,52 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 
 const plans = [
     {
-        name: 'Pago mensual',
-        woo_id: '7737',
-        price: '$15.9/mes',
-        description: 'Facturación cada 30 días',
+        name: 'Basico',
+        imageUrl: 'https://minio-app.wazend.net/strapi/Recurso_2_073883635c.svg', // Reemplaza con la ruta correcta
+        price: '$15',
+        period: '/mes',
+        currency: 'Dólar estadounidense',
         features: [
+            '1 Instancia de WhatsApp',
             'Mensajes enviados ilimitados',
             'Recibir mensajes ilimitados',
             'Enviar medios / documentos',
             'Soporte de webhook',
             'Atención al cliente vía WhatsApp',
         ],
-        featured: false,
+        woo_id: '7737',
     },
     {
-        name: 'Pago anual',
-        woo_id: '8565',
-        price: '$159/año',
-        description: 'Facturación cada 365 días',
+        name: 'Pro',
+        imageUrl: 'https://minio-app.wazend.net/strapi/Recurso_1_1_d150b732bf.svg', // Reemplaza con la ruta correcta
+        price: '$59',
+        period: '/mes',
+        currency: 'Dólar estadounidense',
         features: [
+            '5 Instancia de WhatsApp',
             'Mensajes enviados ilimitados',
             'Recibir mensajes ilimitados',
             'Enviar medios / documentos',
             'Soporte de webhook',
             'Atención al cliente vía WhatsApp',
         ],
-        featured: true,
+        woo_id: '11284',
+    },
+    {
+        name: 'Enterprise',
+        imageUrl: 'https://minio-app.wazend.net/strapi/Recurso_1_98dcf3b23d.svg', // Reemplaza con la ruta correcta
+        price: '$199',
+        period: '/mes',
+        currency: 'Dólar estadounidense',
+        features: [
+            '20 Instancia de WhatsApp',
+            'Mensajes enviados ilimitados',
+            'Recibir mensajes ilimitados',
+            'Enviar medios / documentos',
+            'Soporte de webhook',
+            'Atención al cliente vía WhatsApp',
+        ],
+        woo_id: '11287',
     },
 ];
 
@@ -49,12 +69,11 @@ export default function Pricing() {
         setShowModal(true);
         
         try {
-            // Hacer el POST request al endpoint con autorización en el encabezado
             const response = await fetch('https://wazend.net/wp-json/magic-login/v1/token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Basic ZGV2b3A6WXp3dyBBaXJtIE9NdTIgNjFZRyBNYzAzIFdGS1Y=', // Autorización
+                    'Authorization': 'Basic ZGV2b3A6WXp3dyBBaXJtIE9NdTIgNjFZRyBNYzAzIFdGS1Y=',
                 },
                 body: JSON.stringify({
                     user: email,
@@ -66,15 +85,12 @@ export default function Pricing() {
             const data = await response.json();
 
             if (data?.link) {
-                // Redirigir al usuario al link proporcionado en la respuesta
                 window.location.href = data.link;
             } else {
-                // Si no hay link en la respuesta, redirigir al checkout directamente
                 window.location.href = `https://wazend.net/checkouts/checkout/?aero-add-to-checkout=${woo_id}&aero-qty=1&billing_email=${encodeURIComponent(email)}`;
             }
         } catch (error) {
             console.error('Error al realizar el post:', error);
-            // Si ocurre un error, redirigir al checkout directamente
             window.location.href = `https://wazend.net/checkouts/checkout/?aero-add-to-checkout=${woo_id}&aero-qty=1&billing_email=${encodeURIComponent(email)}`;
         } finally {
             setLoading(false);
@@ -83,40 +99,45 @@ export default function Pricing() {
     };
 
     return (
-        <div className="mx-auto text-center py-6">
-            <h2 className="text-4xl font-extrabold text-gray-900">Elige un plan adecuado para ti</h2>
-            <p className="mt-4 text-lg text-gray-600">Selecciona el plan que mejor se adapte a tus necesidades y comienza hoy.</p>
-
-            {/* Urgency and Special Offer Section */}
-            <div className="mt-10 bg-yellow-100 p-4 rounded-md text-sm text-yellow-900 font-semibold">
-                ¡Oferta por tiempo limitado! Obtén un 2 meses gratis de descuento en el plan anual si te suscribes en las próximas 24 horas. ¡No te lo pierdas!
+        <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold text-gray-900">Elige un plan para <span className="text-teal-700">continuar</span></h2>
+                <p className="mt-4 text-lg text-gray-600">¡Elige el plan que mejor se adapte a tus necesidades!</p>
             </div>
-
-            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {plans.map((plan) => (
-                    <div key={plan.woo_id} className={`relative p-8 rounded-xl shadow-lg border ${plan.featured ? 'bg-gradient-to-b from-emerald-100 to-white' : 'bg-white'} transform hover:scale-105 transition-all duration-300`}>
-                        {plan.featured && (
-                            <span className="absolute top-4 right-4 px-4 py-2 text-sm bg-emerald-700 text-white font-semibold rounded-full shadow-lg">
-                                Más popular
-                            </span>
-                        )}
-                        <h3 className="text-3xl font-semibold text-gray-900">{plan.name}</h3>
-                        <p className="mt-4 text-5xl font-bold text-emerald-700">{plan.price}</p>
-                        <p className="mt-2 text-gray-600">{plan.description}</p>
-
+                    <div key={plan.name} className="bg-white rounded-lg shadow-md p-6">
+                        <div className="flex items-center gap-2 mb-4">
+                            <img 
+                                src={plan.imageUrl} 
+                                alt={`${plan.name} icon`} 
+                                className="w-10 h-10 rounded-full object-cover"
+                            />
+                            <h3 className="text-xl font-bold">{plan.name}</h3>
+                        </div>
+                        
+                        <div className="mb-6">
+                            <div className="flex items-baseline">
+                                <span className="text-4xl font-bold">{plan.price}</span>
+                                <span className="text-lg">{plan.period}</span>
+                            </div>
+                            <p className="text-sm text-gray-600">{plan.currency}</p>
+                        </div>
+                        
                         <button
                             onClick={() => handleCheckout(plan.woo_id)}
                             disabled={loading}
-                            className={`mt-6 w-full py-3 rounded-md font-semibold text-white text-lg transition ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-700 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-opacity-50'}`}
+                            className="w-full py-3 px-4 bg-teal-700 text-white rounded-md font-medium mb-6 hover:bg-teal-800 transition-colors"
                         >
-                            {loading ? 'Cargando...' : 'Seleccionar plan'}
+                            Comprar ahora
                         </button>
-
-                        <ul className="mt-6 space-y-3 text-left text-gray-900">
+                        
+                        <ul className="space-y-3">
                             {plan.features.map((feature, index) => (
-                                <li key={index} className="flex items-center gap-x-3">
-                                    <CheckIcon className="h-6 w-6 text-emerald-700" aria-hidden="true" />
-                                    {feature}
+                                <li key={index} className="flex items-start gap-2">
+                                    <CheckIcon className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                                    <span>{feature}</span>
                                 </li>
                             ))}
                         </ul>
