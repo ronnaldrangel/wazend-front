@@ -14,8 +14,8 @@ export default function Index() {
                 Marketplace
             </h1> */}
 
-            <p className="text-xl mb-20">
-                Las mejores plantillas y complementos de la comunidad Wazend.
+            <p className="text-md mb-20">
+                Explora las mejores plantillas, plugins e integraciones para Wazend.
             </p>
 
             <Store />

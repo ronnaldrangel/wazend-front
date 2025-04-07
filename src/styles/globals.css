@@ -147,3 +147,41 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Parte del scroll del bulletin */
+
+@media (max-width: 1023px) {
+  .slider-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    padding-bottom: 20px;
+  }
+
+  .slider-content {
+    display: inline-flex;
+    gap: 16px;
+  }
+
+  .slider-item {
+    flex: 0 0 auto;
+    width: 85%;
+    white-space: normal;
+  }
+}
+
+@media (min-width: 1024px) {
+  .slider-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+.slider-container.active {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+}

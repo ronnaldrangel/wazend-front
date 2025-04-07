@@ -73,7 +73,7 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
             </div>
 
             <div className="mt-6 flex justify-end space-x-2">
-              <ButtonControl instanceName={instance.name} />
+              <ButtonControl instanceName={instance.name} serverUrl={serverUrl} />
             </div>
 
           </section>
