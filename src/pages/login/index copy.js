@@ -37,39 +37,11 @@ export default function SignIn() {
       }
       toast.success('Sesión iniciada correctamente.');
     } else {
-      // Verificar si el usuario existe y no está confirmado
-      const userCheck = await checkUserConfirmation(e.target.email.value);
-      if (userCheck.exists && !userCheck.confirmed) {
-        router.push('/email-confirmation');
-      } else {
-        toast.error('Credenciales incorrectas');
-      }
+      toast.error('Credenciales incorrectas o falta verificación');
+      // Desbloquear el botón de enviar en caso de error
       setIsSubmitting(false);
     }
   };
-
-    // Función para verificar el estado del usuario en Strapi
-    const checkUserConfirmation = async (email) => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?filters[email][$eq]=${email}`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
-            },
-          }
-        );
-        const data = await response.json();
-        if (data.length > 0) {
-          return { exists: true, confirmed: data[0].confirmed };
-        } else {
-          return { exists: false };
-        }
-      } catch (error) {
-        console.error('Error al verificar el usuario:', error);
-        return { exists: false };
-      }
-    };
 
   return (
     <Layout>
@@ -162,7 +134,7 @@ export default function SignIn() {
         </form>
 
         {/* Botón para iniciar sesión con GitHub */}
-        <SignSocial />
+        <SignSocial/>
 
         <p className="mt-10 text-sm text-center leading-6 text-gray-500 dark:text-gray-400">
           ¿No tienes una cuenta?{' '}

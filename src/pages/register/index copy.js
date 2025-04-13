@@ -9,10 +9,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
 import SignSocial from '../../components/SignSocial';
-// Asumimos que has creado el componente PhoneInput en la ruta:
-import PhoneInput from '../../components/ui/phone-input';
-// Si utiliza un archivo utils.cn diferente:
-// import { cn } from '../../lib/utils';
+
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -22,7 +19,6 @@ export default function SignUp() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
     password: ''
   });
 
@@ -44,10 +40,6 @@ export default function SignUp() {
     if (name === 'password') {
       validatePasswordConditions(value);
     }
-  };
-
-  const handlePhoneChange = (value) => {
-    setFormData({ ...formData, phone: value || '' });
   };
 
   const generateUsername = (email) => {
@@ -80,7 +72,6 @@ export default function SignUp() {
         username,
         name: formData.name,
         email: formData.email,
-        phone: formData.phone,
         password: formData.password
       },
         {
@@ -93,13 +84,13 @@ export default function SignUp() {
       console.log('Registration successful:', response.data);
       toast.success('Registro exitoso.');
 
+
       // Enviar los datos al webhook de n8n
       try {
         await axios.post(process.env.NEXT_PUBLIC_REGISTER, {
           username: username,
           name: formData.name,
           email: formData.email,
-          phone: formData.phone,
         });
         console.log('Datos enviados al webhook de n8n.');
       } catch (webhookError) {
@@ -129,6 +120,7 @@ export default function SignUp() {
 
         <div className="mt-8">
           <form className="space-y-6" onSubmit={handleSubmit}>
+
 
             {/* Nombre */}
             <div>
@@ -172,27 +164,6 @@ export default function SignUp() {
                   value={formData.email}
                   onChange={handleChange}
                   className="block w-full rounded-md border-0 py-1.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            {/* Teléfono con Shadcn */}
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
-              >
-                WhatsApp
-              </label>
-              <div className="mt-2">
-                <PhoneInput
-                  id="phone"
-                  name="phone"
-                  placeholder="Ingresa tu número telefónico"
-                  defaultCountry="ES"
-                  required
-                  value={formData.phone}
-                  onChange={handlePhoneChange}
                 />
               </div>
             </div>
@@ -291,6 +262,7 @@ export default function SignUp() {
           {/* Botón para iniciar sesión con GitHub */}
           <SignSocial />
 
+
           <p className="mt-10 text-sm text-center leading-6 text-gray-500 dark:text-gray-400">
             ¿Tienes una cuenta?{' '}
             <Link
@@ -302,6 +274,7 @@ export default function SignUp() {
           </p>
         </div>
       </Layout>
+
     </>
   );
 };
