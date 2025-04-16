@@ -79,7 +79,6 @@ export default NextAuth({
     },
 
     async jwt({ token, user, account }) {
-      // Si es un login inicial con OAuth
       if (account?.provider === 'google' || account?.provider === 'github') {
         try {
           const authRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${account.provider}/callback?access_token=${account.access_token}`, {
@@ -93,48 +92,19 @@ export default NextAuth({
           const authData = await authRes.json();
           if (!authData.jwt) throw new Error('Error al autenticar con Strapi');
           
-          // Decodificar el JWT manualmente
-          const payload = authData.jwt.split('.')[1];
-          const decodedPayload = JSON.parse(Buffer.from(payload, 'base64').toString());
-          
           token.id = authData.user.id;
           token.jwt = authData.jwt;
           token.name = authData.user.username || authData.user.email;
           token.email = authData.user.email;
-          // Guardar la fecha de expiración
-          token.exp = decodedPayload.exp;
         } catch (error) {
           console.error('❌ Error autenticando con Strapi:', error);
         }
       } else if (user) {
-        // Si es un login con credenciales
         token.id = user.id;
         token.jwt = user.jwt;
         token.name = user.name;
         token.email = user.email;
-        
-        // Decodificar el JWT manualmente para obtener la fecha de expiración
-        if (user.jwt) {
-          try {
-            const parts = user.jwt.split('.');
-            if (parts.length === 3) {
-              const payload = parts[1];
-              const decodedPayload = JSON.parse(Buffer.from(payload, 'base64').toString());
-              token.exp = decodedPayload.exp;
-            }
-          } catch (error) {
-            console.error('❌ Error decodificando JWT:', error);
-          }
-        }
       }
-      
-      // Verificar si el token ha expirado en cada solicitud
-      const now = Math.floor(Date.now() / 1000);
-      if (token.exp && now >= token.exp) {
-        // El token ha expirado
-        token.error = "TokenExpired";
-      }
-      
       return token;
     },
 
@@ -143,27 +113,16 @@ export default NextAuth({
       session.jwt = token.jwt;
       session.user.name = token.name;
       session.user.email = token.email;
-      
-      // Pasar el estado de error a la sesión si el token ha expirado
-      if (token.error === "TokenExpired") {
-        session.error = "TokenExpired";
-      }
-      
       return session;
     },
   },
+  // session: {
+  //   strategy: 'jwt',
+  //   // 2) Definimos el tiempo máximo de vida del token en segundos
+  //   maxAge: 60*60*24*5, // Ej: 72 horas
+  // },
 
   pages: {
     signIn: '/login',
-  },
-  
-  // Añadir un JWT secreto para operaciones de NextAuth
-  secret: process.env.NEXTAUTH_SECRET,
-  
-  // Establecer una duración de sesión para mantener la coherencia con Strapi
-  session: {
-    strategy: "jwt",
-    // Este tiempo debe ser menor que el tiempo de expiración de Strapi
-    maxAge: 7 * 24 * 60 * 60, // 30 días
   },
 });

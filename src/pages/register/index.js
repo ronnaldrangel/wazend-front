@@ -182,15 +182,14 @@ export default function SignUp() {
                 htmlFor="phone"
                 className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
               >
-                WhatsApp
+                WhatsApp (Opcional)
               </label>
               <div className="mt-2">
                 <PhoneInput
                   id="phone"
                   name="phone"
-                  placeholder="Ingresa tu número telefónico"
+                  placeholder="Ingresa tu número"
                   defaultCountry="ES"
-                  required
                   value={formData.phone}
                   onChange={handlePhoneChange}
                 />

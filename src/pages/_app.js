@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
 import Head from 'next/head'
 import { ThemeProvider } from "../components/ui/theme-provider"
+import SessionChecker from '../components/SessionChecker';
 
 import { Toaster } from 'sonner';
 
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           shallowRouting
         />
         <Toaster closeButton richColors position="top-right" />
+        <SessionChecker />
         <Component {...pageProps} />
       </SessionProvider>
       {/* </ThemeProvider> */}
