@@ -15,7 +15,7 @@ const navigation = [
   // { name: 'Tus instancias', href: '/dashboard' },
   { name: 'Marketplace', href: '/marketplace' },
   { name: 'Facturación', href: '/billing' },
-  { name: 'Docs', href: 'https://docs.wazend.net/', external: true },
+  { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
 ]
 
 const userNavigation = [

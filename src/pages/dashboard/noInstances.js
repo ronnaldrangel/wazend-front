@@ -33,14 +33,15 @@ export default function Index() {
 
                 <div className="flex flex-col md:flex-row gap-4">
                     <Link
-                        href="/upgrade/"
+                        href="/upgrade"
                         className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-5 py-3 text-white text-base font-medium shadow-md hover:bg-emerald-500 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
                     >
                         <PlusIcon className="h-6 w-6" aria-hidden="true" />
                         <span className="ml-3">Crea una instancia</span>
                     </Link>
                     <Link
-                        href={email ? `https://wazend.net/checkouts/checkout/?aero-add-to-checkout=9390&aero-qty=1&billing_email=${encodeURIComponent(email)}` : '/'}
+                        // href={email ? `https://wazend.net/checkouts/checkout/?aero-add-to-checkout=9390&aero-qty=1&billing_email=${encodeURIComponent(email)}` : '/'}
+                        href="/trial"
                         className="inline-flex items-center justify-center rounded-lg bg-purple-600 px-5 py-3 text-white text-base font-medium shadow-md hover:bg-purple-500 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
                     >
                         <SparklesIcon className="h-6 w-6" aria-hidden="true" />

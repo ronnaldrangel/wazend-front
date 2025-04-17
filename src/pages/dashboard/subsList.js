@@ -5,9 +5,9 @@ import OrderSkeleton from '../../components/loaders/OrderSkeleton';
 import Link from 'next/link';
 import { format } from "date-fns";
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { CheckCircleIcon, XCircleIcon, ChevronDownIcon, ChevronUpIcon, ExclamationCircleIcon, ClockIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, XCircleIcon, ExclamationCircleIcon, ClockIcon } from '@heroicons/react/24/solid';
 import { toast } from 'sonner';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Modal from '../../components/loaders/modal';
 import NoInstances from './noInstances';
 
@@ -77,27 +77,11 @@ const FetchStrapi = () => {
   const jwt = session?.jwt;
   const email = session?.user?.email;
   const [loading, setLoading] = useState(false);
-  const [expandedSubscriptions, setExpandedSubscriptions] = useState([]);
 
   const { data, error, isLoading } = useSWR(
     jwt ? `${strapiUrl}/api/users/me?populate[subscriptions][populate]=instances` : null,
     (url) => fetcher(url, jwt)
   );
-
-  // Cargar el estado desde localStorage cuando se monta el componente
-  useEffect(() => {
-    const savedState = localStorage.getItem('expandedSubscriptions');
-    if (savedState) {
-      setExpandedSubscriptions(JSON.parse(savedState));
-    }
-  }, []);
-
-  // Guardar el estado de expandedSubscriptions en localStorage cuando cambia
-  useEffect(() => {
-    if (expandedSubscriptions.length > 0) {
-      localStorage.setItem('expandedSubscriptions', JSON.stringify(expandedSubscriptions));
-    }
-  }, [expandedSubscriptions]);
 
   if (isLoading) return <OrderSkeleton />;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
@@ -118,15 +102,8 @@ const FetchStrapi = () => {
         })
         .map((sub, index) => (
           <div key={index} className="pb-0">
-            <div
-              className="p-4 bg-white rounded-lg shadow-md cursor-pointer mb-6"
-              onClick={() => {
-                const newExpanded = [...expandedSubscriptions];
-                newExpanded[index] = !newExpanded[index];
-                setExpandedSubscriptions(newExpanded); // Actualiza el estado
-              }}
-            >
-              <h2 className="text-lg font-semibold text-gray-800 flex items-center justify-between gap-2">
+            <div className="p-4 bg-white rounded-lg shadow-md mb-6">
+              <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
                 <div className="flex items-center gap-2">
                   {sub.status_woo === "active" ? (
                     <CheckCircleIcon className="w-6 h-6 text-emerald-600" />
@@ -143,23 +120,23 @@ const FetchStrapi = () => {
                   )}
                   <span>Suscripción #{sub.id_woo}</span>
                 </div>
-                {expandedSubscriptions[index] ? (
-                  <ChevronUpIcon className="w-7 h-7 text-gray-800" />
-                ) : (
-                  <ChevronDownIcon className="w-7 h-7 text-gray-800" />
-                )}
               </h2>
 
               <div className="flex justify-between items-center mt-2">
-                <p className="text-sm text-gray-600">
-                  Estado: <span className={`font-medium ${sub.status_woo === "active" ? "text-emerald-600" :
-                    sub.status_woo === "on-hold" ? "text-orange-500" :
-                      sub.status_woo === "pending" ? "text-yellow-500" :
-                        sub.status_woo === "cancelled" ? "text-red-600" :
-                          sub.status_woo === "pending-cancel" ? "text-gray-500" :
-                            "text-red-500"
-                    }`}>{getStatusText(sub.status_woo)}</span>
-                </p>
+                <div>
+                  <p className="text-sm text-gray-600">
+                    Estado: <span className={`font-medium ${sub.status_woo === "active" ? "text-emerald-600" :
+                      sub.status_woo === "on-hold" ? "text-orange-500" :
+                        sub.status_woo === "pending" ? "text-yellow-500" :
+                          sub.status_woo === "cancelled" ? "text-red-600" :
+                            sub.status_woo === "pending-cancel" ? "text-gray-500" :
+                              "text-red-500"
+                      }`}>{getStatusText(sub.status_woo)}</span>
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Instancias: <span className="font-medium">{sub.instances?.length || 0}</span>
+                  </p>
+                </div>
                 <p className="text-sm text-gray-600">
                   Próximo pago:{" "}
                   <span className="font-medium">
@@ -171,41 +148,39 @@ const FetchStrapi = () => {
               </div>
             </div>
 
-            {expandedSubscriptions[index] && (
-              <div className="mt-4 transition-all duration-300 ease-in-out max-h-screen">
-                {sub.instances?.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {sub.instances.map((instance, idx) => (
-                      <InstanceCard
-                        key={idx}
-                        documentId={instance.documentId}
-                        instanceId={instance.instanceId}
-                        instanceName={instance.instanceName}
-                        serverUrl={instance.server_url}
-                        isActive={true}
-                      />
-                    ))}
-                  </div>
-                ) : sub.status_woo === "active" ? (
-                  <div className="mt-4">
-                    <p className="text-sm text-gray-500">
-                      Esta suscripción no tiene instancias asociadas.
-                    </p>
-                    <button
-                      className="mt-4 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg shadow-md transform transition-all duration-200 ease-in-out hover:bg-emerald-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 active:scale-95 flex items-center justify-center gap-2"
-                      onClick={() => handleCreateInstance(sub.id, email, setLoading)}
-                    >
-                      <PlusIcon className="w-5 h-5" />
-                      Crear instancia
-                    </button>
-                  </div>
-                ) : (
-                  <p className="text-sm text-gray-500 mt-2">
+            <div className="mt-4 mb-8">
+              {sub.instances?.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {sub.instances.map((instance, idx) => (
+                    <InstanceCard
+                      key={idx}
+                      documentId={instance.documentId}
+                      instanceId={instance.instanceId}
+                      instanceName={instance.instanceName}
+                      serverUrl={instance.server_url}
+                      isActive={true}
+                    />
+                  ))}
+                </div>
+              ) : sub.status_woo === "active" ? (
+                <div className="mt-4">
+                  <p className="text-sm text-gray-500">
                     Esta suscripción no tiene instancias asociadas.
                   </p>
-                )}
-              </div>
-            )}
+                  <button
+                    className="mt-4 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg shadow-md transform transition-all duration-200 ease-in-out hover:bg-emerald-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 active:scale-95 flex items-center justify-center gap-2"
+                    onClick={() => handleCreateInstance(sub.id, email, setLoading)}
+                  >
+                    <PlusIcon className="w-5 h-5" />
+                    Crear instancia
+                  </button>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 mt-2">
+                  Esta suscripción no tiene instancias asociadas.
+                </p>
+              )}
+            </div>
           </div>
         ))}
     </div>

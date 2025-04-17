@@ -182,7 +182,7 @@ export default function SignUp() {
                 htmlFor="phone"
                 className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
               >
-                WhatsApp (Opcional)
+                WhatsApp
               </label>
               <div className="mt-2">
                 <PhoneInput
@@ -194,6 +194,7 @@ export default function SignUp() {
                   onChange={handlePhoneChange}
                 />
               </div>
+              <p className='text-xs text-gray-500 mt-2'>Opcional: Solo para contacto y soporte</p>
             </div>
 
             {/* Contraseña */}

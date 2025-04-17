@@ -145,7 +145,7 @@ export default function Pricing() {
                             <svg className="mr-1.5 h-3 w-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                             </svg>
-                            Ahorra hasta un 16% con facturación anual
+                            Ahorra 2 meses con facturación anual
                         </span>
                     </div>
                 )}
@@ -156,7 +156,7 @@ export default function Pricing() {
                     <div key={plan.id} className="bg-white rounded-lg shadow-md p-6">
                         <div className="flex items-center gap-2 mb-4">
                             <img 
-                                src={plan.img?.url || 'https://placeholder.com/40'} 
+                                src={plan.image?.url || 'https://placeholder.com/40'} 
                                 alt={`${plan.name} icon`} 
                                 className="w-10 h-10 rounded-full object-cover"
                             />
@@ -178,7 +178,7 @@ export default function Pricing() {
                             disabled={loading}
                             className="w-full py-3 px-4 bg-teal-700 text-white rounded-md font-medium mb-6 hover:bg-teal-800 transition-colors"
                         >
-                            Comprar ahora
+                            Elegir plan
                         </button>
                         
                         <ul className="space-y-3">
