@@ -52,9 +52,9 @@ const FetchStrapi = () => {
               serverUrl={sub.server_url}
               documentId={sub.documentId}
               instanceId={sub.instanceId}
-              instanceName={`Instancia gratis - ${sub.instanceName}`} 
+              instanceName={`${sub.instanceName}`} 
               endDate={sub.endDate}
-              isActive={true}
+              isActive={sub.isActive}
               isTrial={true}
               />
               {/* <DeleteButton documentId={sub.documentId} instanceName={sub.instanceName} /> */}
