@@ -5,6 +5,7 @@ import OrderSkeleton from '../../components/loaders/OrderSkeleton';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import CreateButton from './CreateButton';
 import DeleteButton from './DeleteButton';
+import { ClockIcon } from '@heroicons/react/24/outline';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -44,18 +45,26 @@ const FetchStrapi = () => {
 
   return (
     <>
+
       {data?.freetrials?.length > 0 ? (
         <div className="grid grid-cols-1">
           {data.freetrials.map((sub, index) => (
             <div key={index}>
-              <InstanceCard 
-              serverUrl={sub.server_url}
-              documentId={sub.documentId}
-              instanceId={sub.instanceId}
-              instanceName={`${sub.instanceName}`} 
-              endDate={sub.endDate}
-              isActive={sub.isActive}
-              isTrial={true}
+
+              <div className="rounded-lg shadow-md bg-white p-6 mb-6">
+                <div className="flex items-center font-bold text-md">
+                  <ClockIcon className="h-6 w-6 text-black mr-2" />
+                  Tu instancia expira el {new Date(sub.endDate).toLocaleDateString('es-PE')}
+                </div>
+              </div>
+
+              <InstanceCard
+                serverUrl={sub.server_url}
+                documentId={sub.documentId}
+                instanceId={sub.instanceId}
+                instanceName={`${sub.instanceName}`}
+                isActive={sub.isActive}
+                isTrial={true}
               />
               {/* <DeleteButton documentId={sub.documentId} instanceName={sub.instanceName} /> */}
             </div>
