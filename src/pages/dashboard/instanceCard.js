@@ -10,6 +10,7 @@ import {
   ClipboardIcon,
 } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
+import DeleteButton from '../dashboard/DeleteButton';
 
 const fetchInstanceData = async (url) => {
   try {
@@ -34,7 +35,7 @@ const fetchInstanceData = async (url) => {
   }
 };
 
-const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActive, endDate, isTrial }) => {
+const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActive, isTrial }) => {
   const { data, error, isLoading } = useSWR(
     instanceId ? `${serverUrl}/instance/fetchInstances?instanceId=${instanceId}` : null,
     fetchInstanceData
@@ -59,20 +60,6 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
       {/* Encabezado */}
       <div className="flex justify-between items-center mb-2">
         <p className="text-lg font-bold">{instanceName}</p>
-
-        {endDate && (
-          <div className="bg-violet-200 px-2 py-1 rounded-sm inline-block">
-            <p className="text-gray-800 text-xs">
-              Expira el{' '}
-              {new Date(endDate).toLocaleDateString(undefined, {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-              })}
-            </p>
-          </div>
-        )}
-
 
       </div>
 
@@ -144,21 +131,29 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
                 : "Desconectado"}
         </p>
 
-        {/* Botón de ajustes con Link funcional */}
-        {isActive ? (
-          <Link href={isTrial ? `/trial/${documentId}` : `/instances/${documentId}`} passHref>
-            <button className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-base font-semibold shadow-md flex items-center justify-center space-x-2">
-              <Cog6ToothIcon className="h-6 w-6" />
-              <span>Ajustes</span>
-            </button>
-          </Link>
-        ) : (
-          <span className="text-base font-semibold bg-red-500 text-white px-6 py-2 rounded-lg">Tu servicio expiro.</span>
-        )}
+        <div className='flex gap-x-2'>
+          {/* Botón de ajustes con Link funcional */}
+          {isActive ? (
+            <Link href={isTrial ? `/trial/${documentId}` : `/instances/${documentId}`} passHref>
+              <button className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-base font-semibold shadow-md flex items-center justify-center space-x-2">
+                <Cog6ToothIcon className="h-6 w-6" />
+                <span>Ajustes</span>
+              </button>
+            </Link>
+          ) : (
+            <span className="text-base font-semibold bg-red-500 text-white px-6 py-2 rounded-lg">Tu servicio expiro.</span>
+          )}
 
+
+          {/* <DeleteButton
+            documentId={documentId}
+            instanceName={instanceName}
+            onDelete={() => handleDeleteInstance(documentId)}
+          /> */}
+
+        </div>
 
       </div>
-
 
     </div>
   );

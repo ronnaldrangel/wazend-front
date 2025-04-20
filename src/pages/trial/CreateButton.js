@@ -22,7 +22,7 @@ const CreateButton = ({ onSuccess }) => {
   // URL para la mutación de SWR
   const STRAPI_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   // Duración del período de cooldown en milisegundos (10 minutos)
-  const COOLDOWN_DURATION = 10 * 60 * 10;
+  const COOLDOWN_DURATION = 1000 * 60 * 10;
 
   // Verificar si el botón debería estar deshabilitado basado en localStorage
   useEffect(() => {

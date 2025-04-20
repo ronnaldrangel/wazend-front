@@ -1,18 +1,17 @@
-import useSWR from 'swr';
+const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+const createInstanceUrl = process.env.NEXT_PUBLIC_CREATE_INSTANCE; import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import InstanceCard from './instanceCard';
 import OrderSkeleton from '../../components/loaders/OrderSkeleton';
 import Link from 'next/link';
 import { format } from "date-fns";
 import { PlusIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
-import { CheckCircleIcon, XCircleIcon, ExclamationCircleIcon, ClockIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, XCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from '../../components/loaders/modal';
 import NoInstances from './noInstances';
-
-const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-const createInstanceUrl = process.env.NEXT_PUBLIC_CREATE_INSTANCE;
+import { ClockIcon, ServerIcon } from '@heroicons/react/24/outline';
 
 const fetcher = async (url, jwt) => {
   try {
@@ -33,15 +32,16 @@ const fetcher = async (url, jwt) => {
   }
 };
 
-const handleCreateInstance = async (documentId, email, setLoading) => {
-  setLoading(true);
+const handleCreateInstance = async (subscriptionId, email, mutate, setCreatingInstanceForSubscription) => {
+  setCreatingInstanceForSubscription(subscriptionId);
+
   try {
     const response = await fetch(createInstanceUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ documentId, email }),
+      body: JSON.stringify({ documentId: subscriptionId, email }),
     });
 
     if (!response.ok) {
@@ -51,12 +51,19 @@ const handleCreateInstance = async (documentId, email, setLoading) => {
     const result = await response.json();
     toast.success('Instancia creada correctamente');
     console.log('Respuesta del servidor:', result);
-    window.location.reload();
+
+    // Actualizar los datos sin recargar la página
+    mutate();
+
+    // Añadir un retardo pequeño antes de habilitar el botón nuevamente
+    setTimeout(() => {
+      setCreatingInstanceForSubscription(null);
+    }, 2000);
+
   } catch (error) {
     toast.error('Error de conexión');
     console.error('❌ Error:', error);
-  } finally {
-    setLoading(false);
+    setCreatingInstanceForSubscription(null);
   }
 };
 
@@ -100,14 +107,23 @@ const getStatusIcon = (status) => {
   }
 };
 
+const getBillingPeriodText = (period) => {
+  const periodMap = {
+    "month": "Mensual",
+    "year": "Anual"
+  };
+
+  return periodMap[period] || period;
+};
+
 const FetchStrapi = () => {
   const { data: session } = useSession();
   const jwt = session?.jwt;
   const email = session?.user?.email;
-  const [loading, setLoading] = useState(false);
   const [showCancelled, setShowCancelled] = useState(false);
+  const [creatingInstanceForSubscription, setCreatingInstanceForSubscription] = useState(null);
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     jwt ? `${strapiUrl}/api/users/me?populate[subscriptions][populate]=instances` : null,
     (url) => fetcher(url, jwt)
   );
@@ -119,18 +135,17 @@ const FetchStrapi = () => {
   if (!data?.subscriptions?.length) {
     return <NoInstances />;
   }
-  
+
   // Filtrar suscripciones canceladas si showCancelled es false
-  const filteredSubscriptions = showCancelled 
-    ? data.subscriptions 
-    : data.subscriptions.filter(sub => 
-        sub.status_woo !== "cancelled" && sub.status_woo !== "pending-cancel"
-      );
+  const filteredSubscriptions = showCancelled
+    ? data.subscriptions
+    : data.subscriptions.filter(sub =>
+      sub.status_woo !== "cancelled" && sub.status_woo !== "pending-cancel"
+    );
 
   return (
     <div className="space-y-6">
-      {loading && <Modal message="Creando instancia, por favor espera..." />}
-      
+
       {/* Filtro para mostrar/ocultar suscripciones canceladas */}
       <div className="flex justify-between items-center bg-white rounded-lg shadow-md p-4 mb-4">
         <div className="flex items-center gap-2">
@@ -139,17 +154,17 @@ const FetchStrapi = () => {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">Mostrar canceladas</span>
-          <button 
+          <button
             onClick={() => setShowCancelled(!showCancelled)}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${showCancelled ? 'bg-emerald-600' : 'bg-gray-200'}`}
           >
-            <span 
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showCancelled ? 'translate-x-6' : 'translate-x-1'}`} 
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showCancelled ? 'translate-x-6' : 'translate-x-1'}`}
             />
           </button>
         </div>
       </div>
-      
+
       {filteredSubscriptions
         .sort((a, b) => {
           if (a.status_woo === "active" && b.status_woo !== "active") return -1;
@@ -165,31 +180,35 @@ const FetchStrapi = () => {
                   {getStatusIcon(sub.status_woo)}
                   <span className="text-sm font-medium">{getStatusText(sub.status_woo)}</span>
                 </div>
-                <div className="text-sm text-gray-600 font-medium">
-                  Próximo pago:{" "}
-                  <span>
-                    {sub.next_payment_date_gmt
-                      ? format(new Date(sub.next_payment_date_gmt), "dd/MM/yyyy")
-                      : "Sin fecha"}
-                  </span>
+                <div className="flex gap-4">
+                  <div className="text-sm text-gray-600 font-medium">
+                    Próximo pago:{" "}
+                    <span>
+                      {sub.next_payment_date_gmt
+                        ? format(new Date(sub.next_payment_date_gmt), "dd/MM/yyyy")
+                        : "Sin fecha"}
+                      {" "}
+                      ({getBillingPeriodText(sub.billing_period)})
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <h2 className="text-lg font-semibold text-gray-800 mt-1">
-                Suscripción #{sub.id_woo}
+                {sub.product_name || "D"} (#{sub.id_woo})
               </h2>
 
               <div className="mt-2">
-                <p className="text-sm text-gray-600">
-                  Instancias: <span className="font-medium">{sub.instances?.length || 0}</span>
-                </p>
+                <div className="text-sm text-gray-600">
+                  <p>Instancias: <span className="font-medium">{sub.instances?.length || 0} / {sub.instances_limit || "∞"}</span></p>
+                </div>
               </div>
             </div>
 
             <div className="mt-4 mb-8">
-              {sub.instances?.length > 0 ? (
+              <div className="mt-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {sub.instances.map((instance, idx) => (
+                  {sub.instances?.map((instance, idx) => (
                     <InstanceCard
                       key={idx}
                       documentId={instance.documentId}
@@ -199,25 +218,60 @@ const FetchStrapi = () => {
                       isActive={instance.isActive}
                     />
                   ))}
+
+                  {/* Tarjeta para crear nueva instancia */}
+                  {sub.status_woo === "active" && (!sub.instances_limit || (sub.instances?.length || 0) < sub.instances_limit) && (
+                    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center justify-center text-center space-y-4 py-6">
+
+                      <ServerIcon className="h-16 w-16 text-gray-400" />
+                      <h3 className="text-lg font-medium text-gray-900">No tiene instancias activas</h3>
+
+                      <p className="text-gray-500 max-w-md">
+                        Puede crear una instancia para comenzar a utilizar nuestro servicio.
+                      </p>
+
+                      <button
+                        className="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                        onClick={() => handleCreateInstance(sub.id, email, mutate, setCreatingInstanceForSubscription)}
+                        disabled={creatingInstanceForSubscription === sub.id}
+                      >
+                        {creatingInstanceForSubscription === sub.id ? (
+                          <>
+                            <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>Creando...</span>
+                          </>
+                        ) : (
+                          <span>Crear instancia</span>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
-              ) : sub.status_woo === "active" ? (
-                <div className="mt-4">
-                  <p className="text-sm text-gray-500">
+
+                {/* Mensaje cuando no hay instancias */}
+                {/* {sub.instances?.length === 0 && (
+                  <p className="text-sm text-gray-500 mb-4 text-center">
                     Esta suscripción no tiene instancias asociadas.
                   </p>
-                  <button
-                    className="mt-4 px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg shadow-md transform transition-all duration-200 ease-in-out hover:bg-emerald-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 active:scale-95 flex items-center justify-center gap-2"
-                    onClick={() => handleCreateInstance(sub.id, email, setLoading)}
-                  >
-                    <PlusIcon className="w-5 h-5" />
-                    Crear instancia
-                  </button>
-                </div>
-              ) : (
-                <p className="text-sm text-gray-500 mt-2">
-                  Esta suscripción no tiene instancias asociadas.
-                </p>
-              )}
+                )} */}
+
+                {/* Mensaje de límite alcanzado */}
+                {sub.status_woo === "active" && sub.instances_limit && sub.instances?.length >= sub.instances_limit && (
+                  <p className="mt-2 text-sm text-amber-600 font-medium text-center">
+                    Límite de instancias alcanzado. Contacte con soporte para aumentar su plan.
+                  </p>
+                )}
+
+                {/* Mensaje cuando la suscripción no está activa */}
+                {sub.instances?.length === 0 && sub.status_woo !== "active" && (
+                  <p className="mt-2 text-sm text-gray-600 font-medium text-center">
+                    No se pueden crear instancias con una suscripción {getStatusText(sub.status_woo).toLowerCase()}.
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         ))}
