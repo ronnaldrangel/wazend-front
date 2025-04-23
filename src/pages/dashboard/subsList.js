@@ -195,7 +195,7 @@ const FetchStrapi = () => {
               </div>
 
               <h2 className="text-lg font-semibold text-gray-800 mt-1">
-                {sub.product_name || "D"} (#{sub.id_woo})
+                {sub.product_name || "Wazend API"} (#{sub.id_woo})
               </h2>
 
               <div className="mt-2">
