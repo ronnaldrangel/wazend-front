@@ -24,7 +24,7 @@ export default function Layout({ children, title}) {
                                 className="inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
                             >
                                 <PlusIcon className="h-5 w-auto" aria-hidden="true" />
-                                <span className="ml-2 hidden sm:block text-sm font-medium">Crea una instancia</span>
+                                <span className="ml-2 text-sm font-medium">Crea una instancia</span>
                             </Link>
                         </div>
                     </header>
