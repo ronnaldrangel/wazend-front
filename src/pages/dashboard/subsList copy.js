@@ -136,10 +136,12 @@ const FetchStrapi = () => {
     return <NoInstances />;
   }
 
-  // Filtrar para mostrar solo suscripciones activas o todas las suscripciones
+  // Filtrar suscripciones canceladas si showCancelled es false
   const filteredSubscriptions = showCancelled
     ? data.subscriptions
-    : data.subscriptions.filter(sub => sub.status_woo === "active");
+    : data.subscriptions.filter(sub =>
+      sub.status_woo !== "cancelled" && sub.status_woo !== "pending-cancel"
+    );
 
   return (
     <div className="space-y-6">
@@ -151,7 +153,7 @@ const FetchStrapi = () => {
           <span className="font-medium text-gray-700">Filtros</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Mostrar todas</span>
+          <span className="text-sm text-gray-600">Mostrar canceladas</span>
           <button
             onClick={() => setShowCancelled(!showCancelled)}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${showCancelled ? 'bg-emerald-600' : 'bg-gray-200'}`}
@@ -214,7 +216,7 @@ const FetchStrapi = () => {
                       instanceId={instance.instanceId}
                       instanceName={instance.instanceName}
                       serverUrl={instance.server_url}
-                      isActive={true}
+                      isActive={instance.isActive}
                     />
                   ))}
 
