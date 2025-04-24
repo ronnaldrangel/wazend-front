@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Loader from '../../components/loaders/OrderSkeleton';
 import { useStrapiData } from '../../services/strapiService';
 import Link from 'next/link';
-import { ShoppingBagIcon, PuzzlePieceIcon, DocumentTextIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const Services = () => {
     // Estado para el tab activo
@@ -30,16 +29,17 @@ const Services = () => {
     const templates = stores.filter(store => store.type === "template");
 
     return (
-        <div className="mx-auto py-8">
-            {/* Header del marketplace */}
-            <div className="mb-10 text-center">
-                <h1 className="text-3xl font-bold text-gray-800 mb-3">Marketplace de Wazend</h1>
-                <p className="text-gray-600 max-w-2xl mx-auto">
+        <div className="mx-auto">
+            {/* Header del marketplace en una caja */}
+            <div className="mb-10 border border-gray-200 rounded-lg p-6 bg-gray-50 shadow-sm">
+                <h1 className="text-2xl font-bold text-gray-800 mb-3">Marketplace de Wazend</h1>
+                <p className="text-gray-600">
                     Descubre integraciones y plantillas para impulsar tu experiencia con WhatsApp
                 </p>
             </div>
 
             {/* Sección de tabs */}
+            <div className='mb-10 border border-gray-200 rounded-lg p-6 bg-gray-50 shadow-sm'>
             <div className="border-b border-gray-200 mb-8">
                 <div className="flex space-x-8">
                     <button 
@@ -51,7 +51,6 @@ const Services = () => {
                         }`}
                     >
                         <div className="flex items-center">
-                            <PuzzlePieceIcon className="h-5 w-5 mr-2" />
                             <span>Integraciones</span>
                         </div>
                     </button>
@@ -64,7 +63,6 @@ const Services = () => {
                         }`}
                     >
                         <div className="flex items-center">
-                            <DocumentTextIcon className="h-5 w-5 mr-2" />
                             <span>Plantillas</span>
                         </div>
                     </button>
@@ -75,13 +73,9 @@ const Services = () => {
             {activeTab === 'integraciones' && (
                 <div id="integraciones" className="mb-12">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-bold text-gray-800 flex items-center">
-                            <PuzzlePieceIcon className="h-6 w-6 mr-2 text-emerald-500" />
-                            Integraciones
-                        </h2>
                         {plugins.length > 6 && (
                             <Link href="/marketplace/integraciones" className="text-sm text-emerald-600 hover:text-emerald-500 flex items-center">
-                                Ver todas <ArrowRightIcon className="h-4 w-4 ml-1" />
+                                Ver todas
                             </Link>
                         )}
                     </div>
@@ -99,7 +93,7 @@ const Services = () => {
                                             />
                                         ) : (
                                             <div className="flex h-full items-center justify-center bg-gray-200">
-                                                <PuzzlePieceIcon className="h-12 w-12 text-gray-400" />
+                                                <div className="text-gray-400 text-lg">Plugin</div>
                                             </div>
                                         )}
                                     </div>
@@ -127,13 +121,9 @@ const Services = () => {
             {activeTab === 'plantillas' && (
                 <div id="plantillas" className="mb-12">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-bold text-gray-800 flex items-center">
-                            <DocumentTextIcon className="h-6 w-6 mr-2 text-emerald-500" />
-                            Plantillas
-                        </h2>
                         {templates.length > 6 && (
                             <Link href="/marketplace/plantillas" className="text-sm text-emerald-600 hover:text-emerald-500 flex items-center">
-                                Ver todas <ArrowRightIcon className="h-4 w-4 ml-1" />
+                                Ver todas
                             </Link>
                         )}
                     </div>
@@ -151,7 +141,7 @@ const Services = () => {
                                             />
                                         ) : (
                                             <div className="flex h-full items-center justify-center bg-gray-200">
-                                                <DocumentTextIcon className="h-12 w-12 text-gray-400" />
+                                                <div className="text-gray-400 text-lg">Plantilla</div>
                                             </div>
                                         )}
                                     </div>
@@ -174,9 +164,10 @@ const Services = () => {
                     </div>
                 </div>
             )}
+            </div>
 
             {/* Banner de creadores */}
-            <div className="bg-gradient-to-r from-emerald-700 to-emerald-500 text-white py-10 px-8 rounded-xl shadow-lg mt-12 overflow-hidden relative">
+            {/* <div className="bg-gradient-to-r from-emerald-700 to-emerald-500 text-white py-10 px-8 rounded-xl shadow-lg mt-12 overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/4"></div>
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full translate-y-1/2 -translate-x-1/4"></div>
                 
@@ -188,11 +179,11 @@ const Services = () => {
                     <Link href="https://wa.link/5se5ao" passHref>
                         <button className="group bg-white text-emerald-600 py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-600 inline-flex items-center">
                             Únete ahora
-                            <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </button>
                     </Link>
                 </div>
-            </div>
+            </div> */}
+
         </div>
     );
 };
