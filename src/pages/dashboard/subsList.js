@@ -175,7 +175,8 @@ const FetchStrapi = () => {
           <div key={index} className="pb-0">
             <div className="p-4 bg-white rounded-lg shadow-md mb-6 relative overflow-hidden">
               {/* Etiqueta de estado en la parte superior */}
-              <div className="flex justify-between items-start mb-3">
+
+              <div className="flex flex-col md:flex-row justify-between items-start gap-2 mb-3">
                 <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-md border ${getStatusColor(sub.status_woo)}`}>
                   {getStatusIcon(sub.status_woo)}
                   <span className="text-sm font-medium">{getStatusText(sub.status_woo)}</span>
@@ -186,13 +187,13 @@ const FetchStrapi = () => {
                     <span>
                       {sub.next_payment_date_gmt
                         ? format(new Date(sub.next_payment_date_gmt), "dd/MM/yyyy")
-                        : "Sin fecha"}
-                      {" "}
+                        : "Sin fecha"}{" "}
                       ({getBillingPeriodText(sub.billing_period)})
                     </span>
                   </div>
                 </div>
               </div>
+
 
               <h2 className="text-lg font-semibold text-gray-800 mt-1">
                 {sub.product_name || "Wazend API"} (#{sub.id_woo})

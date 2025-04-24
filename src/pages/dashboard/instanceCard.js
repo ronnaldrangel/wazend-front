@@ -141,7 +141,7 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
               </button>
             </Link>
           ) : (
-            <span className="text-base font-semibold bg-red-500 text-white px-6 py-2 rounded-lg">Tu servicio expiro.</span>
+            <span></span>
           )}
 
 

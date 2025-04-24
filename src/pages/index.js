@@ -38,7 +38,6 @@ export default function Index() {
 
       <div className="flex flex-col space-y-10">
         <SubsList />
-        {/* <Bulletin /> */}
       </div>
 
 
