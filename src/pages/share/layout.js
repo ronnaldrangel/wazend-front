@@ -1,5 +1,5 @@
 import React from 'react';
-import Biblia from "@/components/Bible"
+import Biblia from "@/components/layout/bible"
 import { Disclosure } from '@headlessui/react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'

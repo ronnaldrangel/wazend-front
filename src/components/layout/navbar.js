@@ -12,12 +12,12 @@ const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
   { name: 'Tus instancias', href: '/' },
   { name: 'Integraciones', href: '/integrations' },
-  { name: 'Facturación', href: '/billing' },
   { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
 ]
 
 const userNavigation = [
   { name: 'Tu perfil', href: '/profile' },
+  { name: 'Facturación', href: '/billing' },
   { name: 'Afiliados', href: '/affiliates' },
   { name: 'Cerrar sesión', href: '/', signOut: true },
 ]

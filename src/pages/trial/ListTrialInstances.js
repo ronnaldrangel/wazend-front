@@ -5,7 +5,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import { ClockIcon, ServerIcon } from '@heroicons/react/24/outline';
 
 import InstanceCard from '../dashboard/instanceCard';
-import OrderSkeleton from '../../components/loaders/OrderSkeleton';
+import OrderSkeleton from '../../components/loaders/skeleton';
 import CreateButton from './CreateButton';
 import DeleteButton from './DeleteButton';
 

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { CommandLineIcon } from '@heroicons/react/24/outline';
 import { UserCircleIcon, Cog6ToothIcon, DocumentTextIcon, SignalIcon } from '@heroicons/react/24/outline';
 import Layout from '../layout';
-import Loader from '@/components/loaders/OrderSkeleton';
+import Loader from '@/components/loaders/skeleton';
 import { useStrapiData } from '@/services/strapiServiceId';
 
 // Importación de los componentes de cada sección

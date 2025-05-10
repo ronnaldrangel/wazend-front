@@ -2,7 +2,7 @@ const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const createInstanceUrl = process.env.NEXT_PUBLIC_CREATE_INSTANCE; import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
 import InstanceCard from './instanceCard';
-import OrderSkeleton from '../../components/loaders/OrderSkeleton';
+import OrderSkeleton from '../../components/loaders/skeleton';
 import Link from 'next/link';
 import { format } from "date-fns";
 import { PlusIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';

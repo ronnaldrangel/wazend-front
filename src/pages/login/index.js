@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -16,6 +16,21 @@ export default function SignIn() {
 
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  // ref para asegurarnos de que solo mostramos 1 toast
+  const activatedToastRef = useRef(false);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    // solo si viene activation=true y aún no lo mostramos
+    if (router.query.activation === 'true' && !activatedToastRef.current) {
+      activatedToastRef.current = true;
+      toast.success('Cuenta activada exitosamente.');
+      // limpiar query param sin forzar nuevo fetch de página
+      router.replace(router.pathname, undefined, { shallow: true });
+    }
+  }, [router.isReady, router.query.activation, router.pathname, router]);
+
 
   const onSubmit = async (e) => {
     e.preventDefault();

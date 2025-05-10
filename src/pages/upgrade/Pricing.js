@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { useStrapiData } from '../../services/strapiService';
-import Loader from '../../components/loaders/OrderSkeleton';
+import Loader from '../../components/loaders/skeleton';
 
 export default function Pricing() {
     const { data: session } = useSession();
