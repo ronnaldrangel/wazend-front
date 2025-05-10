@@ -13,8 +13,8 @@ const Layout = ({ children }) => {
       <div className="relative hidden w-1/2 lg:block">
           <Image
             className="absolute inset-0 h-full w-full object-cover"
-            src="/images/bg-register.webp"
-            alt="Wazend Login Background"
+            src={process.env.NEXT_PUBLIC_AUTH_BG || '/images/bg-auth.webp'}
+            alt="Background"
             width={960} // Ajusta el ancho deseado
             height={1080} // Ajusta la altura deseada
           />
@@ -25,16 +25,9 @@ const Layout = ({ children }) => {
 
             <Link href="/">
               <Image
-                className="h-8 w-auto dark:hidden"
-                src="/images/logo-light.svg"
-                alt="Wazend Logo - Light"
-                width={236}
-                height={60}
-              />
-              <Image
-                className="h-8 w-auto hidden dark:block"
-                src="/images/logo-dark.svg"
-                alt="Wazend Logo - Dark"
+                className="h-8 w-auto"
+                src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
+                alt="Logo"
                 width={236}
                 height={60}
               />

@@ -4,9 +4,11 @@ import Layout from '../../components/layout/dashboard';
 function Index() {
   return (
     <>
-    <Layout>
-      <User />
-    </Layout>
+      <Layout>
+        <div className="w-full max-w-3xl mx-auto">
+          <User />
+        </div>
+      </Layout>
     </>
   );
 }
