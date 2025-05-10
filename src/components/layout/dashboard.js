@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from "../navbar";
+import Navbar from "./navbar";
 import Link from 'next/link'
 import { PlusIcon } from '@heroicons/react/20/solid';
 import WhatsAppButton from "../../components/WhatsAppButton";

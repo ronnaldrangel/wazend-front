@@ -2,24 +2,23 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { signIn } from "next-auth/react";
+import { signIn } from 'next-auth/react';
 import { getSession } from 'next-auth/react';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import SignSocial from '../../components/SignSocial';
+import { Button, buttonVariants } from '@/components/ui/button';
 
 export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Controla el campo de contraseña
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    // Bloquear el botón de enviar
     setIsSubmitting(true);
 
     const result = await signIn('credentials', {
@@ -30,14 +29,9 @@ export default function SignIn() {
 
     if (result.ok) {
       const callbackUrl = new URLSearchParams(window.location.search).get('callbackUrl');
-      if (callbackUrl) {
-        router.replace(callbackUrl);
-      } else {
-        router.replace('/');
-      }
+      router.replace(callbackUrl || '/');
       toast.success('Sesión iniciada correctamente.');
     } else {
-      // Verificar si el usuario existe y no está confirmado
       const userCheck = await checkUserConfirmation(e.target.email.value);
       if (userCheck.exists && !userCheck.confirmed) {
         router.push('/email-confirmation');
@@ -48,150 +42,109 @@ export default function SignIn() {
     }
   };
 
-    // Función para verificar el estado del usuario en Strapi
-    const checkUserConfirmation = async (email) => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?filters[email][$eq]=${email}`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
-            },
-          }
-        );
-        const data = await response.json();
-        if (data.length > 0) {
-          return { exists: true, confirmed: data[0].confirmed };
-        } else {
-          return { exists: false };
-        }
-      } catch (error) {
-        console.error('Error al verificar el usuario:', error);
-        return { exists: false };
-      }
-    };
+  const checkUserConfirmation = async (email) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?filters[email][$eq]=${email}`,
+        { headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}` } }
+      );
+      const data = await res.json();
+      return data.length > 0 ? { exists: true, confirmed: data[0].confirmed } : { exists: false };
+    } catch {
+      return { exists: false };
+    }
+  };
 
   return (
     <Layout>
-      <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
+      <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
         Iniciar sesión 👋
       </h2>
 
-      <div className="mt-8">
-        <form className="space-y-6" onSubmit={onSubmit}>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
-            >
-              Correo electrónico
+      <form className="mt-8 space-y-6" onSubmit={onSubmit}>
+        {/* Email */}
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+            Correo electrónico
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="tu@ejemplo.com"
+            required
+            className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-border placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+          />
+        </div>
+
+        {/* Password */}
+        <div>
+          <div className="flex items-center justify-between">
+            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+              Contraseña
             </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder="tu@ejemplo.com"
-                required
-                className="block w-full rounded-md border-0 py-1.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
-              >
-                Contraseña
-              </label>
-              <div className="text-sm">
-                <Link
-                  href="/forgot-password"
-                  className="font-normal text-emerald-600 hover:text-emerald-500 dark:hover:text-emerald-400"
-                >
-                  ¿Has olvidado tu contraseña?
-                </Link>
-              </div>
-            </div>
-            <div className="mt-2 relative">
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                minLength={6}
-                required
-                className="block w-full rounded-md border-0 py-1.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6"
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 flex items-center px-3 text-black dark:text-gray-400 hover:text-gray-500 focus:outline-none"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeSlashIcon className="h-5 w-5" aria-hidden="true" />
-                ) : (
-                  <EyeIcon className="h-5 w-5" aria-hidden="true" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              disabled={isSubmitting} // Bloquear el botón de enviar mientras se envía el formulario
-              className={`text-white w-full justify-center inline-flex items-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600'
-                }`}
+            <Link
+              href="/forgot-password"
+              className={buttonVariants({ variant: 'link', size: 'md' })}
             >
-              {isSubmitting ? (
-                <>
-                  <Spin />
-                  Ingresa
-                </>
+              ¿Has olvidado tu contraseña?
+            </Link>
+          </div>
+          <div className="relative mt-2">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={6}
+              required
+              className="block w-full rounded-md border-0 py-1.5 pr-10 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-border placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600"
+              onClick={() => setShowPassword((v) => !v)}
+            >
+              {showPassword ? (
+                <EyeSlashIcon className="h-5 w-5" />
               ) : (
-                'Ingresa'
+                <EyeIcon className="h-5 w-5" />
               )}
             </button>
           </div>
-        </form>
+        </div>
 
-        {/* Botón para iniciar sesión con GitHub */}
-        <SignSocial />
+        {/* Submit */}
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <Spin className="mr-2" /> Cargando
+            </>
+          ) : (
+            'Ingresa'
+          )}
+        </Button>
+      </form>
 
-        <p className="mt-10 text-sm text-center leading-6 text-gray-500 dark:text-gray-400">
-          ¿No tienes una cuenta?{' '}
-          <Link
-            href="/register"
-            className="font-semibold leading-6 text-emerald-600 hover:text-emerald-500 dark:hover:text-emerald-400"
-          >
-            Regístrate ahora
-          </Link>
-        </p>
-      </div>
+      <SignSocial />
+
+      <p className="mt-10 text-center text-sm text-gray-500">
+        ¿No tienes una cuenta?{' '}
+        <Link href="/register" className={buttonVariants({ variant: 'link', size: 'md' })}>
+          Regístrate ahora
+        </Link>
+      </p>
     </Layout>
-
-
   );
 }
 
 export const getServerSideProps = async (context) => {
   const session = await getSession(context);
-  // Check if session exists or not, if not, redirect
   if (session) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
+    return { redirect: { destination: '/', permanent: false } };
   }
-  return {
-    props: {},
-  };
+  return { props: {} };
 };

@@ -3,16 +3,14 @@ import { SessionProvider } from 'next-auth/react';
 import Head from 'next/head'
 import { ThemeProvider } from "../components/ui/theme-provider"
 import SessionChecker from '../components/SessionChecker';
-
 import { Toaster } from 'sonner';
-
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
       <Head>
-        <title>Wazend</title>
+        <title>{process.env.NEXT_PUBLIC_APP_NAME || 'My App'}</title>
       </Head>
       {/* <ThemeProvider
         attribute="class"
