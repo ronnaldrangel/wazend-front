@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { CommandLineIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { UserCircleIcon, Cog6ToothIcon, DocumentTextIcon, SignalIcon } from '@heroicons/react/24/outline';
 import Layout from '@/components/layout/dashboard';
-import Loader from '@/components/loaders/OrderSkeleton';
+import Loader from '@/components/loaders/skeleton';
 import { useStrapiData } from '@/services/strapiServiceId';
 import { toast } from 'sonner';
 import { PaperAirplaneIcon, ClipboardIcon } from '@heroicons/react/24/outline';

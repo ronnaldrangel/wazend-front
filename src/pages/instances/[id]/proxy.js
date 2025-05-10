@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { useState, useEffect } from "react";
 import { Switch } from "@headlessui/react";
 import { toast } from "sonner";
-import Preload from "@/components/loaders/OrderSkeleton";
+import Preload from "@/components/loaders/skeleton";
 
 const API_KEY = process.env.NEXT_PUBLIC_WAZEND_API_KEY;
 const API_URL = process.env.NEXT_PUBLIC_WAZEND_API_URL;

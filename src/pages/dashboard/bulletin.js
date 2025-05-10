@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/react';
-import Loader from '@/components/loaders/OrderSkeleton';
+import Loader from '@/components/loaders/skeleton';
 import { useStrapiData } from '@/services/strapiService';
 import { useEffect, useRef } from 'react';
 
