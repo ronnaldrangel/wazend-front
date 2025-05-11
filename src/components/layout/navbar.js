@@ -53,14 +53,14 @@ export default function Navbar() {
                 <div className="flex flex-shrink-0 items-center">
                   <Link href="/">
                     <Image
-                      className="block h-8 w-auto lg:hidden"
+                      className="block h-6 w-auto lg:hidden"
                       src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
                       alt="Logo"
                       width={236}
                       height={60}
                     />
                     <Image
-                      className="hidden h-8 w-auto lg:block"
+                      className="hidden h-7 w-auto lg:block"
                       src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
                       alt="Logo"
                       width={236}
