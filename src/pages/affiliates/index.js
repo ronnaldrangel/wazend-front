@@ -1,11 +1,11 @@
 import Layout from '../../components/layout/dashboard';
-import Billing from './billing';
+import Affiliates from './affiliates';
 
 export default function Index() {
 
     return (
         <Layout title="Facturación">
-            <Billing/>
+            <Affiliates />
         </Layout>
     );
 }
