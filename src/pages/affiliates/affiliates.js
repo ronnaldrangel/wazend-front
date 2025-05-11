@@ -86,7 +86,7 @@ export default function ReferralProgram() {
                 Recibe tu pago
               </h3>
               <p className="text-sm text-gray-600 leading-relaxed">
-                Cuando permanecen activos durante 14 días y realizan un pago verificado, ganas $20—fácil y rápido.
+                Cuando realizan un pago verificado, ganas 30% fácil y rápido.
               </p>
             </div>
           </div>
