@@ -185,14 +185,14 @@ const FreeTrialDashboard = () => {
               />
               
               {/* Acciones disponibles */}
-              <div className="px-6 py-4 bg-gray-50 flex justify-end space-x-2">
+              {/* <div className="px-6 py-4 bg-gray-50 flex justify-end space-x-2">
                 <DeleteButton 
                   documentId={trial.documentId} 
                   instanceName={trial.instanceName}
                   onDelete={() => handleDeleteInstance(trial.documentId)}
                   disabled={isDeleting}
                 />
-              </div>
+              </div> */}
             </div>
           ))}
         </div>

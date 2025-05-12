@@ -15,14 +15,11 @@ import { useStrapiData } from '@/services/strapiServiceId';
 import { toast } from 'sonner';
 import { PaperAirplaneIcon, ClipboardIcon } from '@heroicons/react/24/outline';
 import { Switch } from '@headlessui/react';
-import Link from 'next/link';
 
 export default function Profile() {
     const { query } = useRouter();
     const documentId = query.id || ''; // Evitar undefined inicial
-    const isTrial = query.trial === 'true'; // Verificar si el parámetro trial es 'true'
     console.log("Document ID:", documentId);
-    console.log("Is Trial:", isTrial);
 
     // Estado para la data cargada
     const [instanceData, setInstanceData] = useState(null);
@@ -33,9 +30,7 @@ export default function Profile() {
     const [resellerName, setResellerName] = useState(''); // Nombre del reseller
     const [isReseller, setIsReseller] = useState(false); // Estado del modo reseller
 
-    // Seleccionar el endpoint según el parámetro trial
-    const endpoint = isTrial ? `freetrials/${documentId}` : `instances/${documentId}`;
-    const { data, error, isLoading } = useStrapiData(endpoint);
+    const { data, error, isLoading } = useStrapiData(`instances/${documentId}`);
     const instance = data?.data || {}; // Asegurar que siempre sea un objeto
 
     useEffect(() => {
@@ -78,7 +73,7 @@ export default function Profile() {
         { name: 'Proxy', icon: SignalIcon, component: 'Proxy' },
         { name: 'Grupos', icon: UserGroupIcon, component: 'Grupos' },
         { name: 'Integraciones', icon: CommandLineIcon, component: 'Integrations' },
-        // { name: 'Documentación', icon: DocumentTextIcon, path: `https://docs.wazend.net/wazend`, external: true },
+        { name: 'Documentación', icon: DocumentTextIcon, path: `https://docs.wazend.net/wazend`, external: true },
     ];
 
     // Función para copiar el enlace al portapapeles
@@ -178,13 +173,6 @@ export default function Profile() {
                         <PaperAirplaneIcon className="w-4 h-4 mr-2" />
                         Compartir instancia
                     </button>
-
-                    <Link href="https://docs.wazend.net/wazend" target="_blank"
-                        className="ml-2 mb-6 inline-flex items-center px-4 py-2 bg-white text-gray-800 border border-gray-300 hover:bg-gray-100 rounded-md text-sm font-medium shadow-sm hover:shadow transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50"
-                    >
-                        <DocumentTextIcon className="w-4 h-4 mr-2" />
-                        Documentación
-                    </Link>
 
                     {/* Modal */}
                     {isModalOpen && (
