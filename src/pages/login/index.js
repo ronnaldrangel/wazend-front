@@ -7,7 +7,7 @@ import { getSession } from 'next-auth/react';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import SignSocial from '../../components/SignSocial';
+import SignSocial from './SignSocial';
 import { Button, buttonVariants } from '@/components/ui/button';
 
 export default function SignIn() {

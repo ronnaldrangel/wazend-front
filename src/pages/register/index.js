@@ -8,7 +8,7 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
-import SignSocial from '../../components/SignSocial';
+import SignSocial from '../login/SignSocial';
 import PhoneInput from '../../components/ui/phone-input';
 import { Button, buttonVariants } from '@/components/ui/button';
 
@@ -94,7 +94,7 @@ export default function SignUp() {
   return (
     <Layout>
       <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        🎉 Regístrate y obtén tu prueba gratis
+        🎉 Regístrate gratis
       </h2>
 
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

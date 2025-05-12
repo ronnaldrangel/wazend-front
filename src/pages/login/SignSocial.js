@@ -10,11 +10,11 @@ export default function Example() {
                         <div className="w-full border-t border-gray-200" />
                     </div>
                     <div className="relative flex justify-center text-sm font-medium leading-6">
-                        <span className="bg-white px-6 text-gray-900">o</span>
+                        <span className="bg-white px-6 text-gray-900">O</span>
                     </div>
                 </div>
 
-                <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="mt-6 grid grid-cols-1 gap-4">
 
                     <button
                         onClick={() => signIn('google')}
@@ -38,10 +38,10 @@ export default function Example() {
                                 fill="#34A853"
                             />
                         </svg>
-                        <span className="text-sm font-semibold leading-6">Google</span>
+                        <span className="text-sm font-medium leading-6">Iniciar sesión con Google</span>
                     </button>
 
-                    <button
+                    {/* <button
                         onClick={() => signIn('github')}
                         className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                     >
@@ -52,8 +52,8 @@ export default function Example() {
                                 clipRule="evenodd"
                             />
                         </svg>
-                        <span className="text-sm font-semibold leading-6">GitHub</span>
-                    </button>
+                        <span className="text-sm font-medium leading-6">GitHub</span>
+                    </button> */}
 
                 </div>
             </div>
