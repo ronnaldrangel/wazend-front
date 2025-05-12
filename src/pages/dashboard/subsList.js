@@ -145,10 +145,10 @@ const FetchStrapi = () => {
     <div className="space-y-6">
 
       {/* Filtro para mostrar/ocultar suscripciones canceladas */}
-      <div className="flex justify-between items-center bg-white rounded-lg shadow-md p-4 mb-4">
+      <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <AdjustmentsHorizontalIcon className="w-5 h-5 text-gray-600" />
-          <span className="font-medium text-gray-700">Filtros</span>
+          <AdjustmentsHorizontalIcon className="w-4 h-4 text-gray-600" />
+          <span className="font-sm text-gray-700">Filtros</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">Mostrar todas</span>
@@ -259,14 +259,14 @@ const FetchStrapi = () => {
 
                 {/* Mensaje de límite alcanzado */}
                 {sub.status_woo === "active" && sub.instances_limit && sub.instances?.length >= sub.instances_limit && (
-                  <p className="mt-2 text-sm text-amber-600 font-medium text-center">
-                    Límite de instancias alcanzado. Contacte con soporte para aumentar su plan.
+                  <p className="mt-6 text-sm text-amber-600 font-medium text-center">
+                    Límite de instancias alcanzado. Mejore su plan para aumentar.
                   </p>
                 )}
 
                 {/* Mensaje cuando la suscripción no está activa */}
                 {sub.instances?.length === 0 && sub.status_woo !== "active" && (
-                  <p className="mt-2 text-sm text-gray-600 font-medium text-center">
+                  <p className="mt-6 text-sm text-gray-600 font-medium text-center">
                     No se pueden crear instancias con una suscripción {getStatusText(sub.status_woo).toLowerCase()}.
                   </p>
                 )}
