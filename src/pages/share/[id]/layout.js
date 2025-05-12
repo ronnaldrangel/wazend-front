@@ -39,8 +39,8 @@ export default function Layout({ children, isReseller, resellerName }) {
                                         // Si isReseller es false, mostramos el logo
                                         <Image
                                             className="block h-8 w-auto"
-                                            src="/images/icon-dark.svg"
-                                            alt="Wazend Logo"
+                                            src="/images/icon.svg"
+                                            alt="Logo"
                                             width={236}
                                             height={60}
                                         />

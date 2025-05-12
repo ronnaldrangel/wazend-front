@@ -46,7 +46,7 @@ const Services = () => {
                                             <img
                                                 src={store.img.url}
                                                 alt={store.title}
-                                                className="h-12 w-12"
+                                                className="h-10 w-10"
                                             />
                                         ) : (
                                             <div className="h-12 w-12 flex items-center justify-center bg-gray-200 rounded-full">
@@ -54,7 +54,7 @@ const Services = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <h3 className="font-bold text-gray-900 text-lg">{store.title}</h3>
+                                    <h3 className="font-semibold text-gray-900 text-lg">{store.title}</h3>
                                 </div>
 
                                 {/* Línea gris separadora */}
