@@ -4,7 +4,7 @@ import Billing from './billing';
 export default function Index() {
 
     return (
-        <Layout title="Facturación">
+        <Layout>
             <Billing/>
         </Layout>
     );

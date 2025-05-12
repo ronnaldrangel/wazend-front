@@ -11,7 +11,7 @@ export default function ReferralProgram() {
         {/* Header */}
         <div className="pb-4 mb-8 border-b border-gray-200">
           <h1 className="text-2xl font-medium text-gray-800">
-            Únete. Comparte. Gana. ¡Refiere a un amigo y audiencia!
+            Únete. Comparte. Gana. ¡Refiere a un amigo y/o audiencia!
           </h1>
         </div>
 

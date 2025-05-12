@@ -4,7 +4,7 @@ import Affiliates from './affiliates';
 export default function Index() {
 
     return (
-        <Layout title="Facturación">
+        <Layout>
             <Affiliates />
         </Layout>
     );
