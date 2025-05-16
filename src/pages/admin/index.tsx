@@ -1,6 +1,4 @@
-import { ChartAreaInteractive } from "@/pages/admin/dashboard/chart-area-interactive"
-import { DataTable } from "@/pages/admin/dashboard/data-table"
-import { SectionCards } from "@/pages/admin/dashboard/section-cards"
+
 import { SiteHeader } from "@/components/admin/site-header"
 import Layout from "./layout"
 
@@ -9,12 +7,12 @@ import data from "./data.json"
 export default function Page() {
   return (
     <>
-    <Layout>
+      <Layout>
         <SiteHeader title="Dashboard" />
         <div className="flex flex-1 flex-col">
           <div className="w-full flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards />
+              {/* <SectionCards /> */}
               {/* <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>
@@ -22,7 +20,7 @@ export default function Page() {
             </div>
           </div>
         </div>
-        </Layout>
+      </Layout>
     </>
   )
 }
