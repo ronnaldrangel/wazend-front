@@ -13,7 +13,7 @@ export default function Index() {
 
 
   return (
-    <Layout title="Tus instancias">
+    <Layout title="Mis servicios">
 
 
       <div className="flex flex-col space-y-10">

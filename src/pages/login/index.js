@@ -76,7 +76,8 @@ export default function SignIn() {
         Iniciar sesión 👋
       </h2>
 
-      <form className="mt-8 space-y-6" onSubmit={onSubmit}>
+      <SignSocial />
+      <form className="mt-6 space-y-6" onSubmit={onSubmit}>
         {/* Email */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
@@ -144,9 +145,7 @@ export default function SignIn() {
         </Button>
       </form>
 
-      <SignSocial />
-
-      <p className="mt-10 text-center text-sm text-gray-500">
+      <p className="mt-6 text-center text-sm text-gray-500">
         ¿No tienes una cuenta?{' '}
         <Link href="/register" className={buttonVariants({ variant: 'link', size: 'md' })}>
           Regístrate ahora

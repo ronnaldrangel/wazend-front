@@ -5,12 +5,12 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import LogoGravatar from '../LogoGravatar'
+import LogoGravatar from '@/components/layout/logo'
 import ToggleMode from '../ui/toggle-mode'
 
 const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
-  { name: 'Tus instancias', href: '/' },
+  { name: 'Mis servicios', href: '/' },
   { name: 'Integraciones', href: '/integrations' },
   { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
 ]
@@ -42,7 +42,7 @@ export default function Navbar() {
   }
 
   return (
-    <Disclosure as="nav" className="bg-white shadow-sm border-b border-gray-100 relative z-10">
+    <Disclosure as="nav" className="bg-white border-b border-gray-100 relative z-10">
       {({ open }) => (
         <>
           {/* Desktop nav */}
@@ -53,14 +53,14 @@ export default function Navbar() {
                 <div className="flex flex-shrink-0 items-center">
                   <Link href="/">
                     <Image
-                      className="block h-8 w-auto lg:hidden"
+                      className="block h-7 w-auto lg:hidden"
                       src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
                       alt="Logo"
                       width={236}
                       height={60}
                     />
                     <Image
-                      className="hidden h-8 w-auto lg:block"
+                      className="hidden h-7 w-auto lg:block"
                       src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
                       alt="Logo"
                       width={236}
