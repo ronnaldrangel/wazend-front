@@ -5,11 +5,10 @@ import { PlusIcon } from '@heroicons/react/20/solid';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import Biblia from './bible';
 import { Button } from '@/components/ui/button';
-import { LanguageSwitcher } from "@/components/lenguage-switcher"
 
 export default function Layout({ children, title }) {
   return (
-    <div className="flex flex-col min-h-screen">    {/* <- actualizado */}
+    <div className="min-h-full">
       <Navbar />
 
       {title && (
@@ -32,29 +31,12 @@ export default function Layout({ children, title }) {
         <Biblia />
       </div>
 
-      <main className="flex-1">   {/* <- ocupa el alto restante */}
+      <main>
         <div className="mx-auto max-w-7xl py-10 px-4 sm:px-6 lg:px-8">
           {children}
         </div>
         <WhatsAppButton />
       </main>
-
-      {/* FOOTER NUEVO */}
-      {/* <footer className="bg-gray-50 border-t border-gray-200"></footer> */}
-      <footer>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500">
-          <LanguageSwitcher />
-
-          <div className="flex gap-4 mt-4 sm:mt-0">
-            <Link href={`${(process.env.NEXT_PUBLIC_URL)}/privacy-policy/`} className="hover:text-gray-800 underline-offset-4 hover:underline">
-              Privacidad
-            </Link>
-            <Link href={`${(process.env.NEXT_PUBLIC_URL)}/terms-of-service/`} className="hover:text-gray-800 underline-offset-4 hover:underline">
-              Términos
-            </Link>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

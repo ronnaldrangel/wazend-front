@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
-import OrderSkeleton from '../../components/loaders/skeleton';
-import LogoGravatar from '../../components/LogoGravatar';
+import OrderSkeleton from '@/components/loaders/skeleton';
+import LogoGravatar from '@/components/layout/logo';
 import { Button } from '@/components/ui/button';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
