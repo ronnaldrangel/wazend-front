@@ -1,7 +1,7 @@
 import Layout from '@/components/layout/dashboard';
 import React from 'react';
 import { useRouter } from 'next/router';
-import SubsList from '../pages/dashboard/subsList';
+import SubsList from './dashboard/subs-list';
 import Bulletin from './dashboard/bulletin';
 import { ArrowRight, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
