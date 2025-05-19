@@ -170,16 +170,25 @@ const FetchStrapi = () => {
           return a.id_woo - b.id_woo;
         })
         .map((sub, index) => (
-          <div key={index} className="pb-0">
+          <div key={index}>
+            
             <div className="p-4 bg-white rounded-lg shadow-md mb-6 relative overflow-hidden">
               {/* Etiqueta de estado en la parte superior */}
 
-              <div className="flex flex-col md:flex-row justify-between items-start gap-2 mb-3">
+              <div className="flex flex-row justify-between items-start gap-2">
+
+                <div>
+                  <p className="text-lg font-semibold text-gray-800 mt-1">
+                    Suscripción N.º{sub.id_woo}
+                  </p>
+                </div>
+
                 <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-md border ${getStatusColor(sub.status_woo)}`}>
                   {getStatusIcon(sub.status_woo)}
                   <span className="text-sm font-medium">{getStatusText(sub.status_woo)}</span>
                 </div>
-                <div className="flex gap-4">
+
+                {/* <div className="flex gap-4">
                   <div className="text-sm text-gray-600 font-medium">
                     Próximo pago:{" "}
                     <span>
@@ -189,17 +198,22 @@ const FetchStrapi = () => {
                       ({getBillingPeriodText(sub.billing_period)})
                     </span>
                   </div>
-                </div>
+                </div> */}
               </div>
 
+              <div className="mt-2 flex flex-row items-center gap-2">
 
-              <h2 className="text-lg font-semibold text-gray-800 mt-1">
-                {sub.product_name || "Wazend API"} (#{sub.id_woo})
-              </h2>
+                <div className="text-sm text-gray-600 font-medium">
+                  Próximo pago:{" "}
+                  <span>
+                    {sub.next_payment_date_gmt
+                      ? format(new Date(sub.next_payment_date_gmt), "dd/MM/yyyy")
+                      : "Sin fecha"}{" "}
+                  </span>
+                </div>
 
-              <div className="mt-2">
                 <div className="text-sm text-gray-600">
-                  <p>Instancias: <span className="font-medium">{sub.instances?.length || 0} / {sub.instances_limit || "∞"}</span></p>
+                  <p>- Instancias: <span className="font-medium">{sub.instances?.length || 0} / {sub.instances_limit || "∞"}</span></p>
                 </div>
               </div>
             </div>
