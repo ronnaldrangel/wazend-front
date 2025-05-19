@@ -7,14 +7,6 @@ import CheckoutButton from '../billing/checkout';
 export default function ReferralProgram() {
   return (
     <div>
-      <div>
-        {/* Header */}
-        <div className="pb-4 mb-8 border-b border-gray-200">
-          <h1 className="text-2xl font-medium text-gray-800">
-            Únete. Comparte. Gana. ¡Refiere a un amigo y/o audiencia!
-          </h1>
-        </div>
-
         {/* Steps Container */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex flex-col md:flex-row justify-between">
@@ -106,7 +98,6 @@ export default function ReferralProgram() {
             redirectUrl="/affiliate-portal/"
           />
         </div>
-      </div>
     </div>
   );
 }
