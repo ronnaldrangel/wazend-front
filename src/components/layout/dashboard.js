@@ -46,8 +46,8 @@ export default function Layout({ children, title, cta }) {
               {title}
             </h1>
             {cta && (
-              <Button asChild variant="default" size="lg">
-                <Link href="/upgrade/" className="inline-flex items-center">
+              <Button asChild variant="default" className='px-4'>
+                <Link href="/upgrade/">
                   <PlusIcon />
                   <span className="text-sm lg:text-base">Comprar servicios</span>
                 </Link>
