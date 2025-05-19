@@ -105,9 +105,6 @@ export default function User() {
 
   return (
     <>
-
-      <p className="text-2xl font-semibold mb-6 ">Mi perfil</p>
-
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center space-x-4">
           <LogoGravatar

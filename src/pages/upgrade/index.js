@@ -5,7 +5,7 @@ import Pricing from './Pricing';
 export default function UpgradePage() {
 
   return (
-    <Layout>
+    <Layout title="Elige un plan para continuar">
       <Pricing />
     </Layout>
   );

@@ -4,10 +4,8 @@ import Layout from '../../components/layout/dashboard';
 function Index() {
   return (
     <>
-      <Layout>
-        <div className="w-full max-w-3xl mx-auto">
+      <Layout title="Perfil">
           <User />
-        </div>
       </Layout>
     </>
   );

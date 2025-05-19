@@ -7,12 +7,17 @@ import Biblia from './bible';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from "@/components/lenguage-switcher"
 
-export default function Layout({ children, title }) {
+export default function Layout({ children, title, cta }) {
   return (
     <div className="flex flex-col min-h-screen">    {/* <- actualizado */}
-      <Navbar />
 
-      {title && (
+      {/* ─── NAVBAR STICKY ─────────────────────────────────────────────── */}
+      <div className="sticky top-0 z-50">
+        <Navbar />
+      </div>
+      {/* ──────────────────────────────────────────────────────────────── */}
+
+      {/* {title && (
         <header className="bg-white shadow-sm shadow-gray-300">
           <div className="mx-auto max-w-7xl py-5 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <h1 className="text-xl font-semibold tracking-tight text-gray-900">
@@ -26,11 +31,31 @@ export default function Layout({ children, title }) {
             </Button>
           </div>
         </header>
-      )}
+      )} */}
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4">
-        <Biblia />
+      <div >
+        <div className='mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8'>
+          <Biblia />
+        </div>
       </div>
+
+      {title && (
+        <header className=''>
+          <div className="mx-auto max-w-7xl py-0 px-4 sm:px-6 lg:px-8 flex items-center justify-between ">
+            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900">
+              {title}
+            </h1>
+            {cta && (
+              <Button asChild variant="default" size="lg">
+                <Link href="/upgrade/" className="inline-flex items-center">
+                  <PlusIcon />
+                  <span className="text-sm lg:text-base">Comprar servicios</span>
+                </Link>
+              </Button>
+            )}
+          </div>
+        </header>
+      )}
 
       <main className="flex-1">   {/* <- ocupa el alto restante */}
         <div className="mx-auto max-w-7xl py-10 px-4 sm:px-6 lg:px-8">

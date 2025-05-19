@@ -11,14 +11,15 @@ import ToggleMode from '../ui/toggle-mode'
 const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
   { name: 'Mis servicios', href: '/' },
-  { name: 'Integraciones', href: '/integrations' },
-  { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
+  { name: 'Facturación', href: '/billing' },
+  { name: 'Recomienda & Gana', href: '/affiliates' },
+  // { name: 'Documentación', href: 'https://docs.wazend.net/', external: true },
 ]
 
 const userNavigation = [
   { name: 'Tu perfil', href: '/profile' },
-  { name: 'Facturación', href: '/billing' },
-  { name: 'Afiliados', href: '/affiliates' },
+  { name: 'Ayuda', href: 'https://docs.wazend.net/', external: true },
+  { name: 'Contactenos', href: 'https://wazend.net/contact', external: true  },
   { name: 'Cerrar sesión', href: '/', signOut: true },
 ]
 
@@ -42,7 +43,7 @@ export default function Navbar() {
   }
 
   return (
-    <Disclosure as="nav" className="bg-white border-b border-gray-100 relative z-10">
+    <Disclosure as="nav" className="bg-white border-b border-gray-200 relative z-10">
       {({ open }) => (
         <>
           {/* Desktop nav */}
@@ -156,8 +157,8 @@ export default function Navbar() {
 
           {/* Backdrop overlay when menu is open */}
           {open && (
-            <div 
-              className="fixed inset-0 bg-gray-600 bg-opacity-50 transition-opacity sm:hidden z-20" 
+            <div
+              className="fixed inset-0 bg-gray-600 bg-opacity-50 transition-opacity sm:hidden z-20"
               aria-hidden="true"
               onClick={() => document.querySelector('[aria-label="Close main menu"]').click()}
             />
@@ -175,7 +176,7 @@ export default function Navbar() {
               leaveFrom="transform translate-x-0"
               leaveTo="transform -translate-x-full"
             >
-              <Disclosure.Panel 
+              <Disclosure.Panel
                 className="fixed top-0 left-0 bottom-0 w-64 bg-white shadow-xl z-30 overflow-y-auto sm:hidden"
               >
                 <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200">
@@ -186,7 +187,7 @@ export default function Navbar() {
                     width={236}
                     height={60}
                   />
-                  <Disclosure.Button 
+                  <Disclosure.Button
                     className="text-gray-400 hover:text-gray-500"
                     aria-label="Close main menu"
                   >

@@ -59,14 +59,12 @@ export default function Pricing() {
         if (typeof features === 'string') {
             return features.split(',').map((f, i) => (
                 <li key={i} className="flex items-start gap-2">
-                    <CheckIcon className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
                     <span>{f.trim()}</span>
                 </li>
             ));
         } else if (Array.isArray(features)) {
             return features.map((f, i) => (
                 <li key={i} className="flex items-start gap-2">
-                    <CheckIcon className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" />
                     <span>{typeof f === 'string' ? f : f.text || ''}</span>
                 </li>
             ));
@@ -76,77 +74,61 @@ export default function Pricing() {
 
     return (
         <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-gray-900">
-                    Elige un plan para{' '}
-                    <span className="text-[hsl(var(--primary))]">continuar</span>
-                </h2>
-                <p className="mt-4 text-base text-gray-600">¡Elige el plan que mejor se adapte a tus necesidades!</p>
 
-                {/* Selector de período */}
-                <div className="flex justify-center mt-8">
-                    <div className="inline-flex p-1.5 bg-white rounded-full shadow-md border border-gray-200">
-                        <Button
-                            variant={activePeriod === 'Monthly' ? 'default' : 'ghost'}
-                            size="sm"
-                            className="rounded-full px-6 py-2.5 text-sm font-medium"
-                            onClick={() => setActivePeriod('Monthly')}
-                            disabled={monthlyPlans.length === 0}
-                        >
-                            Mensual
-                        </Button>
-                        <Button
-                            variant={activePeriod === 'Yearly' ? 'default' : 'ghost'}
-                            size="sm"
-                            className="rounded-full px-6 py-2.5 text-sm font-medium"
-                            onClick={() => setActivePeriod('Yearly')}
-                            disabled={yearlyPlans.length === 0}
-                        >
-                            Anual
-                        </Button>
-                    </div>
+            {/* Selector de período */}
+            <div className="flex mb-8">
+
+                <div className="inline-flex p-1.5 bg-white rounded-full shadow-md border border-gray-200">
+                    <Button
+                        variant={activePeriod === 'Monthly' ? 'default' : 'ghost'}
+                        size="sm"
+                        className="rounded-full px-6 py-2.5 text-sm font-medium"
+                        onClick={() => setActivePeriod('Monthly')}
+                        disabled={monthlyPlans.length === 0}
+                    >
+                        Mensual
+                    </Button>
+                    <Button
+                        variant={activePeriod === 'Yearly' ? 'default' : 'ghost'}
+                        size="sm"
+                        className="rounded-full px-6 py-2.5 text-sm font-medium"
+                        onClick={() => setActivePeriod('Yearly')}
+                        disabled={yearlyPlans.length === 0}
+                    >
+                        Anual
+                    </Button>
                 </div>
-
-                {activePeriod === 'Yearly' && (
-                    <div className="mt-3">
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
-                            <CheckIcon className="mr-1.5 h-3 w-3 flex-shrink-0" />
-                            Ahorra 2 meses con facturación anual
-                        </span>
-                    </div>
-                )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {strapiPlans.map(plan => (
                     <div key={plan.id} className="bg-white rounded-lg shadow-md p-6">
-                        <div className="flex items-center gap-2 mb-4">
-                            <img
-                                src={plan.image?.url || 'https://placeholder.com/40'}
-                                alt={`${plan.name} icon`}
-                                className="w-10 h-10 rounded-full object-cover"
-                            />
-                            <h3 className="text-xl font-bold">{plan.name}</h3>
+
+                        <div className="flex items-center gap-2 mb-6">
+                            <h3 className="text-2xl font-bold">{plan.name}</h3>
                         </div>
-                        <div className="mb-6">
-                            <div className="flex items-baseline">
-                                <span className="text-4xl font-bold">${plan.price}</span>
-                                <span className="text-lg">
-                                    {plan.billing_period === 'Monthly' ? '/mes' : '/año'}
-                                </span>
-                            </div>
-                            <p className="text-sm text-gray-600">Dólar estadounidense</p>
-                        </div>
-                        <Button
-                            onClick={() => handleCheckout(plan.woo_id)}
-                            disabled={loading}
-                            className="w-full mb-6"
-                        >
-                            Elegir plan
-                        </Button>
-                        <ul className="space-y-2 text-sm">
+
+                        <ul className="space-y-2 text-md">
                             {plan.features && renderFeatures(plan.features)}
                         </ul>
+
+                        <div className="mt-6 flex items-center justify-between">
+                            <div>
+                                {/* <p className="text-gray-500 text-sm">Desde</p> */}
+                                <p className="text-emerald-600 font-bold text-lg">${plan.price} USD</p>
+                                <p className="text-gray-500 text-sm">{plan.billing_period === 'Monthly' ? 'Mensual' : 'Anual'}</p>
+                            </div>
+
+                            <Button
+                                onClick={() => handleCheckout(plan.woo_id)}
+                                disabled={loading}
+                                className="text-base px-4"
+                            >
+                                Pedir Ahora
+                            </Button>
+                        </div>
+
+
                     </div>
                 ))}
             </div>
