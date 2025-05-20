@@ -10,7 +10,7 @@ import { CheckCircleIcon, XCircleIcon, ExclamationCircleIcon } from '@heroicons/
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
 import Modal from '../../components/loaders/modal';
-import NoInstances from './noInstances';
+import NoInstances from './no-instances';
 import { ClockIcon, ServerIcon } from '@heroicons/react/24/outline';
 
 const fetcher = async (url, jwt) => {

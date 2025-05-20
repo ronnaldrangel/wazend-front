@@ -19,7 +19,15 @@ export default function Index() {
     <Layout title="Mis servicios" cta="true">
 
 
-      <SubsList />
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="w-full md:w-2/3">
+          <SubsList />
+        </div>
+        <div className="w-full md:w-1/3">
+          <Bulletin />
+        </div>
+      </div>
+      
 
       <div className="mt-6 w-full bg-white shadow-sm border border-gray-100 rounded-lg p-4 flex flex-col md:flex-row justify-between md:items-center gap-3 md:gap-4">
         <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2">

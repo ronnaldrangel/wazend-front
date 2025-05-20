@@ -1,117 +1,133 @@
-import { useSession } from 'next-auth/react';
-import Loader from '@/components/loaders/skeleton';
-import { useStrapiData } from '@/services/strapiService';
-import { useEffect, useRef } from 'react';
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import Loader from "@/components/loaders/skeleton";
+import { useStrapiData } from "@/services/strapiService";
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
 
-const Index = () => {
-    const { data: session } = useSession();
-    const email = session?.user?.email;
-    const sliderRef = useRef(null);
+export default function Index() {
+  const { data: session } = useSession();
+  const email = session?.user?.email;
 
-    const { data: stores, error, isLoading } = useStrapiData('bulletins?populate=*');
+  const { data: stores = [], error, isLoading } = useStrapiData(
+    "bulletins?populate=*"
+  );
 
-    useEffect(() => {
-        const slider = sliderRef.current;
-        let isDown = false;
-        let startX;
-        let scrollLeft;
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-        const handleMouseDown = (e) => {
-            isDown = true;
-            slider.classList.add('active');
-            startX = e.pageX - slider.offsetLeft;
-            scrollLeft = slider.scrollLeft;
-        };
+  const [sliderRef, instanceRef] = useKeenSlider(
+    {
+      loop: true,
+      slides: { perView: 1, spacing: 10 },
+      mode: "snap",
+      slideChanged(s) {
+        setCurrentSlide(s.track.details.rel);
+      },
+    },
+    [
+      (slider) => {
+        let timeout;
+        let mouseOver = false;
 
-        const handleMouseLeave = () => {
-            isDown = false;
-            slider.classList.remove('active');
-        };
-
-        const handleMouseUp = () => {
-            isDown = false;
-            slider.classList.remove('active');
-        };
-
-        const handleMouseMove = (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 2;
-            slider.scrollLeft = scrollLeft - walk;
-        };
-
-        if (slider) {
-            slider.addEventListener('mousedown', handleMouseDown);
-            slider.addEventListener('mouseleave', handleMouseLeave);
-            slider.addEventListener('mouseup', handleMouseUp);
-            slider.addEventListener('mousemove', handleMouseMove);
+        function clearNextTimeout() {
+          clearTimeout(timeout);
         }
 
-        return () => {
-            if (slider) {
-                slider.removeEventListener('mousedown', handleMouseDown);
-                slider.removeEventListener('mouseleave', handleMouseLeave);
-                slider.removeEventListener('mouseup', handleMouseUp);
-                slider.removeEventListener('mousemove', handleMouseMove);
-            }
-        };
-    }, []);
+        function nextTimeout() {
+          clearTimeout(timeout);
+          if (mouseOver) return;
+          timeout = setTimeout(() => {
+            slider.next();
+          }, 2000);
+        }
 
-    if (isLoading) {
-        return <Loader />;
-    }
+        slider.on("created", () => {
+          slider.container.addEventListener("mouseover", () => {
+            mouseOver = true;
+            clearNextTimeout();
+          });
+          slider.container.addEventListener("mouseout", () => {
+            mouseOver = false;
+            nextTimeout();
+          });
+          nextTimeout();
+        });
 
-    if (error) {
-        return (
-            <div className="text-red-600 dark:text-red-400">
-                Error al cargar los datos: {error.message}
-            </div>
-        );
-    }
+        slider.on("dragStarted", clearNextTimeout);
+        slider.on("animationEnded", nextTimeout);
+        slider.on("updated", nextTimeout);
+      },
+    ]
+  );
 
+  if (isLoading) return <Loader />;
+  if (error)
     return (
-        <>
-            <div>
-                <p className="text-xl font-semibold mb-4">Enlaces importantes</p>
-                <div ref={sliderRef} className="slider-container">
-                    <div className="slider-content">
-                        {stores.map((store) => {
-                            let link = store.button;
-                            if (store.isCheckout && email) {
-                                link = `${store.button}&billing_email=${encodeURIComponent(email)}`;
-                            }
-
-                            return (
-                                <div key={store.id} className="slider-item">
-                                    <div className="flex flex-col bg-white rounded-lg shadow-md p-6 gap-4">
-                                        {store.img.url && (
-                                            <img
-                                                src={store.img.url}
-                                                alt={store.title}
-                                                className="w-full h-40 object-cover rounded-lg mb-4"
-                                            />
-                                        )}
-
-                                        <p className="text-xl font-semibold tracking-tight text-gray-950">{store.title}</p>
-                                        <p className="text-base text-gray-600 flex-grow">{store.description}</p>
-                                        <a
-                                            href={link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="mt-2 w-full text-center rounded-lg p-3 text-base font-semibold text-white shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 bg-emerald-600 hover:bg-emerald-500 focus-visible:outline-emerald-600"
-                                        >
-                                            Ver más
-                                        </a>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </div>
-        </>
+      <div className="text-red-600 dark:text-red-400">
+        Error al cargar los datos: {error.message}
+      </div>
     );
-};
 
-export default Index;
+  return (
+    <div className="overflow-hidden relative">
+      <div ref={sliderRef} className="keen-slider">
+        {stores.map((store) => {
+          const link =
+            store.isCheckout && email
+              ? `${store.button}&billing_email=${encodeURIComponent(email)}`
+              : store.button;
+
+          return (
+            <div
+              key={store.id}
+              className="keen-slider__slide flex justify-center w-full"
+            >
+              <div className="flex w-full flex-col gap-4 rounded-lg bg-white p-4 shadow-md">
+                {store.img?.url && (
+                  <img
+                    src={store.img.url}
+                    alt={store.title}
+                    className="h-40 w-full rounded-lg object-cover"
+                  />
+                )}
+
+                <p className="text-xl font-semibold tracking-tight text-gray-950">
+                  {store.title}
+                </p>
+                <p className="flex-grow text-base text-gray-600">
+                  {store.description}
+                </p>
+
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 w-full rounded-lg p-3 text-center text-base font-semibold text-white shadow-md transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 bg-emerald-600 hover:bg-emerald-500 focus-visible:outline-emerald-600"
+                >
+                  Ver más
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Dots clicables */}
+      {instanceRef.current && (
+        <div className="flex justify-center gap-2 mt-4">
+          {stores.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => instanceRef.current.moveToIdx(idx)}
+              className={`h-3 w-3 rounded-full ${
+                currentSlide === idx ? "bg-emerald-600" : "bg-gray-300"
+              }`}
+              aria-label={`Ir a la diapositiva ${idx + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
