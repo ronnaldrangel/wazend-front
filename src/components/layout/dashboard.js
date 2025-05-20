@@ -12,7 +12,7 @@ export default function Layout({ children, title, cta }) {
     <div className="flex flex-col min-h-screen">    {/* <- actualizado */}
 
       {/* ─── NAVBAR STICKY ─────────────────────────────────────────────── */}
-      <div className="sticky top-0 z-50">
+      <div className="sticky top-0 z-10">
         <Navbar />
       </div>
       {/* ──────────────────────────────────────────────────────────────── */}
