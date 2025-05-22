@@ -1,7 +1,7 @@
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const createInstanceUrl = process.env.NEXT_PUBLIC_CREATE_INSTANCE; import useSWR from 'swr';
 import { useSession } from 'next-auth/react';
-import InstanceCard from './instanceCard';
+import InstanceCard from './instance-card';
 import OrderSkeleton from '../../components/loaders/skeleton';
 import Link from 'next/link';
 import { format } from "date-fns";
@@ -12,6 +12,8 @@ import { useState, useEffect } from 'react';
 import Modal from '../../components/loaders/modal';
 import NoInstances from './no-instances';
 import { ClockIcon, ServerIcon } from '@heroicons/react/24/outline';
+import Spin from '@/components/loaders/spin';
+import { Button } from '@/components/ui/button';
 
 const fetcher = async (url, jwt) => {
   try {
@@ -171,7 +173,7 @@ const FetchStrapi = () => {
         })
         .map((sub, index) => (
           <div key={index}>
-            
+
             <div className="p-4 bg-white rounded-lg shadow-md mb-6 relative overflow-hidden">
               {/* Etiqueta de estado en la parte superior */}
 
@@ -229,6 +231,7 @@ const FetchStrapi = () => {
                       instanceName={instance.instanceName}
                       serverUrl={instance.server_url}
                       isActive={true}
+                      isTrial={false}
                     />
                   ))}
 
@@ -243,23 +246,20 @@ const FetchStrapi = () => {
                         Puede crear una instancia para comenzar a utilizar nuestro servicio.
                       </p>
 
-                      <button
+                      <Button
                         className="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                         onClick={() => handleCreateInstance(sub.id, email, mutate, setCreatingInstanceForSubscription)}
                         disabled={creatingInstanceForSubscription === sub.id}
                       >
                         {creatingInstanceForSubscription === sub.id ? (
                           <>
-                            <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
+                            <Spin />
                             <span>Creando...</span>
                           </>
                         ) : (
                           <span>Crear instancia</span>
                         )}
-                      </button>
+                      </Button>
                     </div>
                   )}
                 </div>
