@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link';
 import {
@@ -10,7 +10,7 @@ import {
   ClipboardIcon,
 } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
-import DeleteButton from '../dashboard/DeleteButton';
+import DeleteButton from './delete-button';
 
 const fetchInstanceData = async (url) => {
   try {
@@ -36,10 +36,12 @@ const fetchInstanceData = async (url) => {
 };
 
 const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActive, isTrial }) => {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     instanceId ? `${serverUrl}/instance/fetchInstances?instanceId=${instanceId}` : null,
     fetchInstanceData
   );
+
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const instance = data?.[0] || {};
   const [visibleKey, setVisibleKey] = useState(false);
@@ -54,6 +56,24 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
       toast.success('API Key copiada al portapapeles.');
     }
   };
+
+  /**
+    * Maneja la eliminación de una instancia
+    */
+  const handleDeleteInstance = useCallback(async (documentId) => {
+    setIsDeleting(true);
+    try {
+      // Aquí iría la lógica de eliminación
+
+      // Refrescar los datos después de eliminar
+      await mutate();
+    } catch (error) {
+      console.error('Error al eliminar la instancia:', error);
+    } finally {
+      setIsDeleting(false);
+    }
+  }, [mutate]);
+
 
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-md p-6 gap-4">
@@ -144,12 +164,15 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
             <span></span>
           )}
 
-
-          {/* <DeleteButton
-            documentId={documentId}
-            instanceName={instanceName}
-            onDelete={() => handleDeleteInstance(documentId)}
-          /> */}
+          {!isTrial ? (
+            <DeleteButton
+              documentId={documentId}
+              instanceName={instanceName}
+              onDelete={() => handleDeleteInstance(documentId)}
+              disabled={isDeleting}
+              isTrial={isTrial}
+            />
+          ) : null}
 
         </div>
 

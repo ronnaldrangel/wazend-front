@@ -46,10 +46,10 @@ export default function Layout({ children, title, cta }) {
               {title}
             </h1>
             {cta && (
-              <Button asChild variant="default" className='px-4'>
+              <Button asChild variant="default" className='p-6'>
                 <Link href="/upgrade/">
                   <PlusIcon />
-                  <span className="text-sm lg:text-base">Comprar servicios</span>
+                  <span className="text-sm lg:text-base font-semibold">Comprar servicios</span>
                 </Link>
               </Button>
             )}

@@ -4,10 +4,10 @@ import { useSession } from 'next-auth/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import { ClockIcon, ServerIcon } from '@heroicons/react/24/outline';
 
-import InstanceCard from '../dashboard/instanceCard';
+import InstanceCard from '../dashboard/instance-card';
 import OrderSkeleton from '../../components/loaders/skeleton';
-import CreateButton from './CreateButton';
-import DeleteButton from './DeleteButton';
+import CreateButton from './create-button';
+import DeleteButton from './delete-button';
 
 // Constantes y configuración
 const STRAPI_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -185,14 +185,14 @@ const FreeTrialDashboard = () => {
               />
               
               {/* Acciones disponibles */}
-              <div className="px-6 py-4 bg-gray-50 flex justify-end space-x-2">
+              {/* <div className="px-6 py-4 bg-gray-50 flex justify-end space-x-2">
                 <DeleteButton 
                   documentId={trial.documentId} 
                   instanceName={trial.instanceName}
                   onDelete={() => handleDeleteInstance(trial.documentId)}
                   disabled={isDeleting}
                 />
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
