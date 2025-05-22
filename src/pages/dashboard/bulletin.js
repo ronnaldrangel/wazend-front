@@ -88,7 +88,7 @@ export default function Index() {
                 {store.description}
               </p>
 
-              <Button>
+              <Button asChild variant="default">
                 <Link
                   href={store.button}
                   {...(store.newTab
