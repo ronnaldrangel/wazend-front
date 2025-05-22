@@ -94,7 +94,7 @@ export default function SignUp() {
   return (
     <Layout>
       <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        🎉 Regístrate gratis
+        🎉 Regístrate y obtén tu prueba gratis
       </h2>
 
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
