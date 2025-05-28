@@ -5,6 +5,7 @@ import { useKeenSlider } from "keen-slider/react";
 import Link from "next/link";
 import "keen-slider/keen-slider.min.css";
 import { Button } from "@/components/ui/button";
+import Alerta from '@/components/alerts/main';
 
 export default function Index() {
   const { data: stores = [], error, isLoading } = useStrapiData(
@@ -59,9 +60,7 @@ export default function Index() {
   if (isLoading) return <Loader />;
   if (error)
     return (
-      <div className="text-red-600 dark:text-red-400">
-        Error al cargar los datos: {error.message}
-      </div>
+      <Alerta message={error.message} />
     );
 
   return (

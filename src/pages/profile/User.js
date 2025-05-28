@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import OrderSkeleton from '@/components/loaders/skeleton';
 import LogoGravatar from '@/components/layout/logo';
 import { Button } from '@/components/ui/button';
+import Alerta from '@/components/alerts/main';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -100,7 +101,7 @@ export default function User() {
   };
 
   if (status === 'loading' || loading) return <OrderSkeleton />;
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <Alerta message={error}/>;
   if (!data) return <OrderSkeleton />;
 
   return (
