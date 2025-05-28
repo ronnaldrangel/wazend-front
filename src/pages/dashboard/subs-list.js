@@ -14,6 +14,7 @@ import NoInstances from './no-instances';
 import { ClockIcon, ServerIcon } from '@heroicons/react/24/outline';
 import Spin from '@/components/loaders/spin';
 import { Button } from '@/components/ui/button';
+import Alerta from '@/components/alerts/main';
 
 const fetcher = async (url, jwt) => {
   try {
@@ -131,7 +132,7 @@ const FetchStrapi = () => {
   );
 
   if (isLoading) return <OrderSkeleton />;
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
+  if (error) return <Alerta message={error.message}/>;
   if (!data) return <OrderSkeleton />;
 
   if (!data?.subscriptions?.length) {
