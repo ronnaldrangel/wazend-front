@@ -27,7 +27,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           shallowRouting
         />
         <Toaster closeButton richColors position="top-right" />
-        <SessionChecker />
+
+        {/* <SessionChecker /> */}
+        
         <Component {...pageProps} />
       </SessionProvider>
       {/* </ThemeProvider> */}

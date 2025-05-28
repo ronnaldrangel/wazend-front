@@ -64,7 +64,8 @@ export default function SubscriptionsTableSoporte() {
   }
 
   return (
-    <div className="overflow-x-auto bg-white rounded-lg shadow-md p-6">
+    <div className=" bg-white rounded-lg shadow-md p-4">
+    <div className="overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
@@ -97,6 +98,7 @@ export default function SubscriptionsTableSoporte() {
           ))}
         </TableBody>
       </Table>
+    </div>
     </div>
   )
 }
