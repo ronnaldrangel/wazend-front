@@ -8,6 +8,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import Spin from '../../components/loaders/spin';
+import { NEXT_PUBLIC_SITE_KEY_CLOUDFLARE } from '../../../config/config';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -18,9 +19,34 @@ export default function ResetPassword() {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const turnstileRef = useRef(null);
+  
+  useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      window.turnstile &&
+      turnstileRef.current &&
+      turnstileRef.current.children.length === 0
+    ) {
+      window.turnstile.render(turnstileRef.current, {
+        sitekey: NEXT_PUBLIC_SITE_KEY_CLOUDFLARE,
+        theme: 'light',
+      });
+    }
+  }, []);
 
   const handleResetPassword = async (event) => {
     event.preventDefault();
+
+    const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
+
+    if (!token) {
+      toast.error('Codigo captcha incorrecto');
+      setIsSubmitting(false);
+      return;
+    }
+
+
     if (password !== passwordConfirmation) {
       toast.error('Las contraseñas no coinciden.');
       return;
@@ -117,6 +143,8 @@ export default function ResetPassword() {
             </button>
           </div>
         </div>
+
+        <div ref={turnstileRef} className="my-4" />
 
         {/* Botón */}
         <Button type="submit" className="w-full" disabled={loading}>

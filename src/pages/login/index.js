@@ -9,6 +9,7 @@ import Spin from '../../components/loaders/spin';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import SignSocial from './SignSocial';
 import { Button, buttonVariants } from '@/components/ui/button';
+import { NEXT_PUBLIC_SITE_KEY_CLOUDFLARE } from '../../../config/config';
 
 export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,10 +32,33 @@ export default function SignIn() {
     }
   }, [router.isReady, router.query.activation, router.pathname, router]);
 
+  const turnstileRef = useRef(null);
+  useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      window.turnstile &&
+      turnstileRef.current &&
+      turnstileRef.current.children.length === 0
+    ) {
+      window.turnstile.render(turnstileRef.current, {
+        sitekey: NEXT_PUBLIC_SITE_KEY_CLOUDFLARE,
+        theme: 'light',
+      });
+    }
+  }, []);
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
+
+    if (!token) {
+      toast.error('Codigo captcha incorrecto');
+      setIsSubmitting(false);
+      return;
+    }
 
     const result = await signIn('credentials', {
       redirect: false,
@@ -132,6 +156,8 @@ export default function SignIn() {
             </button>
           </div>
         </div>
+
+        <div ref={turnstileRef} className="my-4" />
 
         {/* Submit */}
         <Button type="submit" className="w-full" disabled={isSubmitting}>

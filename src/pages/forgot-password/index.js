@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/router';
@@ -6,6 +6,7 @@ import Layout from '../../components/layout/auth';
 import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import Spin from '../../components/loaders/spin';
+import { NEXT_PUBLIC_SITE_KEY_CLOUDFLARE } from '../../../config/config';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -13,10 +14,32 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const turnstileRef = useRef(null);
+    useEffect(() => {
+      if (
+        typeof window !== 'undefined' &&
+        window.turnstile &&
+        turnstileRef.current &&
+        turnstileRef.current.children.length === 0
+      ) {
+        window.turnstile.render(turnstileRef.current, {
+          sitekey: NEXT_PUBLIC_SITE_KEY_CLOUDFLARE,
+          theme: 'light',
+        });
+      }
+    }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
+
+    if (!token) {
+      toast.error('Codigo captcha incorrecto');
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const response = await fetch(`${strapiUrl}/api/auth/forgot-password`, {
@@ -69,6 +92,8 @@ export default function ForgotPassword() {
             className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-border placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           />
         </div>
+
+        <div ref={turnstileRef} className="my-4" />
 
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (

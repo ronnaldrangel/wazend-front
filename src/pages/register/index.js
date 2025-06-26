@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -8,9 +8,9 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
-import SignSocial from '../login/SignSocial';
 import PhoneInput from '../../components/ui/phone-input';
 import { Button, buttonVariants } from '@/components/ui/button';
+import { NEXT_PUBLIC_SITE_KEY_CLOUDFLARE } from '../../../config/config';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -33,6 +33,22 @@ export default function SignUp() {
   });
   const [showPasswordConditions, setShowPasswordConditions] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+
+  const turnstileRef = useRef(null);
+  useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      window.turnstile &&
+      turnstileRef.current &&
+      turnstileRef.current.children.length === 0
+    ) {
+      window.turnstile.render(turnstileRef.current, {
+        sitekey: NEXT_PUBLIC_SITE_KEY_CLOUDFLARE,
+        theme: 'light',
+      });
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,6 +75,15 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
+
+    if (!token) {
+      toast.error('Codigo captcha incorrecto');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const username = generateUsername(formData.email);
       await axios.post(
@@ -211,6 +236,8 @@ export default function SignUp() {
             ))}
           </ul>
         )}
+
+        <div ref={turnstileRef} className="my-4" />
 
         {/* Botón de registro */}
         <Button
