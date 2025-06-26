@@ -6,7 +6,7 @@ import Layout from '../../components/layout/auth';
 import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import Spin from '../../components/loaders/spin';
-import { NEXT_PUBLIC_SITE_KEY_CLOUDFLARE } from '../../../config/config';
+import Recaptcha from '@/components/cloudflare/catpcha';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -14,28 +14,14 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const turnstileRef = useRef(null);
-    useEffect(() => {
-      if (
-        typeof window !== 'undefined' &&
-        window.turnstile &&
-        turnstileRef.current &&
-        turnstileRef.current.children.length === 0
-      ) {
-        window.turnstile.render(turnstileRef.current, {
-          sitekey: NEXT_PUBLIC_SITE_KEY_CLOUDFLARE,
-          theme: 'light',
-        });
-      }
-    }, []);
+  const [captchaToken, setCaptchaToken] = useState("");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
-
-    if (!token) {
+    if (!captchaToken) {
       toast.error('Codigo captcha incorrecto');
       setIsSubmitting(false);
       return;
@@ -93,7 +79,7 @@ export default function ForgotPassword() {
           />
         </div>
 
-        <div ref={turnstileRef} className="my-4" />
+        <Recaptcha onVerify={setCaptchaToken} />
 
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (

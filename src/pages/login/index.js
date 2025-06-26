@@ -9,7 +9,7 @@ import Spin from '../../components/loaders/spin';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import SignSocial from './SignSocial';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { NEXT_PUBLIC_SITE_KEY_CLOUDFLARE } from '../../../config/config';
+import Recaptcha from '@/components/cloudflare/catpcha';
 
 export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -17,6 +17,7 @@ export default function SignIn() {
 
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   // ref para asegurarnos de que solo mostramos 1 toast
   const activatedToastRef = useRef(false);
@@ -32,29 +33,11 @@ export default function SignIn() {
     }
   }, [router.isReady, router.query.activation, router.pathname, router]);
 
-  const turnstileRef = useRef(null);
-  useEffect(() => {
-    if (
-      typeof window !== 'undefined' &&
-      window.turnstile &&
-      turnstileRef.current &&
-      turnstileRef.current.children.length === 0
-    ) {
-      window.turnstile.render(turnstileRef.current, {
-        sitekey: NEXT_PUBLIC_SITE_KEY_CLOUDFLARE,
-        theme: 'light',
-      });
-    }
-  }, []);
-
-
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
-
-    if (!token) {
+    if (!captchaToken) {
       toast.error('Codigo captcha incorrecto');
       setIsSubmitting(false);
       return;
@@ -157,7 +140,7 @@ export default function SignIn() {
           </div>
         </div>
 
-        <div ref={turnstileRef} className="my-4" />
+        <Recaptcha onVerify={setCaptchaToken} />
 
         {/* Submit */}
         <Button type="submit" className="w-full" disabled={isSubmitting}>

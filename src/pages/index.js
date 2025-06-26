@@ -7,10 +7,6 @@ import { ArrowRight, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
 export default function Index() {
   const router = useRouter();
 

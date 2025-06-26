@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -10,7 +10,7 @@ import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
 import PhoneInput from '../../components/ui/phone-input';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { NEXT_PUBLIC_SITE_KEY_CLOUDFLARE } from '../../../config/config';
+import Recaptcha from '@/components/cloudflare/catpcha';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -33,22 +33,7 @@ export default function SignUp() {
   });
   const [showPasswordConditions, setShowPasswordConditions] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-
-  const turnstileRef = useRef(null);
-  useEffect(() => {
-    if (
-      typeof window !== 'undefined' &&
-      window.turnstile &&
-      turnstileRef.current &&
-      turnstileRef.current.children.length === 0
-    ) {
-      window.turnstile.render(turnstileRef.current, {
-        sitekey: NEXT_PUBLIC_SITE_KEY_CLOUDFLARE,
-        theme: 'light',
-      });
-    }
-  }, []);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -76,9 +61,7 @@ export default function SignUp() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
-
-    if (!token) {
+    if (!captchaToken) {
       toast.error('Codigo captcha incorrecto');
       setIsSubmitting(false);
       return;
@@ -237,7 +220,7 @@ export default function SignUp() {
           </ul>
         )}
 
-        <div ref={turnstileRef} className="my-4" />
+        <Recaptcha onVerify={setCaptchaToken} />
 
         {/* Botón de registro */}
         <Button

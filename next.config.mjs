@@ -1,7 +1,7 @@
 import {withSentryConfig} from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
     domains: ['wazend.net', 'pps.whatsapp.net', 'minio-app.wazend.net', 'propheta.pro'  ], // Agrega el dominio aquí
   },
