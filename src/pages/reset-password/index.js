@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import Layout from '../../components/layout/auth';
 import { toast } from 'sonner';
@@ -9,6 +9,7 @@ import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
 import Spin from '../../components/loaders/spin';
+import TurnstileWidget from '@/components/ui/turnstile';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -19,9 +20,17 @@ export default function ResetPassword() {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstileRef = useRef(null);
 
   const handleResetPassword = async (event) => {
     event.preventDefault();
+    
+    if (!turnstileToken) {
+      toast.error('Por favor, completa la verificación de seguridad.');
+      return;
+    }
+    
     if (password !== passwordConfirmation) {
       toast.error('Las contraseñas no coinciden.');
       return;
@@ -31,7 +40,7 @@ export default function ResetPassword() {
     try {
       await axios.post(
         `${strapiUrl}/api/auth/reset-password`,
-        { code, password, passwordConfirmation },
+        { code, password, passwordConfirmation, turnstileToken },
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
@@ -44,6 +53,11 @@ export default function ResetPassword() {
     } catch {
       toast.error('Ha ocurrido un error.');
     } finally {
+      // Reset Turnstile on error
+      if (turnstileRef.current) {
+        turnstileRef.current.reset();
+      }
+      setTurnstileToken('');
       setLoading(false);
     }
   };
@@ -115,8 +129,23 @@ export default function ResetPassword() {
           }
         />
 
+        {/* Turnstile */}
+        <TurnstileWidget
+          ref={turnstileRef}
+          onVerify={setTurnstileToken}
+          onError={() => {
+            setTurnstileToken('');
+            toast.error('Error en la verificación de seguridad. Inténtalo de nuevo.');
+          }}
+          onExpire={() => {
+            setTurnstileToken('');
+            toast.warning('La verificación de seguridad ha expirado. Por favor, verifica nuevamente.');
+          }}
+          className="flex justify-center"
+        />
+
         {/* Botón */}
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full" disabled={loading || !turnstileToken}>
           {loading ? (
             <>
               <Spin className="mr-2" /> Cargando
