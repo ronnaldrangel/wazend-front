@@ -1,8 +1,12 @@
 import useSWR from "swr";
 import { useState, useEffect } from "react";
-import { Switch } from "@headlessui/react";
 import { toast } from "sonner";
+import FormInput from "@/components/ui/form-input";
+import { Card } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Preload from "@/components/loaders/skeleton";
+import { Button } from "@/components/ui/button";
 
 const API_KEY = process.env.NEXT_PUBLIC_WAZEND_API_KEY;
 const API_URL = process.env.NEXT_PUBLIC_WAZEND_API_URL;
@@ -124,47 +128,41 @@ const ProxySettings = ({ instanceId, serverUrl }) => {
   if (!data && data !== null) return <Preload />;
 
   return (
-    <div className="rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)] p-6">
+    <Card shadow="custom" padding="md" className="border border-border shadow-[0_0_5px_rgba(0,0,0,0.1)]">
       {/* Toggle Switch */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Enabled</h2>
-          <p className="text-sm text-gray-500">Enable or disable the proxy</p>
+          <h2 className="text-lg font-semibold text-foreground">Enabled</h2>
+          <p className="text-sm text-muted-foreground">Enable or disable the proxy</p>
         </div>
         <Switch
           checked={proxyData.enabled}
-          onChange={toggleEnabled}
-          className={`${proxyData.enabled ? "bg-green-600" : "bg-gray-300"}
-            relative inline-flex h-6 w-11 items-center rounded-full transition-all`}
-        >
-          <span
-            className={`${
-              proxyData.enabled ? "translate-x-6" : "translate-x-1"
-            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-          />
-        </Switch>
+          onCheckedChange={toggleEnabled}
+        />
       </div>
 
       {/* Inputs */}
-      <div className="grid grid-cols-3 gap-4 border-t border-gray-300 pt-4">
+      <div className="grid grid-cols-3 gap-4 border-t border-border pt-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Protocol</label>
-          <select
-            name="protocol"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+          <label className="block text-sm font-medium text-foreground mb-1">Protocol</label>
+          <Select
             value={proxyData.protocol}
-            onChange={handleChange}
+            onValueChange={(value) => setProxyData((prev) => ({ ...prev, protocol: value }))}
           >
-            <option value="http">http</option>
-            <option value="https">https</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select protocol" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="http">http</SelectItem>
+              <SelectItem value="https">https</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Host</label>
-          <input
+          <FormInput
             type="text"
             name="host"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+            label="Host"
             value={proxyData.host}
             onChange={handleChange}
           />
@@ -173,34 +171,31 @@ const ProxySettings = ({ instanceId, serverUrl }) => {
 
       <div className="grid grid-cols-3 gap-4 mt-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Port</label>
-          <input
+          <FormInput
             type="number"
             name="port"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+            label="Port"
             value={proxyData.port}
             onChange={handleChange}
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 border-t border-gray-300 pt-4 mt-4">
+      <div className="grid grid-cols-2 gap-4 border-t border-border pt-4 mt-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-          <input
+          <FormInput
             type="text"
             name="username"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+            label="Username"
             value={proxyData.username}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input
+          <FormInput
             type="text"
             name="password"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+            label="Password"
             value={proxyData.password}
             onChange={handleChange}
           />
@@ -208,16 +203,15 @@ const ProxySettings = ({ instanceId, serverUrl }) => {
       </div>
 
       {/* Save Button */}
-      <button
+      <Button
         onClick={saveSettings}
         disabled={isLoading}
-        className={`mt-4 px-4 py-2 rounded-md text-white transition-all duration-200 ${
-          isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-500"
-        }`}
+        variant="default"
+        className="mt-4"
       >
-        {isLoading ? "Guardando..." : "Guardar"}
-      </button>
-    </div>
+        {isLoading ? "Guardar..." : "Guardar"}
+      </Button>
+    </Card>
   );
 };
 

@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import OrderSkeleton from '@/components/loaders/skeleton';
 import LogoGravatar from '@/components/layout/logo';
 import { Button } from '@/components/ui/button';
+import FormInput from '@/components/ui/form-input';
+import { Card } from '@/components/ui/card';
 import Alerta from '@/components/alerts/main';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -106,69 +108,59 @@ export default function User() {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <Card shadow="md" padding="md" className="border border-border">
         <div className="flex items-center space-x-4">
           <LogoGravatar
             email={session.user.email}
-            className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center"
+            className="w-12 h-12 bg-muted rounded-full flex items-center justify-center"
           />
           <div>
-            <p className="text-base font-bold text-gray-800">
+            <p className="text-base font-bold text-foreground">
               {data.name || 'Nombre no disponible'}
             </p>
-            <p className="text-gray-800 text-sm">
+            <p className="text-foreground text-sm">
               {data.email || 'Email no disponible'}
             </p>
-            <p className="text-gray-800 text-sm">
+            <p className="text-foreground text-sm">
               Sesión con: {data.provider === 'local' ? 'Email' : data.provider.charAt(0).toUpperCase() + data.provider.slice(1)}
             </p>
           </div>
         </div>
-      </div>
+      </Card>
 
-      <div className="mt-6 bg-white rounded-lg shadow-md p-6">
-        <p className="text-lg font-semibold text-black mb-2">Información del perfil</p>
-        <p className="text-gray-500 text-sm mb-8">
+      <Card shadow="md" padding="md" className="mt-6 border border-border">
+        <p className="text-lg font-semibold text-foreground mb-2">Información del perfil</p>
+        <p className="text-muted-foreground text-sm mb-8">
           Actualice la información del perfil y la dirección de correo electrónico de su cuenta.
         </p>
 
         <form className="space-y-6" onSubmit={handleProfileUpdate}>
           <div className="w-full space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-black">
-                Nombre
-              </label>
-              <input
-                id="name"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Ingrese su nombre"
-                className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-              />
-            </div>
+            <FormInput
+              id="name"
+              name="name"
+              label="Nombre"
+              placeholder="Ingrese su nombre"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
 
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-black">
-                Teléfono
-              </label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                pattern="[0-9]*"
-                inputMode="numeric"
-                value={phone}
-                onChange={(e) => {
-                  const regex = /^[0-9\b]+$/;
-                  if (e.target.value === '' || regex.test(e.target.value)) {
-                    setPhone(e.target.value);
-                  }
-                }}
-                placeholder="Ingrese su teléfono"
-                className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-              />
-            </div>
+            <FormInput
+              id="phone"
+              name="phone"
+              type="tel"
+              label="Teléfono"
+              placeholder="Ingrese su teléfono"
+              value={phone}
+              onChange={(e) => {
+                const regex = /^[0-9\b]+$/;
+                if (e.target.value === '' || regex.test(e.target.value)) {
+                  setPhone(e.target.value);
+                }
+              }}
+              pattern="[0-9]*"
+              inputMode="numeric"
+            />
 
             <div className="flex justify-end">
               <Button type="submit" disabled={isSubmittingProfile}>
@@ -177,66 +169,51 @@ export default function User() {
             </div>
           </div>
         </form>
-      </div>
+      </Card>
 
-      <div className="mt-6 bg-white rounded-lg shadow-md p-6">
-        <p className="text-lg font-semibold text-black mb-2">Actualizar contraseña</p>
-        <p className="text-gray-500 text-sm mb-8">
+      <Card shadow="md" padding="md" className="mt-6 border border-border">
+        <p className="text-lg font-semibold text-foreground mb-2">Actualizar contraseña</p>
+        <p className="text-muted-foreground text-sm mb-8">
           Asegúrese de que su cuenta utilice una contraseña larga y aleatoria para mantenerla segura.
         </p>
 
         <form className="space-y-6" onSubmit={handlePasswordUpdate}>
           <div className="w-full space-y-6">
-            <div>
-              <label htmlFor="current-password" className="block text-sm font-medium text-black">
-                Contraseña actual
-              </label>
-              <input
-                id="current-password"
-                name="currentPassword"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="Ingresa tu contraseña actual"
-                className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-              />
-            </div>
+            <FormInput
+              id="current-password"
+              name="currentPassword"
+              type="password"
+              label="Contraseña actual"
+              placeholder="Ingresa tu contraseña actual"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
 
-            <div>
-              <label htmlFor="new-password" className="block text-sm font-medium text-black">
-                Nueva contraseña
-              </label>
-              <input
-                id="new-password"
-                name="newPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Ingresa tu nueva contraseña"
-                className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-              />
-            </div>
+            <FormInput
+              id="new-password"
+              name="newPassword"
+              type="password"
+              label="Nueva contraseña"
+              placeholder="Ingresa tu nueva contraseña"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              autoComplete="new-password"
+              required
+            />
 
-            <div>
-              <label htmlFor="confirm-password" className="block text-sm font-medium text-black">
-                Confirmar contraseña
-              </label>
-              <input
-                id="confirm-password"
-                name="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirma tu nueva contraseña"
-                className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-              />
-            </div>
+            <FormInput
+              id="confirm-password"
+              name="confirmPassword"
+              type="password"
+              label="Confirmar contraseña"
+              placeholder="Confirma tu nueva contraseña"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete="new-password"
+              required
+            />
 
             <div className="flex justify-end">
               <Button type="submit" disabled={isSubmittingPassword}>
@@ -245,7 +222,7 @@ export default function User() {
             </div>
           </div>
         </form>
-      </div>
+      </Card>
     </>
   );
 }

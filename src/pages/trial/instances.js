@@ -47,9 +47,9 @@ const ExpirationBadge = ({ endDate }) => {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   
   const getStatusColor = () => {
-    if (diffDays <= 1) return 'bg-red-100 text-red-800';
-    if (diffDays <= 3) return 'bg-yellow-100 text-yellow-800';
-    return 'bg-green-100 text-green-800';
+    if (diffDays <= 1) return 'bg-destructive/10 text-destructive border border-destructive/20';
+    if (diffDays <= 3) return 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20';
+    return 'bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20';
   };
 
   return (
@@ -70,9 +70,9 @@ const ExpirationBadge = ({ endDate }) => {
  * Componente de información sobre la instancia de prueba
  */
 const TrialInfoCard = () => (
-  <div className="rounded-lg shadow-md bg-blue-50 text-blue-900 p-6">
+  <div className="rounded-lg shadow-md bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 p-6">
     <div className="flex items-center font-bold text-lg mb-3">
-      <ExclamationTriangleIcon className="h-5 w-5 text-blue-600 mr-2" />
+      <ExclamationTriangleIcon className="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2" />
       Información sobre su instancia de prueba
     </div>
 
@@ -144,15 +144,15 @@ const FreeTrialDashboard = () => {
   // Maneja errores
   if (error) {
     return (
-      <div className="rounded-lg bg-red-50 p-6 border border-red-200">
-        <div className="flex items-center text-red-700 mb-2">
+      <div className="rounded-lg bg-destructive/10 p-6 border border-destructive/20">
+        <div className="flex items-center text-destructive mb-2">
           <ExclamationTriangleIcon className="h-6 w-6 mr-2" />
           <h3 className="font-bold">Error al cargar las instancias</h3>
         </div>
-        <p className="text-sm text-red-600">{error.message}</p>
+        <p className="text-sm text-destructive/80">{error.message}</p>
         <button 
           onClick={() => mutate()} 
-          className="mt-4 bg-red-100 text-red-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-red-200"
+          className="mt-4 bg-destructive/20 text-destructive px-4 py-2 rounded-md text-sm font-medium hover:bg-destructive/30 transition-colors"
         >
           Intentar nuevamente
         </button>
@@ -170,7 +170,7 @@ const FreeTrialDashboard = () => {
       {hasInstances ? (
         <div className="space-y-6">
           {data.freetrials.map((trial, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div key={index} className="bg-card rounded-lg shadow-md overflow-hidden border border-border">
               {/* Barra de estado de expiración */}
               <ExpirationBadge endDate={trial.endDate} />
               
@@ -197,11 +197,11 @@ const FreeTrialDashboard = () => {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+        <div className="bg-card rounded-lg shadow-md p-6 text-center border border-border">
           <div className="flex flex-col items-center justify-center space-y-4 py-6">
-            <ServerIcon className="h-16 w-16 text-gray-400" />
-            <h3 className="text-lg font-medium text-gray-900">No tiene instancias activas</h3>
-            <p className="text-gray-500 max-w-md">
+            <ServerIcon className="h-16 w-16 text-muted-foreground" />
+            <h3 className="text-lg font-medium text-foreground">No tiene instancias activas</h3>
+            <p className="text-muted-foreground max-w-md">
               Puede crear una instancia de prueba gratuita para comenzar a utilizar nuestro servicio.
             </p>
             <CreateButton onSuccess={handleInstanceCreated} />

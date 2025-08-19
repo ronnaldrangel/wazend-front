@@ -14,10 +14,10 @@ export default function Index() {
 
     return (
         <div className="w-full">
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-card rounded-lg shadow-md p-6 border border-border">
 
                 <div className="flex flex-col space-y-4">
-                    <p className="text-gray-500">
+                    <p className="text-muted-foreground">
                         Parece que no tienes ningún Producto/Servicio contratado todavía.
                     </p>
 

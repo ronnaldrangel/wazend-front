@@ -34,10 +34,12 @@ import {
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession } from "next-auth/react" // Importamos useSession de NextAuth
+import { useTheme } from 'next-themes'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   // Extraemos los datos de sesión usando el hook useSession
   const { data: session, status } = useSession()
+  const { theme } = useTheme()
 
   // Datos de navegación principal
   const navMainItems = [
@@ -114,9 +116,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem className="p-1.5">
             <Link href="/">
+              {/* Logo claro - visible en modo claro */}
               <Image
-                className="h-6 w-auto"
+                className="block h-6 w-auto dark:hidden"
                 src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
+                alt="Logo"
+                width={236}
+                height={60}
+              />
+              {/* Logo oscuro - visible en modo oscuro */}
+              <Image
+                className="hidden h-6 w-auto dark:block"
+                src={process.env.NEXT_PUBLIC_LOGO_DARK || '/images/logo-dark.svg'}
                 alt="Logo"
                 width={236}
                 height={60}

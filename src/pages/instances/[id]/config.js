@@ -1,8 +1,11 @@
 import useSWR from 'swr';
-import { Switch } from '@headlessui/react';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import FormInput from '@/components/ui/form-input';
+import { Card } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
 import Preload from '@/components/loaders/skeleton';
+import { Button } from '@/components/ui/button';
 
 const API_KEY = process.env.NEXT_PUBLIC_WAZEND_API_KEY;
 
@@ -99,7 +102,7 @@ const InstancePage = ({ instanceId, serverUrl }) => {
 
     return (
         <>
-            <div className="rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)] p-6">
+            <Card shadow="custom" padding="md" className="border border-border shadow-[0_0_5px_rgba(0,0,0,0.1)]">
                 <div className="space-y-4">
 
                 <p className='mb-4 text-lg font-semibold'>Ajustes de WhatsApp</p>
@@ -107,30 +110,23 @@ const InstancePage = ({ instanceId, serverUrl }) => {
                     <div className="py-3 border-b">
                         <div className="flex justify-between items-center">
                             <div>
-                                <p className="font-semibold text-gray-900">{settingDescriptions.rejectCall.title}</p>
-                                <p className="text-gray-600 text-sm">{settingDescriptions.rejectCall.description}</p>
+                                <p className="font-semibold text-foreground">{settingDescriptions.rejectCall.title}</p>
+                                <p className="text-muted-foreground text-sm">{settingDescriptions.rejectCall.description}</p>
                             </div>
                             <Switch
                                 checked={settings.rejectCall}
-                                onChange={() => toggleSetting('rejectCall')}
-                                className={`${settings.rejectCall ? 'bg-emerald-600' : 'bg-gray-300'} relative inline-flex h-6 w-11 items-center rounded-full`}
-                            >
-                                <span className="sr-only">Toggle {settingDescriptions.rejectCall.title}</span>
-                                <span
-                                    className={`${settings.rejectCall ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform bg-white rounded-full transition`}
-                                />
-                            </Switch>
+                                onCheckedChange={() => toggleSetting('rejectCall')}
+                            />
                         </div>
 
                         {/* Cuadro de texto debajo cuando está activo */}
                         {settings.rejectCall && (
                             <div className="mt-2">
-                                <input
+                                <FormInput
                                     type="text"
                                     value={settings.msgCall}
                                     onChange={handleInputChange}
                                     placeholder="Escribe tu mensaje aquí..."
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
                                 />
                             </div>
                         )}
@@ -141,32 +137,26 @@ const InstancePage = ({ instanceId, serverUrl }) => {
                         key !== 'rejectCall' && key !== 'msgCall' && (
                             <div key={key} className="flex justify-between items-center py-3 border-b">
                                 <div>
-                                    <p className="font-semibold text-gray-900">{settingDescriptions[key]?.title}</p>
-                                    <p className="text-gray-600 text-sm">{settingDescriptions[key]?.description}</p>
+                                    <p className="font-semibold text-foreground">{settingDescriptions[key]?.title}</p>
+                                    <p className="text-muted-foreground text-sm">{settingDescriptions[key]?.description}</p>
                                 </div>
                                 <Switch
                                     checked={value}
-                                    onChange={() => toggleSetting(key)}
-                                    className={`${value ? 'bg-emerald-600' : 'bg-gray-300'} relative inline-flex h-6 w-11 items-center rounded-full`}
-                                >
-                                    <span className="sr-only">Toggle {settingDescriptions[key]?.title}</span>
-                                    <span
-                                        className={`${value ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform bg-white rounded-full transition`}
-                                    />
-                                </Switch>
+                                    onCheckedChange={() => toggleSetting(key)}
+                                />
                             </div>
                         )
                     ))}
                 </div>
 
-                <button
+                <Button
                     onClick={updateSettings}
                     disabled={isLoading}
-                    className={`mt-4 px-4 py-2 rounded-md text-white ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-600'}`}
+                    className={`mt-4 ${isLoading ? 'bg-muted cursor-not-allowed' : ''}`}
                 >
                     {isLoading ? 'Guardando...' : 'Guardar'}
-                </button>
-            </div>
+                </Button>
+            </Card>
 
         </>
     );

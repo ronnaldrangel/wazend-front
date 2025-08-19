@@ -155,7 +155,7 @@ const CreateButton = ({ onSuccess }) => {
       </Button>
       
       {isDisabled && (
-        <p className="text-xs text-gray-500 mt-2 text-center">
+        <p className="text-xs text-muted-foreground mt-2 text-center">
           Solo puede crear una instancia cada 10 minutos.
         </p>
       )}

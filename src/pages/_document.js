@@ -12,7 +12,7 @@ export default function Document() {
         <Script src="/assets/translation.js" strategy="beforeInteractive" />
         <Script src="https://translate.google.com/translate_a/element.js?cb=TranslateInit" strategy="afterInteractive" />
       </Head>
-      <body className="h-full bg-gray-100">
+      <body className="h-full bg-background">
         <div id="google_translate_element"></div>
         <Main />
         <NextScript />

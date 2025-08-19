@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Loader from '../../components/loaders/skeleton';
 import { useStrapiData } from '../../services/strapiService';
 import Link from 'next/link';
+import { Card } from '@/components/ui/card';
 
 const Services = () => {
     // Obtenemos los datos de 'stores' de la API
@@ -38,8 +39,12 @@ const Services = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {plugins.map((store) => (
                         <Link key={store.id} href={`${store.buttonUrl}`}>
-                            <div className="p-6 bg-white shadow-sm hover:shadow-md rounded-lg transition-shadow duration-200 cursor-pointer border border-gray-100 h-full flex flex-col">
-
+                            <Card 
+                                shadow="sm" 
+                                padding="md" 
+                                hover="shadow"
+                                className="cursor-pointer h-full flex flex-col"
+                            >
                                 <div className="flex items-center gap-3">
                                     <div className="flex-shrink-0">
                                         {store.img && store.img.url ? (
@@ -49,23 +54,23 @@ const Services = () => {
                                                 className="h-10 w-10"
                                             />
                                         ) : (
-                                            <div className="h-12 w-12 flex items-center justify-center bg-gray-200 rounded-full">
-                                                <p className="text-xs text-gray-500">Sin img</p>
+                                            <div className="h-12 w-12 flex items-center justify-center bg-muted rounded-full">
+                                                <p className="text-xs text-muted-foreground">Sin img</p>
                                             </div>
                                         )}
                                     </div>
-                                    <h3 className="font-semibold text-gray-900 text-lg">{store.title}</h3>
+                                    <h3 className="font-semibold text-foreground text-lg">{store.title}</h3>
                                 </div>
 
-                                {/* Línea gris separadora */}
-                                <div className="border-t border-gray-100 my-3 -mx-6"></div>
+                                {/* Línea separadora */}
+                                <div className="border-t border-border my-3 -mx-6"></div>
 
                                 <div>
-                                    <p className="mt-2 text-sm text-gray-700">
+                                    <p className="mt-2 text-sm text-muted-foreground">
                                         {store.shortDescription}
                                     </p>
                                 </div>
-                            </div>
+                            </Card>
                         </Link>
                     ))}
                 </div>

@@ -8,11 +8,11 @@ export default function ReferralProgram() {
   return (
     <div>
         {/* Affiliate Section */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-medium text-gray-800 mt-0 mb-4">
+        <div className="bg-card rounded-lg shadow-md p-6 border border-border">
+          <h2 className="text-xl font-medium text-foreground mt-0 mb-4">
             Tu enlace de afiliado
           </h2>
-          <p className="text-sm text-gray-600 mb-5">
+          <p className="text-sm text-muted-foreground mb-5">
             Necesitas activar el afiliado para obtener tu enlace de referencia único, que te permite invitar a nuevos usuarios y ganar recompensas.
           </p>
 

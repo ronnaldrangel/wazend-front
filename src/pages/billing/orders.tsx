@@ -31,11 +31,11 @@ function statusClasses(status: string) {
   const base = 'inline-block rounded-full px-2 py-[2px] text-xs font-semibold capitalize'
   return (
     {
-      completed: `${base} bg-green-100 text-green-700`,
-      processing: `${base} bg-blue-100 text-blue-700`,
-      cancelled: `${base} bg-red-100 text-red-700`,
-      refunded: `${base} bg-gray-100 text-gray-600`,
-    }[status as keyof { [key: string]: string }] ?? `${base} bg-gray-100 text-gray-700`
+      completed: `${base} bg-green-500/10 text-green-600 dark:text-green-400`,
+      processing: `${base} bg-blue-500/10 text-blue-600 dark:text-blue-400`,
+      cancelled: `${base} bg-destructive/10 text-destructive`,
+      refunded: `${base} bg-muted text-muted-foreground`,
+    }[status as keyof { [key: string]: string }] ?? `${base} bg-muted text-muted-foreground`
   )
 }
 
@@ -86,7 +86,7 @@ export default function OrdersTableSoporte() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+      <div className="bg-card rounded-lg shadow-md p-4 border border-border">
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>

@@ -1,4 +1,5 @@
 import { signIn } from "next-auth/react";
+import { Button } from '@/components/ui/button';
 
 export default function Example() {
     return (
@@ -6,9 +7,11 @@ export default function Example() {
             <div className="mt-6">
                 {/* BOTONES */}
                 <div className="grid grid-cols-1 gap-4">
-                    <button
+                    <Button
                         onClick={() => signIn("google")}
-                        className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                        variant="outline"
+                        size="default"
+                        className="w-full gap-3"
                     >
                         <svg className="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
                             <path
@@ -31,7 +34,7 @@ export default function Example() {
                         <span className="text-sm font-medium leading-6">
                             Iniciar sesión con Google
                         </span>
-                    </button>
+                    </Button>
 
                     {/* <button
                         onClick={() => signIn('github')}
@@ -54,10 +57,10 @@ export default function Example() {
                         className="absolute inset-0 flex items-center"
                         aria-hidden="true"
                     >
-                        <div className="w-full border-t border-gray-200" />
+                        <div className="w-full border-t border-border" />
                     </div>
                     <div className="relative flex justify-center text-sm font-medium leading-6">
-                        <span className="bg-white px-6 text-gray-900">O</span>
+                        <span className="bg-background px-6 text-foreground">O</span>
                     </div>
                 </div>
             </div>

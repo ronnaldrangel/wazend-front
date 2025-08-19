@@ -78,7 +78,7 @@ export default function Pricing() {
             {/* Selector de período */}
             <div className="flex mb-8">
 
-                <div className="inline-flex p-1.5 bg-white rounded-full shadow-md border border-gray-200">
+                <div className="inline-flex p-1.5 bg-background rounded-full shadow-md border border-border dark:bg-card dark:border-border">
                     <Button
                         variant={activePeriod === 'Monthly' ? 'default' : 'ghost'}
                         size="sm"
@@ -102,21 +102,21 @@ export default function Pricing() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {strapiPlans.map(plan => (
-                    <div key={plan.id} className="bg-white rounded-lg shadow-md p-6">
+                    <div key={plan.id} className="bg-background dark:bg-card rounded-lg shadow-md border border-border p-6">
 
                         <div className="flex items-center gap-2 mb-6">
-                            <h3 className="text-2xl font-bold">{plan.name}</h3>
+                            <h3 className="text-2xl font-bold text-foreground">{plan.name}</h3>
                         </div>
 
-                        <ul className="space-y-2 text-md">
+                        <ul className="space-y-2 text-md text-foreground">
                             {plan.features && renderFeatures(plan.features)}
                         </ul>
 
                         <div className="mt-6 flex items-center justify-between">
                             <div>
                                 {/* <p className="text-gray-500 text-sm">Desde</p> */}
-                                <p className="text-emerald-600 font-bold text-lg">${plan.price} USD</p>
-                                <p className="text-gray-500 text-sm">{plan.billing_period === 'Monthly' ? 'Mensual' : 'Anual'}</p>
+                                <p className="text-emerald-600 dark:text-emerald-400 font-bold text-lg">${plan.price} USD</p>
+                                <p className="text-muted-foreground text-sm">{plan.billing_period === 'Monthly' ? 'Mensual' : 'Anual'}</p>
                             </div>
 
                             <Button
