@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -12,7 +12,6 @@ import SignSocial from '../login/SignSocial';
 import PhoneInput from '../../components/ui/phone-input';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
-import TurnstileWidget from '@/components/ui/turnstile';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -35,9 +34,6 @@ export default function SignUp() {
   });
   const [showPasswordConditions, setShowPasswordConditions] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState('');
-  
-  const turnstileRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,12 +59,6 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!turnstileToken) {
-      toast.error('Por favor, completa la verificación de seguridad.');
-      return;
-    }
-    
     setIsSubmitting(true);
     try {
       const username = generateUsername(formData.email);
@@ -79,8 +69,7 @@ export default function SignUp() {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          password: formData.password,
-          turnstileToken
+          password: formData.password
         },
         {
           headers: {
@@ -97,11 +86,6 @@ export default function SignUp() {
       router.replace('/email-confirmation');
     } catch {
       toast.error('Ya existe esa cuenta en nuestro sistema.');
-      // Reset Turnstile on error
-      if (turnstileRef.current) {
-        turnstileRef.current.reset();
-      }
-      setTurnstileToken('');
     } finally {
       setIsSubmitting(false);
     }
@@ -217,26 +201,11 @@ export default function SignUp() {
           </ul>
         )}
 
-        {/* Turnstile */}
-        <TurnstileWidget
-          ref={turnstileRef}
-          onVerify={setTurnstileToken}
-          onError={() => {
-            setTurnstileToken('');
-            toast.error('Error en la verificación de seguridad. Inténtalo de nuevo.');
-          }}
-          onExpire={() => {
-            setTurnstileToken('');
-            toast.warning('La verificación de seguridad ha expirado. Por favor, verifica nuevamente.');
-          }}
-          className="flex justify-center"
-        />
-
         {/* Botón de registro */}
         <Button
           type="submit"
           className="w-full"
-          disabled={isSubmitting || !isPasswordValid() || !turnstileToken}
+          disabled={isSubmitting || !isPasswordValid()}
         >
           {isSubmitting ? (
             <>
