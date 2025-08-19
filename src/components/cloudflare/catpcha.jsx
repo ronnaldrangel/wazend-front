@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NEXT_PUBLIC_SITE_KEY_CLOUDFLARE } from '../../../config/config';
+import { NEXT_PUBLIC_SITE_KEY_CLOUDFLARE } from '../../config/config';
 
 const Recaptcha = ({ onVerify }) => {
     const [isLoaded, setIsLoaded] = useState(false);
