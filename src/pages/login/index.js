@@ -10,6 +10,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import SignSocial from './SignSocial';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
+import Recaptcha from '@/components/cloudflare/catpcha';
 
 export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,6 +19,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   // ref para asegurarnos de que solo mostramos 1 toast
   const activatedToastRef = useRef(false);
@@ -37,6 +39,11 @@ export default function SignIn() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    if (!captchaToken) {
+      toast.error('Verifica tu captcha');
+      return;
+    }
 
     const result = await signIn('credentials', {
       redirect: false,
@@ -133,6 +140,8 @@ export default function SignIn() {
             }
           />
         </div>
+
+        <Recaptcha onVerify={setCaptchaToken} />
 
         {/* Submit */}
         <Button type="submit" className="w-full" disabled={isSubmitting}>

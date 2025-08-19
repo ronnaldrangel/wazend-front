@@ -9,6 +9,7 @@ import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
 import Spin from '../../components/loaders/spin';
+import Recaptcha from '@/components/cloudflare/catpcha';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -19,9 +20,16 @@ export default function ResetPassword() {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
 
   const handleResetPassword = async (event) => {
     event.preventDefault();
+
+    if (!recaptchaToken) {
+      toast.error('Verifica tu captcha');
+      return;
+    }
+
     if (password !== passwordConfirmation) {
       toast.error('Las contraseñas no coinciden.');
       return;
@@ -114,6 +122,8 @@ export default function ResetPassword() {
             </Button>
           }
         />
+
+        <Recaptcha onVerify={setRecaptchaToken} />
 
         {/* Botón */}
         <Button type="submit" className="w-full" disabled={loading}>

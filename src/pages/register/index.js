@@ -8,10 +8,11 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
-import SignSocial from '../login/SignSocial';
 import PhoneInput from '../../components/ui/phone-input';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
+import Recaptcha from '@/components/cloudflare/catpcha';
+
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -34,6 +35,7 @@ export default function SignUp() {
   });
   const [showPasswordConditions, setShowPasswordConditions] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,6 +62,13 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+
+    if (!isCaptchaVerified) {
+      toast.error('Verifica tu captcha');
+      return;
+    }
+
     try {
       const username = generateUsername(formData.email);
       await axios.post(
@@ -200,6 +209,8 @@ export default function SignUp() {
             ))}
           </ul>
         )}
+
+        <Recaptcha onVerify={setIsCaptchaVerified} />
 
         {/* Botón de registro */}
         <Button

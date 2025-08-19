@@ -7,6 +7,7 @@ import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
 import Spin from '../../components/loaders/spin';
+import Recaptcha from '@/components/cloudflare/catpcha';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -14,10 +15,16 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    if (!captchaToken) {
+      toast.error('Verifica tu captcha');
+      return;
+    }
 
     try {
       const response = await fetch(`${strapiUrl}/api/auth/forgot-password`, {
@@ -65,6 +72,8 @@ export default function ForgotPassword() {
           autoComplete="email"
           required
         />
+
+        <Recaptcha onVerify={setCaptchaToken} />
 
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
