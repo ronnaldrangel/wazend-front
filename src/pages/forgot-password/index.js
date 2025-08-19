@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/router';
@@ -7,25 +7,16 @@ import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
 import Spin from '../../components/loaders/spin';
-import TurnstileWidget from '@/components/ui/turnstile';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState('');
   const router = useRouter();
-  const turnstileRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!turnstileToken) {
-      toast.error('Por favor, completa la verificación de seguridad.');
-      return;
-    }
-    
     setIsSubmitting(true);
 
     try {
@@ -35,7 +26,7 @@ export default function ForgotPassword() {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, turnstileToken }),
+        body: JSON.stringify({ email }),
       });
 
       if (response.ok) {
@@ -48,11 +39,6 @@ export default function ForgotPassword() {
     } catch {
       toast.error('Ha ocurrido un error.');
     } finally {
-      // Reset Turnstile on error
-      if (turnstileRef.current) {
-        turnstileRef.current.reset();
-      }
-      setTurnstileToken('');
       setIsSubmitting(false);
     }
   };
@@ -80,22 +66,7 @@ export default function ForgotPassword() {
           required
         />
 
-        {/* Turnstile */}
-        <TurnstileWidget
-          ref={turnstileRef}
-          onVerify={setTurnstileToken}
-          onError={() => {
-            setTurnstileToken('');
-            toast.error('Error en la verificación de seguridad. Inténtalo de nuevo.');
-          }}
-          onExpire={() => {
-            setTurnstileToken('');
-            toast.warning('La verificación de seguridad ha expirado. Por favor, verifica nuevamente.');
-          }}
-          className="flex justify-center"
-        />
-
-        <Button type="submit" className="w-full" disabled={isSubmitting || !turnstileToken}>
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             <>
               <Spin className="mr-2" /> Cargando
