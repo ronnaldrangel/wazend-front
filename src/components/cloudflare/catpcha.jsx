@@ -26,7 +26,6 @@ const Recaptcha = ({ onVerify }) => {
                     // Add error handling to the Turnstile render
                     window.turnstile.render('#turnstile-container', {
                         sitekey: siteKey,
-                        theme: 'light',
                         callback: (token) => {
                             onVerify(token);
                         },

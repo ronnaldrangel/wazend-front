@@ -38,12 +38,13 @@ export default function SignIn() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
     if (!captchaToken) {
       toast.error('Verifica tu captcha');
       return;
     }
+
+    setIsSubmitting(true);
 
     const result = await signIn('credentials', {
       redirect: false,

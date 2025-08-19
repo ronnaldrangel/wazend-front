@@ -61,13 +61,13 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
 
     if (!isCaptchaVerified) {
       toast.error('Verifica tu captcha');
       return;
     }
+
+    setIsSubmitting(true);
 
     try {
       const username = generateUsername(formData.email);
@@ -93,8 +93,9 @@ export default function SignUp() {
         { username, name: formData.name, email: formData.email, phone: formData.phone }
       );
       router.replace('/email-confirmation');
-    } catch {
-      toast.error('Ya existe esa cuenta en nuestro sistema.');
+    } catch(error) {
+      console.error('Error during registration:', error.message || "error en el registro");
+      toast.error('Error during registration:', error.message || "error en el registro");
     } finally {
       setIsSubmitting(false);
     }
