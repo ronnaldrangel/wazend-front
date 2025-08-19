@@ -5,6 +5,7 @@ import { useKeenSlider } from "keen-slider/react";
 import Link from "next/link";
 import "keen-slider/keen-slider.min.css";
 import { Button } from "@/components/ui/button";
+import { Card } from '@/components/ui/card';
 import Alerta from '@/components/alerts/main';
 
 export default function Index() {
@@ -71,7 +72,7 @@ export default function Index() {
             key={store.id}
             className="keen-slider__slide flex justify-center w-full"
           >
-            <div className="flex w-full flex-col gap-4 rounded-lg bg-white p-4 shadow-md">
+            <Card className="flex w-full flex-col gap-4" shadow="md" padding="sm">
               {store.img?.url && (
                 <img
                   src={store.img.url}
@@ -80,10 +81,10 @@ export default function Index() {
                 />
               )}
 
-              <p className="text-xl font-semibold tracking-tight text-gray-950">
+              <p className="text-xl font-semibold tracking-tight text-foreground">
                 {store.title}
               </p>
-              <p className="flex-grow text-base text-gray-600">
+              <p className="flex-grow text-base text-muted-foreground">
                 {store.description}
               </p>
 
@@ -97,7 +98,7 @@ export default function Index() {
                   Ver más
                 </Link>
               </Button>
-            </div>
+            </Card>
           </div>
         ))}
       </div>
@@ -105,12 +106,13 @@ export default function Index() {
       {instanceRef.current && (
         <div className="flex justify-center gap-2 mt-4">
           {stores.map((_, idx) => (
-            <button
+            <Button
               key={idx}
               type="button"
               onClick={() => instanceRef.current.moveToIdx(idx)}
-              className={`h-3 w-3 rounded-full ${currentSlide === idx ? "bg-emerald-600" : "bg-gray-300"
-                }`}
+              variant="pagination"
+              size="pagination"
+              className={currentSlide === idx ? "bg-emerald-600" : "bg-gray-300"}
               aria-label={`Ir a la diapositiva ${idx + 1}`}
             />
           ))}

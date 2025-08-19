@@ -29,13 +29,13 @@ export default function Index() {
       </div>
       
 
-      <div className="mt-6 w-full bg-white shadow-sm border border-gray-100 rounded-lg p-4 flex flex-col md:flex-row justify-between md:items-center gap-3 md:gap-4">
+      <div className="mt-6 w-full bg-card shadow-sm border border-border rounded-lg p-4 flex flex-col md:flex-row justify-between md:items-center gap-3 md:gap-4">
         <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
           <div className="flex items-center gap-2">
-            <HelpCircle className="h-5 w-5 text-gray-500 flex-shrink-0" />
-            <span className="text-gray-700 font-medium text-md md:text-base">¿Necesitas ayuda?</span>
+            <HelpCircle className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+            <span className="text-foreground font-medium text-md md:text-base">¿Necesitas ayuda?</span>
           </div>
-          <span className="text-gray-600 font-normal text-md md:text-base md:ml-0">
+          <span className="text-muted-foreground font-normal text-md md:text-base md:ml-0">
             Aquí puedes consultar la base de conocimientos y ver nuestros tutoriales.
           </span>
         </div>

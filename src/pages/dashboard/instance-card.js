@@ -10,6 +10,8 @@ import {
   ClipboardIcon,
 } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import DeleteButton from './delete-button';
 
 const fetchInstanceData = async (url) => {
@@ -76,7 +78,7 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
 
 
   return (
-    <div className="flex flex-col bg-white rounded-lg shadow-md p-6 gap-4">
+    <Card className="flex flex-col gap-4" shadow="md" padding="md">
       {/* Encabezado */}
       <div className="flex justify-between items-center mb-2">
         <p className="text-lg font-bold">{instanceName}</p>
@@ -84,17 +86,17 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
       </div>
 
       {/* API Key con íconos de ojo y copiar */}
-      <div className="bg-gray-200 p-3 rounded-sm flex items-center justify-between">
-        <p className="text-black text-sm font-mono">
+      <div className="bg-muted p-3 rounded-sm flex items-center justify-between">
+        <p className="text-foreground text-sm font-mono">
           {visibleKey ? instance.token : '********-****-****-****-************'}
         </p>
         <div className="flex space-x-4">
-          <button onClick={toggleKeyVisibility} className="text-gray-500 hover:text-gray-700">
+          <Button onClick={toggleKeyVisibility} variant="iconOnly" size="auto">
             {visibleKey ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
-          </button>
-          <button onClick={copyToClipboard} className="text-gray-500 hover:text-gray-700">
+          </Button>
+          <Button onClick={copyToClipboard} variant="iconOnly" size="auto">
             <ClipboardIcon className="h-5 w-5" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -102,27 +104,27 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
       <div className="mt-6 group block flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <img className="inline-block h-10 w-10 rounded-full bg-gray-200"
+            <img className="inline-block h-10 w-10 rounded-full bg-muted"
               src={instance.profilePicUrl || "/images/WAPP.webp"}
               alt="WhatsApp"
             />
             <div className="ml-3">
-              <p className="text-md font-semibold text-black">{instance.profileName || "Sin nombre"}</p>
-              <p className="text-sm font-base text-gray-500">
+              <p className="text-md font-semibold text-foreground">{instance.profileName || "Sin nombre"}</p>
+              <p className="text-sm font-base text-muted-foreground">
                 {instance.ownerJid ? instance.ownerJid.split('@')[0] : "-"}
               </p>
             </div>
           </div>
           <div className="flex space-x-4">
             <div className="flex flex-col items-center">
-              <UserCircleIcon className="h-6 w-6 text-gray-600" />
-              <p className="text-sm font-base text-gray-600">
+              <UserCircleIcon className="h-6 w-6 text-muted-foreground" />
+              <p className="text-sm font-base text-muted-foreground">
                 {instance._count?.Contact || 0}
               </p>
             </div>
             <div className="flex flex-col items-center">
-              <ChatBubbleOvalLeftIcon className="h-6 w-6 text-gray-600" />
-              <p className="text-sm font-base text-gray-600">
+              <ChatBubbleOvalLeftIcon className="h-6 w-6 text-muted-foreground" />
+              <p className="text-sm font-base text-muted-foreground">
                 {instance._count?.Message || 0}
               </p>
             </div>
@@ -155,7 +157,7 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
           {/* Botón de ajustes con Link funcional */}
           {isActive ? (
             <Link href={isTrial ? `/instances/${documentId}?trial=true` : `/instances/${documentId}`} passHref>
-              <button className="hover:shadow-lg transition-shadow duration-300 border border-gray-200 bg-white text-slate-900 px-6 py-2 rounded-lg text-base font-semibold shadow-md flex items-center justify-center space-x-2">
+              <button className="hover:shadow-lg transition-shadow duration-300 border border-border bg-card text-card-foreground px-6 py-2 rounded-lg text-base font-semibold shadow-md flex items-center justify-center space-x-2">
                 <Cog6ToothIcon className="h-6 w-6" />
                 <span>Ajustes</span>
               </button>
@@ -178,7 +180,7 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
 
       </div>
 
-    </div>
+    </Card>
   );
 };
 

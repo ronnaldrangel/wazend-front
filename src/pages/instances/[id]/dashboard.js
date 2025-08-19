@@ -10,6 +10,7 @@ import ImagenQr from '../ImagenQr';
 import ButtonControl from '../ButtonControl';
 import WebhookControl from '../WebhookControl';
 import Preload from '../../../components/loaders/skeleton';
+import { Card } from '@/components/ui/card';
 
 
 // Función fetcher que usa axios y pasa instanceId como parámetro
@@ -54,7 +55,8 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
         {/* Seccion de conexion*/}
 
         {instance.connectionStatus === 'open' && (
-          <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
+          <Card shadow="custom" padding="md" className="border border-border shadow-[0_0_5px_rgba(0,0,0,0.1)]" asChild>
+            <section>
             <h2 className='mb-4 text-xl font-semibold'>Tu número de WhatsApp conectado</h2>
             <div className="group block flex-shrink-0">
               <div className="flex items-center">
@@ -66,8 +68,8 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
                   />
                 </div>
                 <div className="ml-3">
-                  <p className="text-md font-semibold text-black">{instance.profileName}</p>
-                  <p className="text-sm font-base text-gray-500">{instance.ownerJid}</p>
+                  <p className="text-md font-semibold text-foreground">{instance.profileName}</p>
+        <p className="text-sm font-base text-muted-foreground">{instance.ownerJid}</p>
                 </div>
               </div>
             </div>
@@ -76,17 +78,19 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
               <ButtonControl instanceName={instance.name} serverUrl={serverUrl} />
             </div>
 
-          </section>
+            </section>
+          </Card>
         )}
 
         {instance.connectionStatus !== 'open' && (
-          <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
+          <Card shadow="custom" padding="md" className="border border-border shadow-[0_0_5px_rgba(0,0,0,0.1)]" asChild>
+            <section>
             <h2 className='mb-4 text-xl font-semibold'>Conecta tu WhatsApp</h2>
             <p className='mb-1'>Escanee el código QR para conectar su número de teléfono de WhatsApp con esta instancia.</p>
             <p className='mb-8'>Después de eso, podrá enviar y recibir mensajes de WhatsApp.</p>
             <div className='flex flex-col md:flex-row md:space-x-4'>
 
-              <div className='w-full md:w-[500px] h-[280px] border-2 border-gray-200 p-2 rounded-lg overflow-hidden'>
+              <div className='w-full md:w-[500px] h-[280px] border-2 border-border p-2 rounded-lg overflow-hidden'>
                 <Image
                   src='/images/scan-wa.webp'
                   alt='Hand holding a phone with WhatsApp'
@@ -117,20 +121,24 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
               <ButtonControl instanceName={instance.name} serverUrl={serverUrl} />
             </div>
 
-          </section>
+            </section>
+          </Card>
         )}
 
-        <section className='rounded-lg bg-white p-6 shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
-          <h3 className='text-sm font-base'>URL del servidor</h3>
-          <p className='text-lg font-medium text-green-600'>{serverUrl}</p>
-        </section>
+        <Card shadow="custom" padding="md" className="border border-border shadow-[0_0_5px_rgba(0,0,0,0.1)]" asChild>
+          <section>
+            <h3 className='text-sm font-base'>URL del servidor</h3>
+            <p className='text-lg font-medium text-green-600'>{serverUrl}</p>
+          </section>
+        </Card>
 
 
-        <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
+        <Card shadow="custom" className="border border-border shadow-[0_0_5px_rgba(0,0,0,0.1)]" asChild>
+          <section>
           <div className='flex flex-col md:flex-row'>
 
             {/* Primera columna */}
-            <div className='flex-1 border-b border-gray-200 p-4 md:border-b-0 md:border-r'>
+            <div className='flex-1 border-b border-border p-4 md:border-b-0 md:border-r'>
               <div className='flex-1 flex-col p-4'>
 
                 <div className='flex align-center justify-between'>
@@ -182,7 +190,7 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
             </div>
 
             {/* Segunda columna */}
-            <div className='flex-1 border-b border-gray-200 p-4 md:border-b-0 md:border-r'>
+            <div className='flex-1 border-b border-border p-4 md:border-b-0 md:border-r'>
               <div className='flex-1 flex-col p-4'>
 
                 <div className='mb-8 md:mb-11'>
@@ -196,16 +204,16 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
                       className="focus:outline-none"
                     >
                       {isTokenVisible ? (
-                        <EyeSlashIcon className="h-5 w-5 text-gray-900" />
+                        <EyeSlashIcon className="h-5 w-5 text-foreground" />
                       ) : (
-                        <EyeIcon className="h-5 w-5 text-gray-800" />
+                        <EyeIcon className="h-5 w-5 text-foreground" />
                       )}
                     </button>
                     <button
                       onClick={handleCopy}
                       className="focus:outline-none"
                     >
-                      <ClipboardIcon className="h-5 w-5 text-gray-800" />
+                      <ClipboardIcon className="h-5 w-5 text-foreground" />
                     </button>
                   </div>
                 </div>
@@ -233,13 +241,15 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
             {/* Final columna */}
 
           </div>
-        </section>
+            </section>
+        </Card>
 
-        <section className='rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)]'>
+        <Card shadow="custom" className="border border-border shadow-[0_0_5px_rgba(0,0,0,0.1)]" asChild>
+          <section>
           <div className='flex flex-col md:flex-row'>
 
             {/* Contactos */}
-            <div className='flex-1 border-b border-gray-200 p-4 md:border-b-0 md:border-r'>
+            <div className='flex-1 border-b border-border p-4 md:border-b-0 md:border-r'>
               <div className='flex-1 flex-col p-4'>
                 <div className="flex items-center space-x-1">
                   <UserIcon className="h-5 w-5 text-blue-500" />
@@ -261,7 +271,7 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
             </div>
 
             {/* Mensajes */}
-            <div className='flex-1 border-b border-gray-200 p-4 md:border-b-0'>
+            <div className='flex-1 border-b border-border p-4 md:border-b-0'>
               <div className='flex-1 flex-col p-4'>
                 <div className="flex items-center space-x-2">
                   <EnvelopeIcon className="h-5 w-5 text-blue-500" />
@@ -272,7 +282,8 @@ const LayoutInstance = ({ instanceId, serverUrl }) => {
             </div>
 
           </div>
-        </section>
+            </section>
+        </Card>
 
 
         {/* Seccion de ajustes*/}

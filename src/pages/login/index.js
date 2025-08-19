@@ -9,11 +9,13 @@ import Spin from '../../components/loaders/spin';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import SignSocial from './SignSocial';
 import { Button, buttonVariants } from '@/components/ui/button';
+import FormInput from '@/components/ui/form-input';
 
 export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -72,32 +74,29 @@ export default function SignIn() {
 
   return (
     <Layout>
-      <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+      <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-foreground">
         Iniciar sesión 👋
       </h2>
 
       <SignSocial />
       <form className="mt-6 space-y-6" onSubmit={onSubmit}>
         {/* Email */}
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-            Correo electrónico
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            placeholder="tu@ejemplo.com"
-            required
-            className="mt-2 block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-border placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-          />
-        </div>
+        <FormInput
+          id="email"
+          name="email"
+          type="email"
+          label="Correo electrónico"
+          placeholder="tu@ejemplo.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="email"
+          required
+        />
 
         {/* Password */}
         <div>
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="password" className="block text-sm font-medium leading-6 text-foreground">
               Contraseña
             </label>
             <Link
@@ -107,30 +106,32 @@ export default function SignIn() {
               ¿Has olvidado tu contraseña?
             </Link>
           </div>
-          <div className="relative mt-2">
-            <input
-              id="password"
-              name="password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              minLength={6}
-              required
-              className="block w-full rounded-md border-0 py-1.5 pr-10 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-border placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-            />
-            <button
-              type="button"
-              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600"
-              onClick={() => setShowPassword((v) => !v)}
-            >
-              {showPassword ? (
-                <EyeSlashIcon className="h-5 w-5" />
-              ) : (
-                <EyeIcon className="h-5 w-5" />
-              )}
-            </button>
-          </div>
+          <FormInput
+            id="password"
+            name="password"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            minLength={6}
+            required
+            className="pr-10"
+            rightElement={
+              <Button
+                type="button"
+                variant="iconOnly"
+                size="auto"
+                className="absolute inset-y-0 right-0 flex items-center px-3"
+                onClick={() => setShowPassword((v) => !v)}
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="h-5 w-5" />
+                ) : (
+                  <EyeIcon className="h-5 w-5" />
+                )}
+              </Button>
+            }
+          />
         </div>
 
         {/* Submit */}
@@ -145,7 +146,7 @@ export default function SignIn() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-gray-500">
+      <p className="mt-6 text-center text-sm text-muted-foreground">
         ¿No tienes una cuenta?{' '}
         <Link href="/register" className={buttonVariants({ variant: 'link', size: 'md' })}>
           Regístrate ahora

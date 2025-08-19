@@ -19,12 +19,30 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        whatsapp:
+          "bg-[#23cc5b] text-white shadow-lg hover:bg-[#1ea84a] transition-all duration-200",
+        pagination:
+          "h-3 w-3 rounded-full transition-colors duration-200",
+        iconOnly:
+          "text-muted-foreground hover:text-foreground transition-colors duration-200 p-0 h-auto w-auto bg-transparent shadow-none",
+        success:
+          "bg-green-600 text-white shadow-sm hover:bg-green-700",
+        warning:
+          "bg-yellow-600 text-white shadow-sm hover:bg-yellow-700",
+        info:
+          "bg-blue-600 text-white shadow-sm hover:bg-blue-700",
       },
       size: {
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
+        xl: "h-12 rounded-md px-10 text-base",
         icon: "h-9 w-9",
+        iconSm: "h-6 w-6",
+        iconLg: "h-12 w-12",
+        floating: "h-14 w-14 rounded-full fixed bottom-4 right-4 shadow-lg",
+        pagination: "h-3 w-3",
+        auto: "h-auto w-auto p-0",
       },
     },
     defaultVariants: {

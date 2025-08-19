@@ -26,12 +26,12 @@ function statusClasses(status: string) {
   const base = 'inline-block rounded-full px-2 py-[2px] text-xs font-semibold capitalize'
   return (
     {
-      active: `${base} bg-green-100 text-green-700`,
-      pending: `${base} bg-yellow-100 text-yellow-700`,
-      'on-hold': `${base} bg-yellow-100 text-yellow-700`,
-      cancelled: `${base} bg-red-100 text-red-700`,
-      expired: `${base} bg-gray-200 text-gray-600`,
-    }[status as keyof ReturnType<typeof Object>] ?? `${base} bg-gray-100 text-gray-700`
+      active: `${base} bg-green-500/10 text-green-600 dark:text-green-400`,
+      pending: `${base} bg-yellow-500/10 text-yellow-600 dark:text-yellow-400`,
+      'on-hold': `${base} bg-yellow-500/10 text-yellow-600 dark:text-yellow-400`,
+      cancelled: `${base} bg-destructive/10 text-destructive`,
+      expired: `${base} bg-muted text-muted-foreground`,
+    }[status as keyof ReturnType<typeof Object>] ?? `${base} bg-muted text-muted-foreground`
   )
 }
 
@@ -84,7 +84,7 @@ export default function SubscriptionsTableSoporte() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-card rounded-lg shadow-md p-4 border border-border">
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>

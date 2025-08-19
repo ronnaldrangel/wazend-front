@@ -2,13 +2,14 @@
 import React from 'react';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
+import { Card } from '@/components/ui/card';
 import CheckoutButton from '../billing/checkout';
 
 export default function ReferralProgram() {
   return (
     <div>
         {/* Steps Container */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <Card shadow="md" padding="md" className="mb-6 border border-border">
           <div className="flex flex-col md:flex-row justify-between">
             {/* Step 1 */}
             <div className="flex-1 min-w-[250px] text-center p-4">
@@ -23,13 +24,13 @@ export default function ReferralProgram() {
                 />
               </div>
               {/* Número abajo */}
-              <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full text-gray-600 mb-4">
+              <div className="inline-flex items-center justify-center w-8 h-8 bg-muted rounded-full text-muted-foreground mb-4">
                 1
               </div>
-              <h3 className="font-bold text-lg mb-2 text-gray-700">
+              <h3 className="font-bold text-lg mb-2 text-foreground">
                 Invita a tu audiencia
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Comparte tu enlace de referencia único y deja que tus amigos o audiencia se unan al mundo y confiabilidad de {process.env.NEXT_PUBLIC_APP_NAME || 'My App'}.
               </p>
             </div>
@@ -47,13 +48,13 @@ export default function ReferralProgram() {
                 />
               </div>
               {/* Número abajo */}
-              <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full text-gray-600 mb-4">
+              <div className="inline-flex items-center justify-center w-8 h-8 bg-muted rounded-full text-muted-foreground mb-4">
                 2
               </div>
-              <h3 className="font-bold text-lg mb-2 text-gray-700">
+              <h3 className="font-bold text-lg mb-2 text-foreground">
                 Tus amigos/audiencia aceptan
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Ellos se registran, comienzan a usar {process.env.NEXT_PUBLIC_APP_NAME || 'My App'} y experimentan nuestra magia.
               </p>
             </div>
@@ -71,18 +72,18 @@ export default function ReferralProgram() {
                 />
               </div>
               {/* Número abajo */}
-              <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full text-gray-600 mb-4">
+              <div className="inline-flex items-center justify-center w-8 h-8 bg-muted rounded-full text-muted-foreground mb-4">
                 3
               </div>
-              <h3 className="font-bold text-lg mb-2 text-gray-700">
+              <h3 className="font-bold text-lg mb-2 text-foreground">
                 Recibe tu pago
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Cuando realizan un pago verificado, ganas 30% fácil y rápido.
               </p>
             </div>
           </div>
-        </div>
+        </Card>
     </div>
   );
 }

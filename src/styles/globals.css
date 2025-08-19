@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0, 0%, 98%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -41,37 +41,37 @@
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
+    --background: 0 0% 7.5%; /* #121314 */
     --foreground: 0 0% 95%;
-    --card: 24 9.8% 10%;
+    --card: 0 0% 12.5%; /* #202020 */
     --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
+    --popover: 0 0% 7.5%; /* Mismo que background */
     --popover-foreground: 0 0% 95%;
     --primary: 142.1 70.6% 45.3%;
     --primary-foreground: 144.9 80.4% 10%;
-    --secondary: 240 3.7% 15.9%;
+    --secondary: 0 0% 12%; /* Basado en #121314 pero más claro */
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 12 6.5% 15.1%;
+    --muted: 0 0% 11%; /* Ligeramente más claro que el fondo */
+    --muted-foreground: 0 0% 64.9%;
+    --accent: 0 0% 12%; /* Basado en #121314 pero más claro */
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    --border: 0 0% 15%; /* Bordes más visibles sobre #121314 */
+    --input: 0 0% 12%; /* Inputs ligeramente más claros */
     --ring: 142.4 71.8% 29.2%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-background: 0 0% 7.5%; /* Mismo que background #121314 */
+    --sidebar-foreground: 0 0% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-accent: 0 0% 12%; /* Basado en #121314 pero más claro */
+    --sidebar-accent-foreground: 0 0% 95.9%;
+    --sidebar-border: 0 0% 15%; /* Bordes más visibles */
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }

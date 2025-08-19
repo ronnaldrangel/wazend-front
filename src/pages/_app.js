@@ -12,27 +12,25 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       <Head>
         <title>{process.env.NEXT_PUBLIC_APP_NAME || 'My App'}</title>
       </Head>
-      {/* <ThemeProvider
+      <ThemeProvider
         attribute="class"
-        defaultTheme="light"
+        defaultTheme="system"
         enableSystem
-        // defaultTheme="light"
-        // enableSystem={false}
-        disableTransitionOnChange> */}
-      <SessionProvider session={session}>
-        <ProgressBar
-          height="4px"
-          color="#059669"
-          options={{ showSpinner: false }}
-          shallowRouting
-        />
-        <Toaster closeButton richColors position="top-right" />
+        disableTransitionOnChange>
+        <SessionProvider session={session}>
+          <ProgressBar
+            height="4px"
+            color="#059669"
+            options={{ showSpinner: false }}
+            shallowRouting
+          />
+          <Toaster closeButton richColors position="top-right" />
 
-        {/* <SessionChecker /> */}
-        
-        <Component {...pageProps} />
-      </SessionProvider>
-      {/* </ThemeProvider> */}
+          {/* <SessionChecker /> */}
+          
+          <Component {...pageProps} />
+        </SessionProvider>
+      </ThemeProvider>
     </>
   );
 }

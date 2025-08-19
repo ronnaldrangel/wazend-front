@@ -3,6 +3,7 @@ import { ClipboardIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { Button } from '@/components/ui/button';
 
 // Componente para mostrar una lista de grupos obtenidos desde una fuente externa
 export default function Index({ groupList, loading, documentId }) {
@@ -63,14 +64,15 @@ export default function Index({ groupList, loading, documentId }) {
         <>
             {/* Botón para actualizar la lista de grupos */}
             <div className="flex justify-end mb-4">
-                <button
+                <Button
                     onClick={handleRefreshGroups}
                     disabled={isUpdating}
-                    className={`flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm rounded-lg hover:bg-emerald-700 transition-colors ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    variant="default"
+                    className="flex items-center gap-2"
                 >
-                    <ArrowPathIcon className="h-4 w-4" />
+                    <ArrowPathIcon className={`h-4 w-4 ${isUpdating ? 'animate-spin' : ''}`} />
                     {isUpdating ? 'Actualizando...' : 'Actualizar grupos'}
-                </button>
+                </Button>
             </div>
 
             {/* Mostrar mensaje si la lista filtrada está vacía o no definida */}
@@ -84,14 +86,14 @@ export default function Index({ groupList, loading, documentId }) {
                 {filteredGroups.map((item, index) => (
                     <div
                         key={index}
-                        className="bg-white shadow rounded-lg p-6 transition-shadow duration-200"
+                        className="bg-card border border-border shadow rounded-lg p-6 transition-shadow duration-200"
                     >
                         {/* Mostrar el ID del grupo con icono de copiar */}
-                        <div className="flex items-center justify-between text-sm text-gray-600 mb-6">
+                        <div className="flex items-center justify-between text-sm text-muted-foreground mb-6">
                             <span className="line-clamp-1">ID: {item.id}</span>
                             <ClipboardIcon
                                 onClick={() => copyToClipboard(item.id)}
-                                className="h-5 w-5 cursor-pointer hover:text-gray-900"
+                                className="h-5 w-5 cursor-pointer hover:text-foreground"
                             />
                         </div>
                         <div className="flex items-center mb-2">
@@ -105,8 +107,8 @@ export default function Index({ groupList, loading, documentId }) {
                                     className="h-10 w-10 mr-4 object-cover rounded"
                                 />
                             ) : (
-                                <div className="h-10 w-10 mr-4 bg-gray-300 rounded flex items-center justify-center">
-                                    <span className="text-xl font-bold text-gray-600">
+                                <div className="h-10 w-10 mr-4 bg-muted rounded flex items-center justify-center">
+                                    <span className="text-xl font-bold text-muted-foreground">
                                         {item.subject[0]}
                                     </span>
                                 </div>
@@ -115,12 +117,12 @@ export default function Index({ groupList, loading, documentId }) {
                                 {/* Mostrar nombre del grupo */}
                                 <h3 className="text-base font-semibold">{item.subject}</h3>
                                 {/* Mostrar fecha de creación */}
-                                <p className="text-xs text-gray-400">Creado: {formatDate(item.creation)}</p>
+                                <p className="text-xs text-muted-foreground">Creado: {formatDate(item.creation)}</p>
                             </div>
                         </div>
-                        <hr className="border-t border-gray-100 mb-4" />
+                        <hr className="border-t border-border mb-4" />
                         {/* Descripción del grupo, si existe */}
-                        {item.desc && <p className="text-sm text-gray-600 line-clamp-3">{item.desc}</p>}
+                        {item.desc && <p className="text-sm text-muted-foreground line-clamp-3">{item.desc}</p>}
                     </div>
                 ))}
             </div>

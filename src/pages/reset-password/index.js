@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
+import FormInput from '@/components/ui/form-input';
 import Spin from '../../components/loaders/spin';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -57,25 +58,23 @@ export default function ResetPassword() {
 
       <form className="mt-8 space-y-6" onSubmit={handleResetPassword}>
         {/* Contraseña */}
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-            Contraseña
-          </label>
-          <div className="relative mt-2">
-            <input
-              id="password"
-              name="password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              minLength={6}
-              required
-              className="block w-full rounded-md border-0 py-1.5 pr-10 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-border placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-            />
-            <button
+        <FormInput
+          id="password"
+          name="password"
+          type={showPassword ? 'text' : 'password'}
+          label="Contraseña"
+          placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          minLength={6}
+          required
+          className="pr-10"
+          rightElement={
+            <Button
               type="button"
-              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600"
+              variant="iconOnly"
+              size="auto"
+              className="absolute inset-y-0 right-0 flex items-center px-3"
               onClick={toggleShow}
             >
               {showPassword ? (
@@ -83,30 +82,28 @@ export default function ResetPassword() {
               ) : (
                 <EyeIcon className="h-5 w-5" />
               )}
-            </button>
-          </div>
-        </div>
+            </Button>
+          }
+        />
 
         {/* Confirmar contraseña */}
-        <div>
-          <label htmlFor="passwordConfirmation" className="block text-sm font-medium leading-6 text-gray-900">
-            Confirmar contraseña
-          </label>
-          <div className="relative mt-2">
-            <input
-              id="passwordConfirmation"
-              name="passwordConfirmation"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="••••••••"
-              value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
-              minLength={6}
-              required
-              className="block w-full rounded-md border-0 py-1.5 pr-10 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-border placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-            />
-            <button
+        <FormInput
+          id="passwordConfirmation"
+          name="passwordConfirmation"
+          type={showPassword ? 'text' : 'password'}
+          label="Confirmar contraseña"
+          placeholder="••••••••"
+          value={passwordConfirmation}
+          onChange={(e) => setPasswordConfirmation(e.target.value)}
+          minLength={6}
+          required
+          className="pr-10"
+          rightElement={
+            <Button
               type="button"
-              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600"
+              variant="iconOnly"
+              size="auto"
+              className="absolute inset-y-0 right-0 flex items-center px-3"
               onClick={toggleShow}
             >
               {showPassword ? (
@@ -114,9 +111,9 @@ export default function ResetPassword() {
               ) : (
                 <EyeIcon className="h-5 w-5" />
               )}
-            </button>
-          </div>
-        </div>
+            </Button>
+          }
+        />
 
         {/* Botón */}
         <Button type="submit" className="w-full" disabled={loading}>

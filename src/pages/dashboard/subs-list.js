@@ -14,6 +14,7 @@ import NoInstances from './no-instances';
 import { ClockIcon, ServerIcon } from '@heroicons/react/24/outline';
 import Spin from '@/components/loaders/spin';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import Alerta from '@/components/alerts/main';
 
 const fetcher = async (url, jwt) => {
@@ -150,17 +151,17 @@ const FetchStrapi = () => {
       {/* Filtro para mostrar/ocultar suscripciones canceladas */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <AdjustmentsHorizontalIcon className="w-4 h-4 text-gray-600" />
-          <span className="font-sm text-gray-700">Filtros</span>
+          <AdjustmentsHorizontalIcon className="w-4 h-4 text-muted-foreground" />
+          <span className="font-sm text-foreground">Filtros</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Mostrar todas</span>
+          <span className="text-sm text-muted-foreground">Mostrar todas</span>
           <button
             onClick={() => setShowCancelled(!showCancelled)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${showCancelled ? 'bg-emerald-600' : 'bg-gray-200'}`}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${showCancelled ? 'bg-emerald-600' : 'bg-muted'}`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showCancelled ? 'translate-x-6' : 'translate-x-1'}`}
+              className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${showCancelled ? 'translate-x-6' : 'translate-x-1'}`}
             />
           </button>
         </div>
@@ -175,13 +176,13 @@ const FetchStrapi = () => {
         .map((sub, index) => (
           <div key={index}>
 
-            <div className="p-4 bg-white rounded-lg shadow-md mb-6 relative overflow-hidden">
+            <Card className="mb-6 relative overflow-hidden" shadow="md" padding="sm">
               {/* Etiqueta de estado en la parte superior */}
 
               <div className="flex flex-row justify-between items-start gap-2">
 
                 <div>
-                  <p className="text-lg font-semibold text-gray-800 mt-1">
+                  <p className="text-lg font-semibold text-foreground mt-1">
                     Suscripción N.º{sub.id_woo}
                   </p>
                 </div>
@@ -206,7 +207,7 @@ const FetchStrapi = () => {
 
               <div className="mt-2 flex flex-row items-center gap-2">
 
-                <div className="text-sm text-gray-600 font-medium">
+                <div className="text-sm text-muted-foreground font-medium">
                   Próximo pago:{" "}
                   <span>
                     {sub.next_payment_date_gmt
@@ -215,11 +216,12 @@ const FetchStrapi = () => {
                   </span>
                 </div>
 
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-muted-foreground">
                   <p>- Instancias: <span className="font-medium">{sub.instances?.length || 0} / {sub.instances_limit || "∞"}</span></p>
                 </div>
+
               </div>
-            </div>
+            </Card>
 
             <div className="mt-4 mb-8">
               <div className="mt-4">
@@ -238,17 +240,18 @@ const FetchStrapi = () => {
 
                   {/* Tarjeta para crear nueva instancia */}
                   {sub.status_woo === "active" && (!sub.instances_limit || (sub.instances?.length || 0) < sub.instances_limit) && (
-                    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center justify-center text-center space-y-4 py-6">
+                    <Card className="flex flex-col items-center justify-center text-center space-y-4 py-6 border-2 border-dashed border-border" shadow="md" padding="md">
 
-                      <ServerIcon className="h-16 w-16 text-gray-400" />
-                      <h3 className="text-lg font-medium text-gray-900">No tiene instancias activas</h3>
+                      <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
+                        <ServerIcon className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                      <h3 className="text-lg font-medium text-foreground">No tiene instancias activas</h3>
 
-                      <p className="text-gray-500 max-w-md">
+                      <p className="text-muted-foreground max-w-md">
                         Puede crear una instancia para comenzar a utilizar nuestro servicio.
                       </p>
 
                       <Button
-                        className="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                         onClick={() => handleCreateInstance(sub.id, email, mutate, setCreatingInstanceForSubscription)}
                         disabled={creatingInstanceForSubscription === sub.id}
                       >
@@ -261,7 +264,7 @@ const FetchStrapi = () => {
                           <span>Crear instancia</span>
                         )}
                       </Button>
-                    </div>
+                    </Card>
                   )}
                 </div>
 
@@ -281,7 +284,7 @@ const FetchStrapi = () => {
 
                 {/* Mensaje cuando la suscripción no está activa */}
                 {sub.instances?.length === 0 && sub.status_woo !== "active" && (
-                  <p className="mt-6 text-sm text-gray-600 font-medium text-center">
+                  <p className="mt-6 text-sm text-muted-foreground font-medium text-center">
                     No se pueden crear instancias con una suscripción {getStatusText(sub.status_woo).toLowerCase()}.
                   </p>
                 )}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const ActionButtons = () => {
   const [whatsAppUrl, setWhatsAppUrl] = useState("");
@@ -29,10 +30,10 @@ const ActionButtons = () => {
         href={whatsAppUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-4 right-4 bg-[#23cc5b] text-white p-2.5 rounded-full shadow-lg"
+        className="fixed bottom-4 right-4 h-16 w-16 bg-[#23cc5b] hover:bg-[#1ea84a] rounded-full flex items-center justify-center shadow-lg transition-all duration-200 z-50"
       >
         <svg
-          className="h-10 w-10"
+          className="h-10 w-10 text-white"
           fill="currentColor"
           viewBox="0 0 308 308"
         >

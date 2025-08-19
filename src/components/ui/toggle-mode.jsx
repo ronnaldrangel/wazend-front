@@ -11,17 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function MyComponent() {
+export default function ThemeToggle() {
   const { setTheme } = useTheme();
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-200"
+            className="p-2 rounded-full hover:bg-secondary dark:hover:bg-accent transition duration-200 border border-border"
           >
-            <Sun className="h-5 w-5 transition-all dark:hidden" />
-            <Moon className="hidden h-5 w-5 transition-all dark:block" />
+            <Sun className="h-5 w-5 transition-all dark:hidden text-foreground" />
+            <Moon className="hidden h-5 w-5 transition-all dark:block text-foreground" />
             <span className="sr-only">Toggle theme</span>
           </button>
         </DropdownMenuTrigger>

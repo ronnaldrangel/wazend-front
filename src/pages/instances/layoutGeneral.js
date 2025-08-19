@@ -31,9 +31,9 @@ export default function Profile({ children }) {
                   href={item.path}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full px-2 py-2.5 text-left text-sm font-medium rounded-md flex items-center gap-x-2 transition-colors duration-200 ease-in-out border-l-0 text-gray-700 hover:bg-gray-200 hover:underline border-transparent"
+                  className="w-full px-2 py-2.5 text-left text-sm font-medium rounded-md flex items-center gap-x-2 transition-colors duration-200 ease-in-out border-l-0 text-muted-foreground hover:bg-muted hover:underline border-transparent"
                 >
-                  <item.icon className="h-5 w-5 text-gray-700" strokeWidth="2" />
+                  <item.icon className="h-5 w-5 text-muted-foreground" strokeWidth="2" />
                   {item.name}
                 </a>
               ) : (
@@ -41,11 +41,11 @@ export default function Profile({ children }) {
                   key={item.name}
                   onClick={() => router.push(item.path)}
                   className={`w-full px-2 py-2.5 text-left text-sm font-medium rounded-md flex items-center gap-x-2 transition-colors duration-200 ease-in-out border-l-0 ${currentRoute === item.path
-                    ? 'bg-gray-300 text-emerald-700 border-emerald-700'
-                    : 'text-gray-700 hover:bg-gray-200 hover:underline border-transparent'
+                    ? 'bg-muted text-emerald-700 border-emerald-700'
+                    : 'text-muted-foreground hover:bg-muted hover:underline border-transparent'
                     }`}
                 >
-                  <item.icon className={`h-5 w-5 ${currentRoute === item.path ? 'text-emerald-700' : 'text-gray-700'}`} strokeWidth="2" />
+                  <item.icon className={`h-5 w-5 ${currentRoute === item.path ? 'text-emerald-700' : 'text-muted-foreground'}`} strokeWidth="2" />
                   {item.name}
                 </button>
               )

@@ -3,11 +3,15 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 import ToggleMode from '../ui/toggle-mode';
 
 const Layout = ({ children }) => {
+  const { theme } = useTheme();
+  
   return (
-    <div className="h-screen bg-white dark:bg-zinc-900">
+    <div className="h-screen bg-background">
+
       <div className="flex min-h-full flex-1">
 
       <div className="relative hidden w-1/2 lg:block">
@@ -24,9 +28,18 @@ const Layout = ({ children }) => {
           <div className="mx-auto w-full max-w-sm lg:w-96">
 
             <Link href="/">
+              {/* Logo claro - visible en modo claro */}
               <Image
-                className="h-8 w-auto"
+                className="block h-8 w-auto dark:hidden"
                 src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
+                alt="Logo"
+                width={236}
+                height={60}
+              />
+              {/* Logo oscuro - visible en modo oscuro */}
+              <Image
+                className="hidden h-8 w-auto dark:block"
+                src={process.env.NEXT_PUBLIC_LOGO_DARK || '/images/logo-dark.svg'}
                 alt="Logo"
                 width={236}
                 height={60}

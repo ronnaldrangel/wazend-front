@@ -17,21 +17,7 @@ export default function Layout({ children, title, cta }) {
       </div>
       {/* ──────────────────────────────────────────────────────────────── */}
 
-      {/* {title && (
-        <header className="bg-white shadow-sm shadow-gray-300">
-          <div className="mx-auto max-w-7xl py-5 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-            <h1 className="text-xl font-semibold tracking-tight text-gray-900">
-              {title}
-            </h1>
-            <Button asChild variant="default" size="sm">
-              <Link href="/upgrade/" className="inline-flex items-center">
-                <PlusIcon className="h-5 w-auto" aria-hidden="true" />
-                <span className="text-sm font-medium">Contratar ahora</span>
-              </Link>
-            </Button>
-          </div>
-        </header>
-      )} */}
+
 
       <div >
         <div className='mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8'>
@@ -42,7 +28,7 @@ export default function Layout({ children, title, cta }) {
       {title && (
         <header className=''>
           <div className="mx-auto max-w-7xl py-0 px-4 sm:px-6 lg:px-8 flex items-center justify-between ">
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">
               {title}
             </h1>
             {cta && (
@@ -64,17 +50,16 @@ export default function Layout({ children, title, cta }) {
         <WhatsAppButton />
       </main>
 
-      {/* FOOTER NUEVO */}
-      {/* <footer className="bg-gray-50 border-t border-gray-200"></footer> */}
+      {/* FOOTER */}
       <footer>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between text-sm text-muted-foreground">
           <LanguageSwitcher />
 
           <div className="flex gap-4 mt-4 sm:mt-0">
-            <Link href={`${(process.env.NEXT_PUBLIC_URL)}/privacy-policy/`} className="hover:text-gray-800 underline-offset-4 hover:underline">
+            <Link href={`${(process.env.NEXT_PUBLIC_URL)}/privacy-policy/`} className="hover:text-foreground underline-offset-4 hover:underline">
               Privacidad
             </Link>
-            <Link href={`${(process.env.NEXT_PUBLIC_URL)}/terms-of-service/`} className="hover:text-gray-800 underline-offset-4 hover:underline">
+            <Link href={`${(process.env.NEXT_PUBLIC_URL)}/terms-of-service/`} className="hover:text-foreground underline-offset-4 hover:underline">
               Términos
             </Link>
           </div>

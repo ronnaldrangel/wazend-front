@@ -4,9 +4,11 @@ import { Bars3Icon, XMarkIcon, ArrowTopRightOnSquareIcon } from '@heroicons/reac
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
+import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import LogoGravatar from '@/components/layout/logo'
-import ToggleMode from '../ui/toggle-mode'
+import ThemeToggle from '../ui/toggle-mode'
+import { Button } from '@/components/ui/button'
 
 const navigation = [
   { name: 'Prueba gratis', href: '/trial', trial: true },
@@ -19,7 +21,7 @@ const navigation = [
 const userNavigation = [
   { name: 'Tu perfil', href: '/profile' },
   { name: 'Ayuda', href: 'https://docs.wazend.net/', external: true },
-  { name: 'Contactenos', href: 'https://wazend.net/contact', external: true  },
+  { name: 'Contactenos', href: 'https://wazend.net/contact', external: true },
   { name: 'Cerrar sesión', href: '/', signOut: true },
 ]
 
@@ -31,6 +33,7 @@ export default function Navbar() {
   const router = useRouter()
   const [currentPath, setCurrentPath] = useState(router.pathname)
   const { data: session } = useSession()
+  const { theme } = useTheme()
 
   useEffect(() => {
     const handleRouteChange = (url) => setCurrentPath(url)
@@ -43,7 +46,7 @@ export default function Navbar() {
   }
 
   return (
-    <Disclosure as="nav" className="bg-white border-b border-gray-200 relative z-10">
+    <Disclosure as="nav" className="bg-background border-b border-border relative z-10">
       {({ open }) => (
         <>
           {/* Desktop nav */}
@@ -53,16 +56,18 @@ export default function Navbar() {
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center">
                   <Link href="/">
+                    {/* Logo claro - visible en modo claro */}
                     <Image
-                      className="block h-7 w-auto lg:hidden"
+                      className="block h-7 w-auto dark:hidden"
                       src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
                       alt="Logo"
                       width={236}
                       height={60}
                     />
+                    {/* Logo oscuro - visible en modo oscuro */}
                     <Image
-                      className="hidden h-7 w-auto lg:block"
-                      src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
+                      className="hidden h-7 w-auto dark:block"
+                      src={process.env.NEXT_PUBLIC_LOGO_DARK || '/images/logo-dark.svg'}
                       alt="Logo"
                       width={236}
                       height={60}
@@ -71,22 +76,34 @@ export default function Navbar() {
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        currentPath === item.href
-                          ? 'border-primary text-gray-900'
-                          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                        'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium'
-                      )}
-                      aria-current={currentPath === item.href ? 'page' : undefined}
-                      target={item.external ? '_blank' : undefined}
-                    >
-                      <span className={item.trial ? 'bg-primary text-white px-2 py-1 rounded-lg' : ''}>
+                    item.trial ? (
+                       <Button
+                         key={item.name}
+                         asChild
+                         variant="default"
+                         size="sm"
+                         className="self-center"
+                       >
+                         <Link href={item.href}>
+                           {item.name}
+                         </Link>
+                       </Button>
+                     ) : (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={classNames(
+                          currentPath === item.href
+                            ? 'border-primary text-foreground'
+                            : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground',
+                          'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium'
+                        )}
+                        aria-current={currentPath === item.href ? 'page' : undefined}
+                        target={item.external ? '_blank' : undefined}
+                      >
                         {item.name}
-                      </span>
-                    </Link>
+                      </Link>
+                    )
                   ))}
                 </div>
               </div>
@@ -95,9 +112,9 @@ export default function Navbar() {
               <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-2">
                 {session && (
                   <>
-                    <p className="text-gray-500 text-sm font-medium hidden lg:block">{session.user.name}</p>
+                    <p className="text-muted-foreground text-sm font-medium hidden lg:block">{session.user.name}</p>
                     <Menu as="div" className="relative ml-3">
-                      <Menu.Button className="relative flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                      <Menu.Button className="relative flex rounded-full bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
                         <span className="sr-only">Open user menu</span>
                         <LogoGravatar email={session.user.email} size={40} />
                       </Menu.Button>
@@ -110,7 +127,7 @@ export default function Navbar() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-card py-1 shadow-lg ring-1 ring-border focus:outline-none">
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
                               {({ active }) => (
@@ -118,8 +135,8 @@ export default function Navbar() {
                                   href={item.href}
                                   className={classNames(
                                     item.signOut ? 'text-red-500' : '',
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    active ? 'bg-accent' : '',
+                                    'block px-4 py-2 text-sm text-card-foreground'
                                   )}
                                   onClick={item.signOut ? handleSignOut : undefined}
                                   target={item.external ? '_blank' : undefined}
@@ -127,7 +144,7 @@ export default function Navbar() {
                                   <div className="flex items-center">
                                     {item.name}
                                     {item.external && (
-                                      <ArrowTopRightOnSquareIcon className="h-3.5 w-3.5 ml-2 text-gray-700" />
+                                      <ArrowTopRightOnSquareIcon className="h-3.5 w-3.5 ml-2 text-muted-foreground" />
                                     )}
                                   </div>
                                 </Link>
@@ -137,13 +154,17 @@ export default function Navbar() {
                         </Menu.Items>
                       </Transition>
                     </Menu>
+
+                    <ThemeToggle />
                   </>
                 )}
               </div>
 
               {/* Mobile menu button */}
               <div className="flex items-center sm:hidden -mr-2">
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                <ThemeToggle />
+                
+                <Disclosure.Button className="ml-2 relative inline-flex items-center justify-center rounded-md bg-background p-2 text-muted-foreground hover:bg-accent hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -177,18 +198,27 @@ export default function Navbar() {
               leaveTo="transform -translate-x-full"
             >
               <Disclosure.Panel
-                className="fixed top-0 left-0 bottom-0 w-64 bg-white shadow-xl z-30 overflow-y-auto sm:hidden"
+                className="fixed top-0 left-0 bottom-0 w-64 bg-background shadow-xl z-30 overflow-y-auto sm:hidden"
               >
-                <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200">
+                <div className="flex items-center justify-between px-4 py-4 border-b border-border">
+                  {/* Logo claro - visible en modo claro */}
                   <Image
-                    className="h-8 w-auto"
+                    className="h-8 w-auto dark:hidden"
                     src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
                     alt="Logo"
                     width={236}
                     height={60}
                   />
+                  {/* Logo oscuro - visible en modo oscuro */}
+                  <Image
+                    className="hidden h-8 w-auto dark:block"
+                    src={process.env.NEXT_PUBLIC_LOGO_DARK || '/images/logo-dark.svg'}
+                    alt="Logo"
+                    width={236}
+                    height={60}
+                  />
                   <Disclosure.Button
-                    className="text-gray-400 hover:text-gray-500"
+                    className="text-muted-foreground hover:text-foreground"
                     aria-label="Close main menu"
                   >
                     {/* <XMarkIcon className="h-6 w-6" aria-hidden="true" /> */}
@@ -197,29 +227,46 @@ export default function Navbar() {
 
                 <div className="space-y-1 py-2">
                   {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as={Link}
-                      href={item.href}
-                      className={classNames(
-                        currentPath === item.href
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800',
-                        'block border-l-4 py-2 pl-3 pr-4 text-base font-medium'
-                      )}
-                      aria-current={currentPath === item.href ? 'page' : undefined}
-                    >
-                      {item.name}
-                    </Disclosure.Button>
+                    item.trial ? (
+                      <div key={item.name} className="px-4">
+                        <Button
+                          asChild
+                          variant="default"
+                          size="sm"
+                          className="w-full my-4"
+                        >
+                          <Link href={item.href}>
+                            {item.name}
+                          </Link>
+                        </Button>
+                      </div>
+                    ) : (
+                      <Disclosure.Button
+                        key={item.name}
+                        as={Link}
+                        href={item.href}
+                        className={classNames(
+                          currentPath === item.href
+                            ? 'border-primary bg-primary/10 text-primary'
+                            : 'border-transparent text-muted-foreground hover:border-border hover:bg-accent hover:text-foreground',
+                          'block border-l-4 py-2 pl-3 pr-4 text-base font-medium'
+                        )}
+                        aria-current={currentPath === item.href ? 'page' : undefined}
+                      >
+                        {item.name}
+                      </Disclosure.Button>
+                    )
                   ))}
                 </div>
 
-                <div className="border-t border-gray-200 py-4">
-                  <div className="flex items-center px-4">
-                    <LogoGravatar email={session.user.email} size={40} className="h-10 w-10 rounded-full" />
-                    <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">{session.user.name}</div>
-                      <div className="text-sm font-medium text-gray-500">{session.user.email}</div>
+                <div className="border-t border-border py-4">
+                  <div className="flex items-center justify-between px-4">
+                    <div className="flex items-center">
+                      <LogoGravatar email={session.user.email} size={40} className="h-10 w-10 rounded-full" />
+                      <div className="ml-3">
+                        <div className="text-base font-medium text-foreground">{session.user.name}</div>
+                        <div className="text-sm font-medium text-muted-foreground">{session.user.email}</div>
+                      </div>
                     </div>
                   </div>
                   <div className="mt-3 space-y-1">
@@ -229,8 +276,8 @@ export default function Navbar() {
                         as={item.external ? 'a' : Link}
                         href={item.href}
                         className={classNames(
-                          item.signOut ? 'text-red-500 hover:text-red-600' : 'text-gray-500 hover:text-gray-800',
-                          'block px-4 py-2 text-base font-medium hover:bg-gray-100'
+                          item.signOut ? 'text-red-500 hover:text-red-600' : 'text-muted-foreground hover:text-foreground',
+                          'block px-4 py-2 text-base font-medium hover:bg-accent'
                         )}
                         onClick={(e) => {
                           if (item.signOut) {

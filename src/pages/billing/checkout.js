@@ -62,7 +62,7 @@ const CheckoutButton = ({
             <Button
                 onClick={handleCheckout}
                 disabled={loading}
-                className="inline-flex items-center justify-center px-5 py-3 text-white text-sm font-medium transition-all duration-200"
+                className="inline-flex items-center justify-center px-5 py-3 text-sm font-medium transition-all duration-200"
             >
                 {loading ? (
                     <>
