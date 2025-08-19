@@ -10,6 +10,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import SignSocial from './SignSocial';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
+import TurnstileWidget from '@/components/ui/turnstile';
 
 export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,9 +19,11 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   // ref para asegurarnos de que solo mostramos 1 toast
   const activatedToastRef = useRef(false);
+  const turnstileRef = useRef(null);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -36,12 +39,19 @@ export default function SignIn() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!turnstileToken) {
+      toast.error('Por favor, completa la verificación de seguridad.');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     const result = await signIn('credentials', {
       redirect: false,
       email: e.target.email.value,
       password: e.target.password.value,
+      turnstileToken,
     });
 
     if (result.ok) {
@@ -55,6 +65,11 @@ export default function SignIn() {
       } else {
         toast.error('Credenciales incorrectas');
       }
+      // Reset Turnstile on error
+      if (turnstileRef.current) {
+        turnstileRef.current.reset();
+      }
+      setTurnstileToken('');
       setIsSubmitting(false);
     }
   };
@@ -134,8 +149,23 @@ export default function SignIn() {
           />
         </div>
 
+        {/* Turnstile */}
+        <TurnstileWidget
+          ref={turnstileRef}
+          onVerify={setTurnstileToken}
+          onError={() => {
+            setTurnstileToken('');
+            toast.error('Error en la verificación de seguridad. Inténtalo de nuevo.');
+          }}
+          onExpire={() => {
+            setTurnstileToken('');
+            toast.warning('La verificación de seguridad ha expirado. Por favor, verifica nuevamente.');
+          }}
+          className="flex justify-center"
+        />
+
         {/* Submit */}
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button type="submit" className="w-full" disabled={isSubmitting || !turnstileToken}>
           {isSubmitting ? (
             <>
               <Spin className="mr-2" /> Cargando
