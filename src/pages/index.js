@@ -40,7 +40,7 @@ export default function Index() {
           </span>
         </div>
 
-        <Link href="https://docs.wazend.net/" target='_blank_' className="flex items-center text-emerald-600 font-medium hover:text-emerald-700 transition-colors text-md md:text-base whitespace-nowrap">
+        <Link href="https://docs.wazend.net/" target='_blank_' className="flex items-center text-primary font-medium hover:text-primary/80 transition-colors text-md md:text-base whitespace-nowrap">
           Explora la base de conocimientos
           <ArrowRight className="ml-1 h-4 w-4" />
         </Link>

@@ -221,6 +221,25 @@ const FetchStrapi = () => {
                 </div>
 
               </div>
+
+              {/* Status Messages */}
+              <p className="mt-2 text-sm font-medium">
+                {sub.instances?.length === 0 && sub.status_woo === "active" && (
+                  <span className="text-muted-foreground">
+                    Esta suscripción no tiene instancias asociadas crea una.
+                  </span>
+                )}
+                {/* {sub.status_woo === "active" && sub.instances_limit && sub.instances?.length >= sub.instances_limit && (
+                  <span className="text-amber-600">
+                    Límite de instancias alcanzado. Mejore su plan para aumentar.
+                  </span>
+                )} */}
+                {sub.instances?.length === 0 && sub.status_woo !== "active" && (
+                  <span className="text-muted-foreground">
+                    No se pueden crear instancias con una suscripción {getStatusText(sub.status_woo).toLowerCase()}.
+                  </span>
+                )}
+              </p>
             </Card>
 
             <div className="mt-4 mb-8">
@@ -268,26 +287,7 @@ const FetchStrapi = () => {
                   )}
                 </div>
 
-                {/* Mensaje cuando no hay instancias */}
-                {/* {sub.instances?.length === 0 && (
-                  <p className="text-sm text-gray-500 mb-4 text-center">
-                    Esta suscripción no tiene instancias asociadas.
-                  </p>
-                )} */}
 
-                {/* Mensaje de límite alcanzado */}
-                {sub.status_woo === "active" && sub.instances_limit && sub.instances?.length >= sub.instances_limit && (
-                  <p className="mt-6 text-sm text-amber-600 font-medium text-center">
-                    Límite de instancias alcanzado. Mejore su plan para aumentar.
-                  </p>
-                )}
-
-                {/* Mensaje cuando la suscripción no está activa */}
-                {sub.instances?.length === 0 && sub.status_woo !== "active" && (
-                  <p className="mt-6 text-sm text-muted-foreground font-medium text-center">
-                    No se pueden crear instancias con una suscripción {getStatusText(sub.status_woo).toLowerCase()}.
-                  </p>
-                )}
               </div>
             </div>
           </div>

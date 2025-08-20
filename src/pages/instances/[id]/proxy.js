@@ -144,7 +144,7 @@ const ProxySettings = ({ instanceId, serverUrl }) => {
       {/* Inputs */}
       <div className="grid grid-cols-3 gap-4 border-t border-border pt-4">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Protocol</label>
+          <label className="block text-sm font-medium text-foreground mb-3">Protocol</label>
           <Select
             value={proxyData.protocol}
             onValueChange={(value) => setProxyData((prev) => ({ ...prev, protocol: value }))}
