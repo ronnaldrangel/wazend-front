@@ -4,7 +4,10 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 import { useStrapiData } from '@/services/strapiService';
 import Loader from '@/components/loaders/skeleton';
 import { Button } from '@/components/ui/button';
+<<<<<<< HEAD
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+=======
+>>>>>>> 1fa977596a23946df09689c9b93cfb4cf27a71bc
 import Modal from '@/components/loaders/modal';
 
 export default function Pricing() {
@@ -75,6 +78,7 @@ export default function Pricing() {
 
     return (
         <div className="max-w-7xl mx-auto">
+<<<<<<< HEAD
             <Tabs value={activePeriod} onValueChange={setActivePeriod} className="w-full">
                 {/* Selector de período */}
                 <div className="flex mb-8">
@@ -122,6 +126,63 @@ export default function Pricing() {
                                 </div>
                             </div>
                         ))}
+=======
+
+            {/* Selector de período */}
+            <div className="flex mb-8">
+
+                <div className="inline-flex p-1.5 bg-background rounded-full shadow-md border border-border dark:bg-card dark:border-border">
+                    <Button
+                        variant={activePeriod === 'Monthly' ? 'default' : 'ghost'}
+                        size="sm"
+                        className="rounded-full px-6 py-2.5 text-sm font-medium"
+                        onClick={() => setActivePeriod('Monthly')}
+                        disabled={monthlyPlans.length === 0}
+                    >
+                        Mensual
+                    </Button>
+                    <Button
+                        variant={activePeriod === 'Yearly' ? 'default' : 'ghost'}
+                        size="sm"
+                        className="rounded-full px-6 py-2.5 text-sm font-medium"
+                        onClick={() => setActivePeriod('Yearly')}
+                        disabled={yearlyPlans.length === 0}
+                    >
+                        Anual
+                    </Button>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {strapiPlans.map(plan => (
+                    <div key={plan.id} className="bg-background dark:bg-card rounded-lg shadow-md border border-border p-6">
+
+                        <div className="flex items-center gap-2 mb-6">
+                            <h3 className="text-2xl font-bold text-foreground">{plan.name}</h3>
+                        </div>
+
+                        <ul className="space-y-2 text-md text-foreground">
+                            {plan.features && renderFeatures(plan.features)}
+                        </ul>
+
+                        <div className="mt-6 flex items-center justify-between">
+                            <div>
+                                {/* <p className="text-gray-500 text-sm">Desde</p> */}
+                                <p className="text-emerald-600 dark:text-emerald-400 font-bold text-lg">${plan.price} USD</p>
+                                <p className="text-muted-foreground text-sm">{plan.billing_period === 'Monthly' ? 'Mensual' : 'Anual'}</p>
+                            </div>
+
+                            <Button
+                                onClick={() => handleCheckout(plan.woo_id)}
+                                disabled={loading}
+                                className="text-base px-4"
+                            >
+                                Pedir Ahora
+                            </Button>
+                        </div>
+
+
+>>>>>>> 1fa977596a23946df09689c9b93cfb4cf27a71bc
                     </div>
                 </TabsContent>
 
