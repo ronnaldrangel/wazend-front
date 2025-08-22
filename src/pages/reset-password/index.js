@@ -31,11 +31,10 @@ export default function ResetPassword() {
     setLoading(true);
     try {
       await axios.post(
-        `${strapiUrl}/api/auth/reset-password`,
+        '/api/auth/reset-password',
         { code, password, passwordConfirmation },
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
             'Content-Type': 'application/json',
           },
         }
@@ -140,13 +139,3 @@ export default function ResetPassword() {
     </>
   );
 }
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (session) {
-    return {
-      redirect: { destination: '/', permanent: false },
-    };
-  }
-  return { props: {} };
-};

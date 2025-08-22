@@ -64,7 +64,7 @@ export default function SignUp() {
     try {
       const username = generateUsername(formData.email);
       await axios.post(
-        `${strapiUrl}/api/auth/local/register`,
+        '/api/auth/register',
         {
           username,
           name: formData.name,
@@ -74,7 +74,6 @@ export default function SignUp() {
         },
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
             'Content-Type': 'application/json'
           }
         }

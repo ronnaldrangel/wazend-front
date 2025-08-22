@@ -62,12 +62,9 @@ export default function SignIn() {
 
   const checkUserConfirmation = async (email) => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?filters[email][$eq]=${email}`,
-        { headers: { Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}` } }
-      );
+      const res = await fetch(`/api/auth/check-user?email=${encodeURIComponent(email)}`);
       const data = await res.json();
-      return data.length > 0 ? { exists: true, confirmed: data[0].confirmed } : { exists: false };
+      return data;
     } catch {
       return { exists: false };
     }

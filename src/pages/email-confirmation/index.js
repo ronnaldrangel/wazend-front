@@ -62,8 +62,7 @@ export default function EmailConfirm() {
           </p>
           <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
             Revisa tu correo para confirmar tu cuenta antes de iniciar
-            sesión en el panel de control de{' '}
-            {process.env.NEXT_PUBLIC_APP_NAME || 'My App'}.
+            sesión. Si no recibiste el correo, renvíalo en el formulario de abajo.
           </p>
           {/* <p className="mt-2 text-sm font-medium text-red-500">
             Si no recibes el correo, por favor revisa tu carpeta de Spam o escribe tu correo y te
@@ -72,21 +71,13 @@ export default function EmailConfirm() {
       </div>
 
 
-      <div className="mt-6 border-t pt-6 border-gray-200">
-        <p className="text-balance text-base font-semibold tracking-tight text-gray-900 dark:text-gray-100">
-            ¿No recibiste el correo electrónico?
-          </p>
-
-          <p className="mt-2 text-sm leading-6 text-gray-500">
-            Introduce tu email y te reenviaremos el enlace de confirmación.
-          </p>
-
+      <div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <FormInput
             id="email"
             name="email"
             type="email"
-            label="Correo electrónico"
+            label="Correo electrónico" 
             placeholder="tu@ejemplo.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -104,6 +95,18 @@ export default function EmailConfirm() {
             )}
           </Button>
         </form>
+
+        <div className="mt-4 text-center">
+          <a
+            href="/"
+            className={buttonVariants({
+              variant: "link",
+              className: "text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+            })}
+          >
+            Volver al inicio
+          </a>
+        </div>
       </div>
     </Layout>
     </>
