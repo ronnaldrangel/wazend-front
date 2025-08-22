@@ -1,12 +1,14 @@
 
 import { SiteHeader } from "@/components/admin/site-header"
 import Layout from "./layout"
+import { PageTitle } from "@/hooks/use-page-title"
 
 import data from "./data.json"
 
 export default function Page() {
   return (
     <>
+      <PageTitle title="Dashboard" />
       <Layout>
         <SiteHeader title="Dashboard" />
         <div className="flex flex-1 flex-col">

@@ -9,6 +9,7 @@ import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
 import Spin from '../../components/loaders/spin';
+import { PageTitle } from '@/hooks/use-page-title';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -51,7 +52,9 @@ export default function ResetPassword() {
   const toggleShow = () => setShowPassword((v) => !v);
 
   return (
-    <Layout>
+    <>
+      <PageTitle title="Restablecer contraseña" />
+      <Layout>
       <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
         Restablecer contraseña
       </h2>
@@ -134,6 +137,7 @@ export default function ResetPassword() {
         </Link>
       </p>
     </Layout>
+    </>
   );
 }
 

@@ -1,14 +1,12 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image'
+import Image from 'next/image';
+import { PageTitle } from '@/hooks/use-page-title';
 
 export default function Error404() {
   return (
     <>
-      <Head>
-        <title>404 - Página no encontrada</title>
-      </Head>
+      <PageTitle title="404 - Página no encontrada" />
       <div className="h-screen">
         <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
           <div className="text-center">

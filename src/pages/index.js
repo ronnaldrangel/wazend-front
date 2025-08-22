@@ -6,6 +6,7 @@ import Bulletin from './dashboard/bulletin';
 import { ArrowRight, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { PageTitle } from '@/hooks/use-page-title';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -14,9 +15,10 @@ function classNames(...classes) {
 export default function Index() {
   const router = useRouter();
 
-
   return (
-    <Layout title="Mis servicios" cta="true">
+    <>
+      <PageTitle title="Inicio" />
+      <Layout title="Mis servicios" cta="true">
 
 
       <div className="flex flex-col md:flex-row gap-6">
@@ -47,7 +49,8 @@ export default function Index() {
       </div>
 
 
-    </Layout>
+      </Layout>
+    </>
   );
 };
 

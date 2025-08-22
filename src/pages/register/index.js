@@ -12,6 +12,7 @@ import SignSocial from '../login/SignSocial';
 import PhoneInput from '../../components/ui/phone-input';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
+import { PageTitle } from '@/hooks/use-page-title';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -93,7 +94,9 @@ export default function SignUp() {
   const handlePasswordFocus = () => setShowPasswordConditions(true);
 
   return (
-    <Layout>
+    <>
+      <PageTitle title="Registro" />
+      <Layout>
       <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-foreground">
         🎉 Regístrate y obtén tu prueba gratis
       </h2>
@@ -225,7 +228,8 @@ export default function SignUp() {
           Iniciar sesión
         </Link>
       </p>
-    </Layout>
+      </Layout>
+    </>
   );
 }
 

@@ -10,6 +10,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import SignSocial from './SignSocial';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
+import { PageTitle } from '@/hooks/use-page-title';
 
 export default function SignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -73,7 +74,9 @@ export default function SignIn() {
   };
 
   return (
-    <Layout>
+    <>
+      <PageTitle title="Iniciar sesión" />
+      <Layout>
       <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-foreground">
         Iniciar sesión 👋
       </h2>
@@ -152,7 +155,8 @@ export default function SignIn() {
           Regístrate ahora
         </Link>
       </p>
-    </Layout>
+      </Layout>
+    </>
   );
 }
 

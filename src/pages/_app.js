@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
       <Head>
-        <title>{process.env.NEXT_PUBLIC_APP_NAME || 'My App'}</title>
+        <title>Wazend AI</title>
       </Head>
       <ThemeProvider
         attribute="class"

@@ -6,6 +6,7 @@ import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
 import Spin from '@/components/loaders/spin';
+import { PageTitle } from '@/hooks/use-page-title';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -48,7 +49,9 @@ export default function EmailConfirm() {
   };
 
   return (
-    <Layout>
+    <>
+      <PageTitle title="Confirmación de email" />
+      <Layout>
 
       <div className="mt-8 flex flex-col">
         <CheckCircleIcon
@@ -103,6 +106,7 @@ export default function EmailConfirm() {
         </form>
       </div>
     </Layout>
+    </>
   );
 }
 

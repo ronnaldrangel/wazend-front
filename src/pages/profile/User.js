@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
 import { Card } from '@/components/ui/card';
 import Alerta from '@/components/alerts/main';
+import { PageTitle } from '@/hooks/use-page-title';
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -107,7 +108,9 @@ export default function User() {
   if (!data) return <OrderSkeleton />;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <>
+      <PageTitle title="Perfil" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Columna izquierda - Perfil de usuario */}
       <div className="lg:col-span-1">
         <Card shadow="md" padding="md" className="border border-border">
@@ -229,6 +232,7 @@ export default function User() {
           </form>
         </Card>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

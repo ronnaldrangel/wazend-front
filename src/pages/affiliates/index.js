@@ -1,11 +1,14 @@
 import Layout from '../../components/layout/dashboard';
 import Affiliates from './affiliates';
 import Request from './request';
+import { PageTitle } from '@/hooks/use-page-title';
 
 export default function Index() {
 
     return (
-        <Layout title="Recomienda & Gana">
+        <>
+            <PageTitle title="Recomienda & Gana" />
+            <Layout title="Recomienda & Gana">
 
             <div className="flex flex-col row gap-6">
                 <div className="w-full">
@@ -25,6 +28,7 @@ export default function Index() {
                 </div>
             </div> */}
 
-        </Layout>
+            </Layout>
+        </>
     );
 }
