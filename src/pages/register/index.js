@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { Turnstile } from '@marsidev/react-turnstile';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
 import SignSocial from '../login/SignSocial';
@@ -25,6 +26,7 @@ export default function SignUp() {
     phone: '',
     password: ''
   });
+  const [turnstileToken, setTurnstileToken] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordConditions, setPasswordConditions] = useState({
     uppercase: false,
@@ -60,6 +62,12 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!turnstileToken) {
+      toast.error('Por favor, completa la verificación de seguridad.');
+      return;
+    }
+    
     setIsSubmitting(true);
     try {
       const username = generateUsername(formData.email);
@@ -70,7 +78,8 @@ export default function SignUp() {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          password: formData.password
+          password: formData.password,
+          turnstileToken
         },
         {
           headers: {
@@ -203,11 +212,22 @@ export default function SignUp() {
           </ul>
         )}
 
+        {/* Cloudflare Turnstile */}
+        <div className="flex justify-start">
+          <Turnstile
+            siteKey={process.env.NEXT_PUBLIC_SITE_KEY_CLOUDFLARE}
+            onSuccess={(token) => setTurnstileToken(token)}
+            onError={() => setTurnstileToken('')}
+            onExpire={() => setTurnstileToken('')}
+            theme="auto"
+          />
+        </div>
+
         {/* Botón de registro */}
         <Button
           type="submit"
           className="w-full"
-          disabled={isSubmitting || !isPasswordValid()}
+          disabled={isSubmitting || !isPasswordValid() || !turnstileToken}
         >
           {isSubmitting ? (
             <>

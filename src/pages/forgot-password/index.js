@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/router';
+import { Turnstile } from '@marsidev/react-turnstile';
 import Layout from '../../components/layout/auth';
 import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -14,10 +15,17 @@ const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!turnstileToken) {
+      toast.error('Por favor, completa la verificación de seguridad.');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
@@ -26,7 +34,7 @@ export default function ForgotPassword() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, turnstileToken }),
       });
 
       if (response.ok) {
@@ -68,7 +76,18 @@ export default function ForgotPassword() {
           required
         />
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        {/* Cloudflare Turnstile */}
+        <div className="flex justify-start">
+          <Turnstile
+            siteKey={process.env.NEXT_PUBLIC_SITE_KEY_CLOUDFLARE}
+            onSuccess={(token) => setTurnstileToken(token)}
+            onError={() => setTurnstileToken('')}
+            onExpire={() => setTurnstileToken('')}
+            theme="auto"
+          />
+        </div>
+
+        <Button type="submit" className="w-full" disabled={isSubmitting || !turnstileToken}>
           {isSubmitting ? (
             <>
               <Spin className="mr-2" /> Cargando

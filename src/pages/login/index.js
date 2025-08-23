@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { getSession } from 'next-auth/react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
@@ -19,6 +20,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   // ref para asegurarnos de que solo mostramos 1 toast
   const activatedToastRef = useRef(false);
@@ -37,12 +39,19 @@ export default function SignIn() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!turnstileToken) {
+      toast.error('Por favor, completa la verificación de seguridad.');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     const result = await signIn('credentials', {
       redirect: false,
       email: e.target.email.value,
       password: e.target.password.value,
+      turnstileToken,
     });
 
     if (result.ok) {
@@ -134,8 +143,19 @@ export default function SignIn() {
           />
         </div>
 
+        {/* Cloudflare Turnstile */}
+        <div className="flex justify-start">
+          <Turnstile
+            siteKey={process.env.NEXT_PUBLIC_SITE_KEY_CLOUDFLARE}
+            onSuccess={(token) => setTurnstileToken(token)}
+            onError={() => setTurnstileToken('')}
+            onExpire={() => setTurnstileToken('')}
+            theme="auto"
+          />
+        </div>
+
         {/* Submit */}
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button type="submit" className="w-full" disabled={isSubmitting || !turnstileToken}>
           {isSubmitting ? (
             <>
               <Spin className="mr-2" /> Cargando
