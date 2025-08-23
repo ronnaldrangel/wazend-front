@@ -6,6 +6,7 @@ export default function Document() {
   return (
     <Html lang="es" className="h-full">
       <Head>
+        <link rel="icon" href={process.env.NEXT_PUBLIC_FAVICON || "/favicon.ico"} />
         <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
 
         <Script src="/assets/lang-config.js" strategy="beforeInteractive" />
