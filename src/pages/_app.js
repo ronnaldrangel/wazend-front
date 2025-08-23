@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
 import Head from 'next/head'
 import { ThemeProvider } from "../components/ui/theme-provider"
-import SessionChecker from '../components/SessionChecker';
+
 import { Toaster } from 'sonner';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           />
           <Toaster closeButton richColors position="top-right" />
 
-          {/* <SessionChecker /> */}
+
           
           <Component {...pageProps} />
         </SessionProvider>
