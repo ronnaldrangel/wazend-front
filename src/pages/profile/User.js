@@ -106,6 +106,7 @@ export default function User() {
   if (status === 'loading' || loading) return <OrderSkeleton />;
   if (error) return <Alerta message={error}/>;
   if (!data) return <OrderSkeleton />;
+  if (!session || !session.user) return <OrderSkeleton />;
 
   return (
     <>
