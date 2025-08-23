@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import FormInput from '@/components/ui/form-input';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import ErrorAlert from '@/components/alerts/ErrorAlert';
 
 const fetcher = (url) =>
     fetch(url, {
@@ -73,7 +74,7 @@ const WebhookControl = ({ instanceName, serverUrl }) => {
         }
     };
 
-    if (error) return <div>Error al cargar los datos</div>;
+    if (error) return <ErrorAlert title="Error al cargar los datos" message={error.message || 'Ha ocurrido un error inesperado'} />;
     if (!webhookData) return <div>Cargando...</div>;
 
     return (

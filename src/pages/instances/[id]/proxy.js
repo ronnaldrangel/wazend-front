@@ -7,6 +7,7 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Preload from "@/components/loaders/skeleton";
 import { Button } from "@/components/ui/button";
+import ErrorAlert from "@/components/alerts/ErrorAlert";
 
 const API_KEY = process.env.NEXT_PUBLIC_WAZEND_API_KEY;
 const API_URL = process.env.NEXT_PUBLIC_WAZEND_API_URL;
@@ -122,7 +123,7 @@ const ProxySettings = ({ instanceId, serverUrl }) => {
 
   if (error) {
     // console.error("❌ Error en SWR:", error);
-    return <div>Error al cargar configuraciones.</div>;
+    return <ErrorAlert title="Error al cargar configuraciones" message={error.message || 'Ha ocurrido un error inesperado'} />;
   }
 
   if (!data && data !== null) return <Preload />;

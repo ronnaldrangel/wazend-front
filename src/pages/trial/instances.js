@@ -8,6 +8,7 @@ import InstanceCard from '../dashboard/instance-card';
 import OrderSkeleton from '../../components/loaders/skeleton';
 import CreateButton from './create-button';
 import DeleteButton from './delete-button';
+import ErrorAlert from '../../components/alerts/ErrorAlert';
 
 // Constantes y configuración
 const STRAPI_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -144,19 +145,11 @@ const FreeTrialDashboard = () => {
   // Maneja errores
   if (error) {
     return (
-      <div className="rounded-lg bg-destructive/10 p-6 border border-destructive/20">
-        <div className="flex items-center text-destructive mb-2">
-          <ExclamationTriangleIcon className="h-6 w-6 mr-2" />
-          <h3 className="font-bold">Error al cargar las instancias</h3>
-        </div>
-        <p className="text-sm text-destructive/80">{error.message}</p>
-        <button 
-          onClick={() => mutate()} 
-          className="mt-4 bg-destructive/20 text-destructive px-4 py-2 rounded-md text-sm font-medium hover:bg-destructive/30 transition-colors"
-        >
-          Intentar nuevamente
-        </button>
-      </div>
+      <ErrorAlert 
+        title="Error al cargar las instancias"
+        message={error.message}
+        onReload={() => mutate()}
+      />
     );
   }
 

@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import Preload from '@/components/loaders/skeleton';
 import { Button } from '@/components/ui/button';
+import ErrorAlert from '@/components/alerts/ErrorAlert';
 
 const API_KEY = process.env.NEXT_PUBLIC_WAZEND_API_KEY;
 
@@ -97,7 +98,7 @@ const InstancePage = ({ instanceId, serverUrl }) => {
         setSettings((prev) => ({ ...prev, msgCall: e.target.value }));
     };
 
-    if (error) return <div>Error al cargar configuraciones.</div>;
+    if (error) return <ErrorAlert title="Error al cargar configuraciones" message={error.message || 'Ha ocurrido un error inesperado'} />;
     if (!data) return  <Preload />;
 
     return (

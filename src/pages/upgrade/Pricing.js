@@ -6,6 +6,7 @@ import Loader from '@/components/loaders/skeleton';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import Modal from '@/components/loaders/modal';
+import ErrorAlert from '@/components/alerts/ErrorAlert';
 
 export default function Pricing() {
     const { data: session } = useSession();
@@ -54,7 +55,7 @@ export default function Pricing() {
     };
 
     if (isLoading) return <Loader />;
-    if (error) return <div className="text-red-600 dark:text-red-400">Error al cargar los datos: {error.message}</div>;
+    if (error) return <ErrorAlert title="Error al cargar los datos" message={error.message} />;
 
     const renderFeatures = (features) => {
         if (typeof features === 'string') {

@@ -3,6 +3,7 @@ import Loader from '../../components/loaders/skeleton';
 import { useStrapiData } from '../../services/strapiService';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
+import ErrorAlert from '@/components/alerts/ErrorAlert';
 
 const Services = () => {
     // Obtenemos los datos de 'stores' de la API
@@ -14,10 +15,10 @@ const Services = () => {
 
     if (error) {
         return (
-            <div className="bg-red-50 p-4 rounded-lg border border-red-200 text-red-600">
-                <p className="font-medium">Error al cargar los datos</p>
-                <p className="text-sm">{error.message}</p>
-            </div>
+            <ErrorAlert 
+                title="Error al cargar los datos" 
+                message={error.message} 
+            />
         );
     }
 
