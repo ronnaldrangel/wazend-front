@@ -8,8 +8,6 @@ import FormInput from '@/components/ui/form-input';
 import Spin from '@/components/loaders/spin';
 import { PageTitle } from '@/hooks/use-page-title';
 
-const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 export default function EmailConfirm() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,10 +19,9 @@ export default function EmailConfirm() {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch(`${strapiUrl}/api/auth/send-email-confirmation`, {
+      const response = await fetch('/api/strapi/auth/send-email-confirmation', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
