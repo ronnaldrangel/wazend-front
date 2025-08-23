@@ -58,15 +58,15 @@ export default function Navbar() {
                   <Link href="/">
                     {/* Logo claro - visible en modo claro */}
                     <Image
-                      className="block h-7 w-auto dark:hidden"
+                      className={`block h-${process.env.NEXT_PUBLIC_LOGO_HEIGHT || '7'} w-auto dark:hidden`}
                       src={process.env.NEXT_PUBLIC_LOGO || '/images/logo.svg'}
-                      alt="Logo"
+                      alt="Logo" 
                       width={236}
                       height={60}
                     />
                     {/* Logo oscuro - visible en modo oscuro */}
                     <Image
-                      className="hidden h-7 w-auto dark:block"
+                      className={`hidden h-${process.env.NEXT_PUBLIC_LOGO_HEIGHT || '7'} w-auto dark:block`}
                       src={process.env.NEXT_PUBLIC_LOGO_DARK || '/images/logo-dark.svg'}
                       alt="Logo"
                       width={236}
