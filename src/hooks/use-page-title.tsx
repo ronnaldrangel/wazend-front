@@ -9,7 +9,7 @@ interface PageTitleProps {
 /**
  * Hook personalizado para manejar títulos de página dinámicos
  */
-export const usePageTitle = (pageTitle: string, baseTitle: string = 'Wazend AI'): JSX.Element => {
+export const usePageTitle = (pageTitle: string, baseTitle: string = process.env.NEXT_PUBLIC_APP_NAME || 'Wazend API'): JSX.Element => {
   const fullTitle = pageTitle ? `${pageTitle} - ${baseTitle}` : baseTitle;
   
   useEffect(() => {
@@ -26,7 +26,7 @@ export const usePageTitle = (pageTitle: string, baseTitle: string = 'Wazend AI')
 /**
  * Componente para establecer el título de página
  */
-export const PageTitle = ({ title, baseTitle = 'Wazend AI' }: PageTitleProps) => {
+export const PageTitle = ({ title, baseTitle = process.env.NEXT_PUBLIC_APP_NAME || 'Wazend API' }: PageTitleProps) => {
   const fullTitle = title ? `${title} - ${baseTitle}` : baseTitle;
   
   return (
