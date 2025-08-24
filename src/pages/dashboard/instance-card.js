@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   UserCircleIcon,
   ChatBubbleOvalLeftIcon,
@@ -104,9 +105,14 @@ const InstanceCard = ({ documentId, instanceId, instanceName, serverUrl, isActiv
       <div className="mt-6 group block flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <img className="inline-block h-10 w-10 rounded-full bg-muted"
-              src={instance.profilePicUrl || "/images/WAPP.webp"}
+            <Image
+              className="inline-block h-10 w-10 rounded-full bg-muted"
+              src={instance.profilePicUrl || "/images/profile-wa.webp"}
               alt="WhatsApp"
+              width={40}
+              height={40}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Kcp"
             />
             <div className="ml-3">
               <p className="text-md font-semibold text-foreground">{instance.profileName || "Sin nombre"}</p>
