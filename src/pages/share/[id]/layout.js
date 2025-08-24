@@ -43,6 +43,7 @@ export default function Layout({ children, isReseller, resellerName }) {
                                             alt="Logo"
                                             width={236}
                                             height={60}
+                                            priority={true}
                                         />
                                     )
                                 )}

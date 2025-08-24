@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Loader from '../../components/loaders/skeleton';
 import { useStrapiData } from '../../services/strapiService';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 
@@ -49,13 +50,20 @@ const Services = () => {
                                 <div className="flex items-center gap-3">
                                     <div className="flex-shrink-0">
                                         {store.img && store.img.url ? (
-                                            <img
-                                                src={store.img.url}
-                                                alt={store.title}
-                                                className="h-10 w-10"
-                                            />
+                                            <div className="relative h-10 w-10">
+                                                <Image
+                                                    src={store.img.url}
+                                                    alt={store.title}
+                                                    width={40}
+                                                    height={40}
+                                                    className="object-contain rounded"
+                                                    placeholder="blur"
+                                                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                                                    priority={false}
+                                                />
+                                            </div>
                                         ) : (
-                                            <div className="h-12 w-12 flex items-center justify-center bg-muted rounded-full">
+                                            <div className="h-10 w-10 flex items-center justify-center bg-muted rounded-full">
                                                 <p className="text-xs text-muted-foreground">Sin img</p>
                                             </div>
                                         )}

@@ -63,6 +63,7 @@ export default function Navbar() {
                       alt="Logo" 
                       width={236}
                       height={60}
+                      priority={true}
                     />
                     {/* Logo oscuro - visible en modo oscuro */}
                     <Image
@@ -71,6 +72,7 @@ export default function Navbar() {
                       alt="Logo"
                       width={236}
                       height={60}
+                      priority={true}
                     />
                   </Link>
                 </div>
@@ -208,6 +210,7 @@ export default function Navbar() {
                     alt="Logo"
                     width={236}
                     height={60}
+                    priority={true}
                   />
                   {/* Logo oscuro - visible en modo oscuro */}
                   <Image
@@ -216,6 +219,7 @@ export default function Navbar() {
                     alt="Logo"
                     width={236}
                     height={60}
+                    priority={true}
                   />
                   <Disclosure.Button
                     className="text-muted-foreground hover:text-foreground"

@@ -123,6 +123,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 alt="Logo"
                 width={236}
                 height={60}
+                priority={true}
               />
               {/* Logo oscuro - visible en modo oscuro */}
               <Image
@@ -131,6 +132,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 alt="Logo"
                 width={236}
                 height={60}
+                priority={true}
               />
             </Link>
           </SidebarMenuItem>
