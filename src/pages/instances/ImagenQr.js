@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment } from 'react';
 import Image from 'next/image';
 import { Dialog, Transition } from '@headlessui/react';
+import Spin from '../../components/loaders/spin';
 
 const QRCodeComponent = ({ instanceName, serverUrl }) => {
   const [qrBase64, setQrBase64] = useState('');
@@ -73,7 +74,9 @@ const QRCodeComponent = ({ instanceName, serverUrl }) => {
                       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+Kcp"
                     />
                   ) : (
-                    <p>Loading...</p>
+                    <div className="flex justify-center items-center h-48">
+                      <Spin />
+                    </div>
                   )}
                 </div>
                 <div className="mt-5 sm:mt-6">
