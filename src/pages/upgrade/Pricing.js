@@ -41,13 +41,13 @@ export default function Pricing() {
                 body: JSON.stringify({
                     user: email,
                     send: false,
-                    redirect_to: `${process.env.NEXT_PUBLIC_URL || 'https://wazend.net'}/checkouts/checkout/?aero-add-to-checkout=${woo_id}&aero-qty=1&billing_email=${encodeURIComponent(email)}`,
+                    redirect_to: `${process.env.NEXT_PUBLIC_URL || 'https://wazend.net'}?custom_add_to_cart=${woo_id}&billing_email=${encodeURIComponent(email)}`,
                 }),
             });
             const data = await res.json();
-            window.location.href = data?.link || `${process.env.NEXT_PUBLIC_URL || 'https://wazend.net'}/checkouts/checkout/?aero-add-to-checkout=${woo_id}&aero-qty=1&billing_email=${encodeURIComponent(email)}`;
+            window.location.href = data?.link || `${process.env.NEXT_PUBLIC_URL || 'https://wazend.net'}?custom_add_to_cart=${woo_id}&billing_email=${encodeURIComponent(email)}`;
         } catch {
-            window.location.href = `${process.env.NEXT_PUBLIC_URL || 'https://wazend.net'}/checkouts/checkout/?aero-add-to-checkout=${woo_id}&aero-qty=1&billing_email=${encodeURIComponent(email)}`;
+            window.location.href = `${process.env.NEXT_PUBLIC_URL || 'https://wazend.net'}?custom_add_to_cart=${woo_id}&billing_email=${encodeURIComponent(email)}`;
         } finally {
             setLoading(false);
             setShowModal(false);

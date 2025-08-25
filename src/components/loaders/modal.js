@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Spin from './spin';
 
 const Modal = ({ message }) => {
   const [isTakingLong, setIsTakingLong] = useState(false);
@@ -12,15 +13,14 @@ const Modal = ({ message }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/70 z-50">
+      <div className="bg-background p-8 rounded-lg shadow-lg border border-border">
         <div className="flex justify-center items-center">
-          {/* Spinner con --primary en lugar de emerald */}
-          <div className="w-10 h-10 border-4 border-t-primary border-gray-300 rounded-full animate-spin" />
+          <Spin />
         </div>
-        <p className="text-center mt-4">{message}</p>
+        <p className="text-center mt-4 text-gray-900 dark:text-gray-100">{message}</p>
         {isTakingLong && (
-          <p className="text-center mt-4 text-yellow-600">
+          <p className="text-center mt-4 text-yellow-600 dark:text-yellow-400">
             Esto está tardando más de lo esperado... por favor, mantén la página abierta.
           </p>
         )}
