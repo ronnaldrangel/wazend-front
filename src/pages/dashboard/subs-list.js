@@ -152,7 +152,7 @@ const FetchStrapi = () => {
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
           <AdjustmentsHorizontalIcon className="w-4 h-4 text-muted-foreground" />
-          <span className="font-sm text-foreground">Filtros</span>
+          <span className="text-sm text-muted-foreground">Filtros</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">Mostrar todas</span>
