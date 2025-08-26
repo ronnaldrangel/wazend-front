@@ -150,11 +150,6 @@ const FetchStrapi = () => {
     sub.status_woo === "active" && sub.instances && sub.instances.length > 0
   );
 
-  // Si no hay instancias activas, mostrar NoInstances
-  if (!hasActiveInstances && !showCancelled) {
-    return <NoInstances />;
-  }
-
   return (
     <div className="space-y-6">
 
@@ -177,7 +172,11 @@ const FetchStrapi = () => {
         </div>
       </div>
 
-      {filteredSubscriptions
+      {/* Si no hay instancias activas, mostrar NoInstances */}
+      {!hasActiveInstances && !showCancelled ? (
+        <NoInstances />
+      ) : (
+        filteredSubscriptions
         .sort((a, b) => {
           if (a.status_woo === "active" && b.status_woo !== "active") return -1;
           if (a.status_woo !== "active" && b.status_woo === "active") return 1;
@@ -301,7 +300,8 @@ const FetchStrapi = () => {
               </div>
             </div>
           </div>
-        ))}
+        ))
+      )}
     </div>
   );
 };
