@@ -21,8 +21,8 @@ export default function Pricing() {
             .filter(plan => plan.billing_period === activePeriod)
             .sort((a, b) => a.price - b.price)
         : [];
-    const monthlyPlans = strapiPlansRaw?.filter(plan => plan.billing_period === 'Monthly') || [];
-    const yearlyPlans = strapiPlansRaw?.filter(plan => plan.billing_period === 'Yearly') || [];
+    const monthlyPlans = strapiPlansRaw?.filter(plan => plan.billing_period === 'Monthly').sort((a, b) => a.price - b.price) || [];
+    const yearlyPlans = strapiPlansRaw?.filter(plan => plan.billing_period === 'Yearly').sort((a, b) => a.price - b.price) || [];
 
     const handleCheckout = async (woo_id) => {
         if (!email) {
@@ -107,6 +107,8 @@ export default function Pricing() {
                                     {plan.features && renderFeatures(plan.features)}
                                 </ul>
 
+                                <hr className="my-6 border-border -mx-6" />
+
                                 <div className="mt-6 flex items-center justify-between">
                                     <div>
                                         <p className="text-emerald-600 dark:text-emerald-400 font-bold text-lg">${plan.price} USD</p>
@@ -137,6 +139,8 @@ export default function Pricing() {
                                 <ul className="space-y-2 text-md text-foreground">
                                     {plan.features && renderFeatures(plan.features)}
                                 </ul>
+
+                                <hr className="my-6 border-border -mx-6" />
 
                                 <div className="mt-6 flex items-center justify-between">
                                     <div>

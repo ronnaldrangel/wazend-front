@@ -78,17 +78,17 @@ const LanguageSwitcher = () => {
         <div className="notranslate">
             <Select value={currentLanguage} onValueChange={handleLanguageChange}>
                 <SelectTrigger className="w-[130px]">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-sm">
                         <Globe className="h-4 w-4" />
                         <SelectValue placeholder="Seleccionar idioma" />
                     </div>
                 </SelectTrigger>
-                <SelectContent className="min-w-[130px] ">
+                <SelectContent className="min-w-[130px]">
                     {languageConfig.languages.map((ld: LanguageDescriptor) => (
                         <SelectItem 
                             key={`lang_${ld.name}`} 
                             value={ld.name}
-                            className={currentLanguage === ld.name ? "font-medium " : ""}
+                            className={currentLanguage === ld.name ? "font-medium" : ""}
                         >
                             {ld.title}
                         </SelectItem>
