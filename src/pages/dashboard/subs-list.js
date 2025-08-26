@@ -145,6 +145,16 @@ const FetchStrapi = () => {
     ? data.subscriptions
     : data.subscriptions.filter(sub => sub.status_woo === "active");
 
+  // Verificar si hay instancias activas
+  const hasActiveInstances = filteredSubscriptions.some(sub => 
+    sub.status_woo === "active" && sub.instances && sub.instances.length > 0
+  );
+
+  // Si no hay instancias activas, mostrar NoInstances
+  if (!hasActiveInstances && !showCancelled) {
+    return <NoInstances />;
+  }
+
   return (
     <div className="space-y-6">
 
