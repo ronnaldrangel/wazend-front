@@ -5,6 +5,7 @@ import OrderSkeleton from '@/components/loaders/skeleton';
 import LogoGravatar from '@/components/layout/logo';
 import { Button } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
+import PhoneInput from '@/components/ui/phone-input';
 import { Card } from '@/components/ui/card';
 import Alerta from '@/components/alerts/main';
 import { PageTitle } from '@/hooks/use-page-title';
@@ -24,6 +25,10 @@ export default function User() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
   const [isSubmittingPassword, setIsSubmittingPassword] = useState(false);
+
+  const handlePhoneChange = (value) => {
+    setPhone(value || '');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,13 +56,12 @@ export default function User() {
     e.preventDefault();
     setIsSubmittingProfile(true);
     try {
-      const response = await fetch(`${strapiUrl}/api/users/${data.id}`, {
+      const response = await fetch('/api/profile/update', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, phone })
+        body: JSON.stringify({ userId: data.id, name, phone })
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result?.error?.message || 'Error al actualizar perfil');
@@ -154,22 +158,23 @@ export default function User() {
                 onChange={(e) => setName(e.target.value)}
               />
 
-              <FormInput
-                id="phone"
-                name="phone"
-                type="tel"
-                label="Teléfono"
-                placeholder="Ingrese su teléfono"
-                value={phone}
-                onChange={(e) => {
-                  const regex = /^[0-9\b]+$/;
-                  if (e.target.value === '' || regex.test(e.target.value)) {
-                    setPhone(e.target.value);
-                  }
-                }}
-                pattern="[0-9]*"
-                inputMode="numeric"
-              />
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium leading-6 text-foreground mb-2"
+                >
+                  Teléfono
+                </label>
+                <PhoneInput
+                  id="phone"
+                  name="phone"
+                  placeholder="Ingrese su teléfono"
+                  defaultCountry="ES"
+                  value={phone}
+                  onChange={handlePhoneChange}
+                  className="w-full"
+                />
+              </div>
 
               <div className="flex justify-end">
                 <Button type="submit" disabled={isSubmittingProfile}>
