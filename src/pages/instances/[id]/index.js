@@ -96,18 +96,15 @@ export default function Profile() {
     // Función para realizar la actualización PUT en Strapi
     const saveSettings = async () => {
         const updatedData = {
-            data: {
-                isReseller, // Estado del modo reseller
-                resellerName, // Nombre del reseller
-            }
+            isReseller, // Estado del modo reseller
+            resellerName, // Nombre del reseller
         };
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/instances/${documentId}`, {
+            const response = await fetch(`/api/instances/${documentId}/update`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`, // API Key en los headers
                 },
                 body: JSON.stringify(updatedData),
             });

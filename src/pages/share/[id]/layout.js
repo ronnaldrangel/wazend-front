@@ -19,20 +19,20 @@ export default function Layout({ children, isReseller, resellerName }) {
                             <div className="flex flex-shrink-0 items-center">
                                 {/* Verificamos si isReseller está disponible */}
                                 {isReseller === undefined ? (
-                                    <span className="text-lg font-semibold">Cargando...</span>
+                                    <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">Cargando...</span>
                                 ) : (
                                     isReseller ? (
                                         // Si esReseller es true, mostramos el ícono y nombre del reseller
                                         resellerName ? (
                                             <div className="flex items-center space-x-2">
-                                                <ChatBubbleLeftIcon className="h-8 w-8 text-emerald-600" />
-                                                <span className="text-lg font-semibold">{resellerName}</span>
+                                                <ChatBubbleLeftIcon className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+                                                <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">{resellerName}</span>
                                             </div>
                                         ) : (
                                             // Si el nombre del reseller aún no está disponible, mostramos "Cargando..."
                                             <div className="flex items-center space-x-2">
-                                                <ChatBubbleLeftIcon className="h-8 w-8 text-emerald-600" />
-                                                <span className="text-lg font-semibold">Cargando...</span>
+                                                <ChatBubbleLeftIcon className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+                                                <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">Cargando...</span>
                                             </div>
                                         )
                                     ) : (
@@ -64,7 +64,7 @@ export default function Layout({ children, isReseller, resellerName }) {
                 <Biblia />
             </div>
 
-            <main>
+            <main className="bg-gray-50 dark:bg-gray-900 min-h-screen">
                 <div className="mx-auto max-w-7xl py-10 px-4 sm:px-6 lg:px-8">
                     {children}
                 </div>

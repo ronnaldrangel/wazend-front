@@ -41,7 +41,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         attribute="class"
         defaultTheme="system"
         enableSystem
-        disableTransitionOnChange>
+        disableTransitionOnChange
+        suppressHydrationWarning>
         <SessionProvider session={session}>
           <ProgressBar
             height="4px"

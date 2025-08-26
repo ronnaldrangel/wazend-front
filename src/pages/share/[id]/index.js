@@ -62,11 +62,11 @@ export default function Profile() {
             case 'Dashboard':
                 return <Dashboard instanceId={instanceData.instanceId} serverUrl={instanceData.server_url} />;
             case 'Config':
-                return <Config instanceId={instanceData.instanceName} />;
+                return <Config instanceId={instanceData.instanceName} serverUrl={instanceData.server_url} />;
             case 'Proxy':
-                return <Proxy instanceId={instanceData.instanceName} />;
+                return <Proxy instanceId={instanceData.instanceName} serverUrl={instanceData.server_url}/>;
             case 'Integrations':
-                return <Integrations instanceId={instanceData.instanceId} />;
+                return <Integrations instanceId={instanceData.instanceId} serverUrl={instanceData.server_url} />;
             default:
                 return <Dashboard instanceId={instanceData.instanceId} />;
         }
@@ -85,17 +85,17 @@ export default function Profile() {
                         {menuItems.map((item) => (
                             item.external ? (
                                 <a key={item.name} href={item.path} target="_blank" rel="noopener noreferrer"
-                                    className="w-full px-2 py-2.5 text-left text-sm font-medium rounded-md flex items-center gap-x-2 transition-colors duration-200 ease-in-out border-l-0 text-gray-700 hover:bg-gray-200 hover:underline border-transparent">
-                                    <item.icon className="h-5 w-5 text-gray-700" strokeWidth="2" />
+                                    className="w-full px-2 py-2.5 text-left text-sm font-medium rounded-md flex items-center gap-x-2 transition-colors duration-200 ease-in-out border-l-0 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:underline border-transparent">
+                                    <item.icon className="h-5 w-5 text-gray-700 dark:text-gray-300" strokeWidth="2" />
                                     {item.name}
                                 </a>
                             ) : (
                                 <button key={item.name} onClick={() => setActiveComponent(item.component)}
                                     className={`w-full px-2 py-2.5 text-left text-sm font-medium rounded-md flex items-center gap-x-2 transition-colors duration-200 ease-in-out border-l-0 ${activeComponent === item.component
-                                        ? 'bg-gray-300 text-emerald-700 border-emerald-700'
-                                        : 'text-gray-700 hover:bg-gray-200 hover:underline border-transparent'
+                                        ? 'bg-gray-300 dark:bg-gray-600 text-emerald-700 dark:text-emerald-400 border-emerald-700 dark:border-emerald-400'
+                                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:underline border-transparent'
                                         }`}>
-                                    <item.icon className={`h-5 w-5 ${activeComponent === item.component ? 'text-emerald-700' : 'text-gray-700'}`} strokeWidth="2" />
+                                    <item.icon className={`h-5 w-5 ${activeComponent === item.component ? 'text-emerald-700 dark:text-emerald-400' : 'text-gray-700 dark:text-gray-300'}`} strokeWidth="2" />
                                     {item.name}
                                 </button>
                             )
@@ -104,8 +104,8 @@ export default function Profile() {
                 </div>
 
                 <div className="w-full md:w-4/5">
-                    <div className="rounded-lg bg-white shadow-[0_0_5px_rgba(0,0,0,0.1)] p-6 mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900">{activeComponent}</h2>
+                    <div className="rounded-lg bg-white dark:bg-gray-800 shadow-[0_0_5px_rgba(0,0,0,0.1)] dark:shadow-[0_0_5px_rgba(255,255,255,0.1)] p-6 mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{activeComponent}</h2>
                     </div>
                     {renderComponent()}
                 </div>

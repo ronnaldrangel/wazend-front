@@ -5,7 +5,6 @@ const fetcher = async (url) => {
   const res = await fetch(url, {
     method: 'GET',
     headers: {
-      'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
       'Content-Type': 'application/json',
     },
   });
@@ -26,7 +25,7 @@ const fetcher = async (url) => {
 // Función para obtener datos de Strapi (reutilizable)
 export function useStrapiData(endpoint) {
   const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/${endpoint}`,
+    `/api/strapi/${endpoint}`,
     fetcher
   );
 

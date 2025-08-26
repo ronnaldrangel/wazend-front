@@ -1,13 +1,18 @@
 // components/Layout.js
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import ToggleMode from '../ui/toggle-mode';
 
 const Layout = ({ children }) => {
+  const [mounted, setMounted] = useState(false);
   const { theme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   return (
     <div className="h-screen bg-background">
