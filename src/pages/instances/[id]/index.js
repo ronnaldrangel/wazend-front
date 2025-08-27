@@ -155,8 +155,8 @@ export default function Profile() {
                                     {item.name}
                                 </a>
                             ) : (
-                                <Button 
-                                    key={item.name} 
+                                <Button
+                                    key={item.name}
                                     onClick={() => setActiveComponent(item.component)}
                                     variant="ghost"
                                     size="default"
@@ -175,24 +175,29 @@ export default function Profile() {
 
                 <div className="w-full md:w-4/5">
                     {/* Botón "Compartir instancia" */}
-                    <Button
-                        onClick={() => setIsModalOpen(true)}
-                        variant="outline"
-                        size="default"
-                        className="mb-6 gap-2"
-                    >
-                        <PaperAirplaneIcon className="w-4 h-4" />
-                        Compartir instancia
-                    </Button>
+                    <div className="flex gap-2 mb-6">
 
-                    <Button href="https://docs.wazend.net/wazend" target="_blank"
-                              variant="outline"
-                        size="default"
-                        className="ml-2 mb-6"
-                    >
-                        <DocumentTextIcon className="w-4 h-4 mr-2" />
-                        Documentación
-                    </Button>
+                        <Button
+                            onClick={() => setIsModalOpen(true)}
+                            variant="outline"
+                            size="default"
+                            className="gap-2"
+                        >
+                            <PaperAirplaneIcon className="w-4 h-4" />
+                            Compartir instancia
+                        </Button>
+
+                        <Button
+                            asChild
+                            variant="outline"
+                            size="default"
+                        >
+                            <Link href="https://docs.wazend.net/wazend" target="_blank">
+                                <DocumentTextIcon className="w-4 h-4" />
+                                Documentación
+                            </Link>
+                        </Button>
+                    </div>
 
                     {/* Modal */}
                     {isModalOpen && (
