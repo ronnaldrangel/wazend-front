@@ -53,13 +53,13 @@ export default function Layout({ children, title, cta }) {
       {/* FOOTER */}
       <footer>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 flex flex-row items-center justify-between text-sm text-muted-foreground">
+          
           <LanguageSwitcher />
 
-          <div className="flex gap-4 mt-0 sm:mt-0">
-            <Link href={`${(process.env.NEXT_PUBLIC_URL)}/terms-of-service/`} className="hover:text-foreground underline-offset-4 hover:underline">
-              Términos del Servicio y Condiciones de Uso
-            </Link>
-          </div>
+          <Link href={`${(process.env.NEXT_PUBLIC_URL)}/terms-of-service/`} className="hover:text-foreground underline-offset-4 hover:underline text-right">
+            Términos del Servicio y Condiciones de Uso
+          </Link>
+
         </div>
       </footer>
     </div>
