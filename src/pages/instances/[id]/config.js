@@ -153,7 +153,7 @@ const InstancePage = ({ instanceId, serverUrl }) => {
                 <Button
                     onClick={updateSettings}
                     disabled={isLoading}
-                    className={`mt-4 ${isLoading ? 'bg-muted cursor-not-allowed' : ''}`}
+                    className={`mt-4 ${isLoading ? 'cursor-not-allowed' : ''}`}
                 >
                     {isLoading ? 'Guardando...' : 'Guardar'}
                 </Button>
