@@ -1,6 +1,6 @@
-const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-const createInstanceUrl = process.env.NEXT_PUBLIC_CREATE_INSTANCE; import useSWR from 'swr';
+const createInstanceUrl = process.env.NEXT_PUBLIC_CREATE_INSTANCE;
 import { useSession } from 'next-auth/react';
+import { useStrapiData } from '../../services/strapiServiceJWT';
 import InstanceCard from './instance-card';
 import OrderSkeleton from '../../components/loaders/skeleton';
 import Link from 'next/link';
@@ -17,24 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Alerta from '@/components/alerts/main';
 
-const fetcher = async (url, jwt) => {
-  try {
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
 
-    if (!response.ok) {
-      throw new Error(`❌ Error en la solicitud: ${response.statusText}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('❌ Error al obtener datos de Strapi:', error);
-    throw error;
-  }
-};
 
 const handleCreateInstance = async (subscriptionId, email, mutate, setCreatingInstanceForSubscription) => {
   setCreatingInstanceForSubscription(subscriptionId);
@@ -127,9 +110,9 @@ const FetchStrapi = () => {
   const [showCancelled, setShowCancelled] = useState(false);
   const [creatingInstanceForSubscription, setCreatingInstanceForSubscription] = useState(null);
 
-  const { data, error, isLoading, mutate } = useSWR(
-    jwt ? `${strapiUrl}/api/users/me?populate[subscriptions][populate]=instances` : null,
-    (url) => fetcher(url, jwt)
+  const { data, error, isLoading, mutate } = useStrapiData(
+    'users/me?populate[subscriptions][populate]=instances',
+    jwt
   );
 
   if (isLoading) return <OrderSkeleton />;
