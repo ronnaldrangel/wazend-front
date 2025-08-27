@@ -240,17 +240,18 @@ export default function Profile() {
 
                                 {/* Botones en dos columnas */}
                                 <div className="grid grid-cols-2 gap-4">
-                                    <button
+                                    <Button
                                         onClick={saveSettings}
-                                        className="w-full px-6 py-3 bg-emerald-600 text-white text-md font-medium rounded-lg shadow-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out">
+                                    >
                                         Guardar
-                                    </button>
+                                    </Button>
 
-                                    <button
+                                    <Button
+                                        variant="outline"
                                         onClick={() => setIsModalOpen(false)}
-                                        className="w-full px-6 py-3 bg-card text-muted-foreground text-md font-medium border border-border rounded-lg shadow-md hover:bg-muted hover:shadow focus:outline-none focus:ring-2 focus:ring-border focus:ring-opacity-50 transition-colors duration-200 ease-in-out">
+                                    >
                                         Cerrar
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
