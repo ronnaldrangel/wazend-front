@@ -3,12 +3,14 @@ import { ClipboardIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 
 // Componente para mostrar una lista de grupos obtenidos desde una fuente externa
 export default function Index({ groupList, loading, documentId }) {
     const [isUpdating, setIsUpdating] = useState(false);
     const router = useRouter();
+    const { data: session } = useSession();
 
     // Mostrar mensaje de carga mientras los datos aún no han sido cargados
     if (loading) {
@@ -45,7 +47,10 @@ export default function Index({ groupList, loading, documentId }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ documentId }),
+                body: JSON.stringify({ 
+                    documentId,
+                    email: session?.user?.email 
+                }),
             });
 
             if (!response.ok) throw new Error('Network response was not ok');
