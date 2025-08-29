@@ -16,6 +16,10 @@ const Layout = ({ children }) => {
   
   return (
     <div className="h-screen bg-background">
+      {/* Selector de tema en la esquina superior derecha */}
+      <div className="absolute top-4 right-4 z-10">
+        <ToggleMode />
+      </div>
 
       <div className="flex min-h-full flex-1">
 
