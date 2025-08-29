@@ -148,7 +148,7 @@ const FetchStrapi = () => {
 
   // Verificar si hay instancias activas
   const hasActiveInstances = filteredSubscriptions.some(sub => 
-    sub.status_woo === "active" && sub.instances && sub.instances.length > 0
+    sub.status_woo === "active"
   );
 
   return (
