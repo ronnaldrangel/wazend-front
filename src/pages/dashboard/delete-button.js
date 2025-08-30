@@ -141,7 +141,6 @@ const DeleteButton = ({ documentId, instanceName, onDelete, isTrial }) => {
                     >
                       {isSubmitting ? (
                         <>
-                          <Spin className="mr-2" />
                           Eliminando...
                         </>
                       ) : (
