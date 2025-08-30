@@ -118,7 +118,7 @@ export default function Pricing() {
                                     <Button
                                         onClick={() => handleCheckout(plan.woo_id)}
                                         disabled={loading}
-                                        className="text-base px-4"
+                                        className="px-6"
                                     >
                                         Pedir Ahora
                                     </Button>
