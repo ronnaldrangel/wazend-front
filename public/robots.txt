@@ -1,0 +1,46 @@
+# Robots.txt para Wazend
+# Optimizado para SEO y crawling eficiente
+
+User-agent: *
+Allow: /
+
+# Bloquear páginas administrativas y de autenticación
+Disallow: /admin/
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /reset-password
+Disallow: /forgot-password
+Disallow: /email-confirmation
+
+# Bloquear archivos y directorios técnicos
+Disallow: /_next/
+Disallow: /static/
+Disallow: /*.json$
+Disallow: /*?*
+Disallow: /404
+Disallow: /500
+
+# Permitir específicamente páginas importantes
+Allow: /
+Allow: /affiliates
+Allow: /trial
+Allow: /upgrade
+Allow: /share
+
+# Configuración específica para bots principales
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://app.wazend.net/sitemap.xml
+Sitemap: https://app.wazend.net/api/sitemap.xml

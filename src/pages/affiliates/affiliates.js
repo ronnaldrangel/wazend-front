@@ -17,7 +17,7 @@ export default function ReferralProgram() {
               <div className="w-32 h-32 mx-auto mb-5 relative">
                 <Image
                   src="/images/affiliate/step-1.webp"
-                  alt="Invita a un amigo"
+                  alt="Ilustración del paso 1: Compartir enlace de referido de Wazend con tu audiencia"
                   width={128}
                   height={128}
                   className="object-contain"
@@ -43,7 +43,7 @@ export default function ReferralProgram() {
               <div className="w-32 h-32 mx-auto mb-5 relative">
                 <Image
                   src="/images/affiliate/step-2.webp"
-                  alt="Tus amigos aceptan"
+                  alt="Ilustración del paso 2: Usuarios registrándose en Wazend a través de enlace de referido"
                   width={128}
                   height={128}
                   className="object-contain"
@@ -69,7 +69,7 @@ export default function ReferralProgram() {
               <div className="w-32 h-32 mx-auto mb-5 relative">
                 <Image
                   src="/images/affiliate/step-3.webp"
-                  alt="Recibe tu pago"
+                  alt="Ilustración del paso 3: Recibir comisión del 30% por referidos en Wazend"
                   width={128}
                   height={128}
                   className="object-contain"

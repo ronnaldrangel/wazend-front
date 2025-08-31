@@ -1,0 +1,41 @@
+{
+  "name": "Wazend API",
+  "short_name": "Wazend",
+  "description": "Plataforma líder en automatización de WhatsApp Business. Gestiona conversaciones, automatiza respuestas y mejora tu atención al cliente.",
+  "start_url": "https://app.wazend.net/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#059669",
+  "orientation": "portrait-primary",
+  "scope": "https://app.wazend.net/",
+  "lang": "es",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/images/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["business", "productivity", "communication"],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-desktop.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/images/screenshot-mobile.webp",
+      "sizes": "390x844",
+      "type": "image/webp",
+      "form_factor": "narrow"
+    }
+  ]
+}
