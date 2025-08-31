@@ -8,8 +8,11 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
 import Spin from '@/components/loaders/spin';
 import { PageTitle } from '@/hooks/use-page-title';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function EmailConfirm() {
+  const { t } = useTranslation('common');
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
@@ -19,7 +22,7 @@ export default function EmailConfirm() {
     e.preventDefault();
     
     if (!turnstileToken) {
-      toast.error('Por favor, completa la verificación de seguridad.');
+      toast.error(t('securityVerification'));
       return;
     }
 
@@ -35,17 +38,17 @@ export default function EmailConfirm() {
       });
 
       if (response.ok) {
-        setMessage('Se ha enviado un enlace de confirmación a su correo.');
-        toast.success('Se ha enviado un correo para confirmar su cuenta.');
+        setMessage(t('confirmationEmailSent'));
+        toast.success(t('confirmationEmailSuccess'));
         setEmail('');
       } else {
         const errorData = await response.json();
-        setMessage(errorData.message || 'An error occurred while processing your request.');
-        toast.error(errorData.message || 'An error occurred.');
+        setMessage(errorData.message || t('requestError'));
+        toast.error(errorData.message || t('error'));
       }
     } catch (error) {
-      setMessage('There was an error processing your request.');
-      toast.error('An error has occurred.');
+      setMessage(t('requestError'));
+      toast.error(t('error'));
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -54,7 +57,7 @@ export default function EmailConfirm() {
 
   return (
     <>
-      <PageTitle title="Confirmación de email" />
+      <PageTitle title={t('email')} />
       <Layout>
 
       <div className="mt-8 flex flex-col">
@@ -62,11 +65,10 @@ export default function EmailConfirm() {
           className="h-auto w-10 text-green-400 dark:text-green-500 mb-4"
         />
           <p className="text-base font-semibold tracking-tight text-gray-900 dark:text-gray-100">
-            Te has registrado correctamente.
+            {t('registrationSuccess')}
           </p>
           <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-            Revisa tu correo para confirmar tu cuenta antes de iniciar
-            sesión. Si no recibiste el correo, renvíalo en el formulario de abajo.
+            {t('emailConfirmationInstructions')}
           </p>
           {/* <p className="mt-2 text-sm font-medium text-red-500">
             Si no recibes el correo, por favor revisa tu carpeta de Spam o escribe tu correo y te
@@ -81,8 +83,8 @@ export default function EmailConfirm() {
             id="email"
             name="email"
             type="email"
-            label="Correo electrónico" 
-            placeholder="tu@ejemplo.com"
+            label={t('email')} 
+            placeholder={t('emailPlaceholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
@@ -103,10 +105,10 @@ export default function EmailConfirm() {
           <Button type="submit" className="w-full" disabled={isSubmitting || !turnstileToken}>
             {isSubmitting ? (
               <>
-                <Spin className="mr-2" /> Cargando
+                <Spin className="mr-2" /> {t('loading')}
               </>
             ) : (
-              'Reenviar correo de confirmación'
+              t('resendConfirmationEmail')
             )}
           </Button>
         </form>
@@ -119,7 +121,7 @@ export default function EmailConfirm() {
               className: "text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
             })}
           >
-            Volver al inicio
+            {t('backToHome')}
           </a>
         </div>
       </div>
@@ -139,6 +141,8 @@ export const getServerSideProps = async (context) => {
     };
   }
   return {
-    props: {},
+    props: {
+      ...(await serverSideTranslations(context.locale, ['common'])),
+    },
   };
 };

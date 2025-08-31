@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { getSession } from 'next-auth/react';
 import { Turnstile } from '@marsidev/react-turnstile';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
@@ -14,6 +16,7 @@ import FormInput from '@/components/ui/form-input';
 import { PageTitle } from '@/hooks/use-page-title';
 
 export default function SignIn() {
+  const { t } = useTranslation('common');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -81,10 +84,10 @@ export default function SignIn() {
 
   return (
     <>
-      <PageTitle title="Iniciar sesión" />
+      <PageTitle title={t('login')} />
       <Layout>
       <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-foreground">
-        Iniciar sesión 👋
+        {t('login')} 👋
       </h2>
 
       <SignSocial />
@@ -94,8 +97,8 @@ export default function SignIn() {
           id="email"
           name="email"
           type="email"
-          label="Correo electrónico"
-          placeholder="tu@ejemplo.com"
+          label={t('email')}
+          placeholder={t('emailPlaceholder')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           autoComplete="email"
@@ -106,13 +109,13 @@ export default function SignIn() {
         <div>
           <div className="flex items-center justify-between">
             <label htmlFor="password" className="block text-sm font-medium leading-6 text-foreground">
-              Contraseña
+              {t('password')}
             </label>
             <Link
               href="/forgot-password"
               className={buttonVariants({ variant: 'link', size: 'md' })}
             >
-              ¿Has olvidado tu contraseña?
+              {t('forgotPassword')}
             </Link>
           </div>
           <FormInput
@@ -158,18 +161,18 @@ export default function SignIn() {
         <Button type="submit" className="w-full" disabled={isSubmitting || !turnstileToken}>
           {isSubmitting ? (
             <>
-              <Spin className="mr-2" /> Cargando
+              <Spin className="mr-2" /> {t('loading')}
             </>
           ) : (
-            'Ingresa'
+            t('login')
           )}
         </Button>
       </form>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        ¿No tienes una cuenta?{' '}
+        {t('noAccount')}{' '}
         <Link href="/register" className={buttonVariants({ variant: 'link', size: 'md' })}>
-          Regístrate ahora
+          {t('register')}
         </Link>
       </p>
       </Layout>
@@ -182,5 +185,9 @@ export const getServerSideProps = async (context) => {
   if (session) {
     return { redirect: { destination: '/', permanent: false } };
   }
-  return { props: {} };
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale, ['common'])),
+    },
+  };
 };

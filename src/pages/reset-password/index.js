@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import Link from 'next/link';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { getSession } from 'next-auth/react';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Button, buttonVariants } from '@/components/ui/button';
 import FormInput from '@/components/ui/form-input';
 import Spin from '../../components/loaders/spin';
@@ -14,6 +16,7 @@ import { PageTitle } from '@/hooks/use-page-title';
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function ResetPassword() {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const { code } = router.query;
   const [password, setPassword] = useState('');
@@ -24,7 +27,7 @@ export default function ResetPassword() {
   const handleResetPassword = async (event) => {
     event.preventDefault();
     if (password !== passwordConfirmation) {
-      toast.error('Las contraseñas no coinciden.');
+      toast.error(t('passwordsMatch'));
       return;
     }
 
@@ -39,10 +42,10 @@ export default function ResetPassword() {
           },
         }
       );
-      toast.success('Contraseña restablecida con éxito.');
+      toast.success(t('passwordResetSuccess'));
       router.replace('/login');
     } catch {
-      toast.error('Ha ocurrido un error.');
+      toast.error(t('error'));
     } finally {
       setLoading(false);
     }
@@ -52,10 +55,10 @@ export default function ResetPassword() {
 
   return (
     <>
-      <PageTitle title="Restablecer contraseña" />
+      <PageTitle title={t('resetPassword')} />
       <Layout>
       <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-        Restablecer contraseña
+        {t('resetPassword')}
       </h2>
 
       <form className="mt-8 space-y-6" onSubmit={handleResetPassword}>
@@ -64,7 +67,7 @@ export default function ResetPassword() {
           id="password"
           name="password"
           type={showPassword ? 'text' : 'password'}
-          label="Contraseña"
+          label={t('password')}
           placeholder="••••••••"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -93,7 +96,7 @@ export default function ResetPassword() {
           id="passwordConfirmation"
           name="passwordConfirmation"
           type={showPassword ? 'text' : 'password'}
-          label="Confirmar contraseña"
+          label={t('confirmPassword')}
           placeholder="••••••••"
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
@@ -121,10 +124,10 @@ export default function ResetPassword() {
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? (
             <>
-              <Spin className="mr-2" /> Cargando
+              <Spin className="mr-2" /> {t('loading')}
             </>
           ) : (
-            'Restablecer contraseña'
+            t('resetPassword')
           )}
         </Button>
       </form>
@@ -132,10 +135,24 @@ export default function ResetPassword() {
       {/* Volver al login */}
       <p className="mt-10 text-center text-sm text-gray-500">
         <Link href="/login" className={buttonVariants({ variant: 'link', size: 'md' })}>
-          Volver al inicio de sesión
+          {t('login')}
         </Link>
       </p>
     </Layout>
     </>
   );
 }
+
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (session) {
+    return {
+      redirect: { destination: '/', permanent: false },
+    };
+  }
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale, ['common'])),
+    },
+  };
+};

@@ -1,7 +1,13 @@
 import {withSentryConfig} from '@sentry/nextjs';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en'],
+    localeDetection: false,
+  },
   images: {
     domains: ['wazend.net', 'pps.whatsapp.net', 'minio-app.wazend.net', 'tradervps.net'], // Dominios permitidos
     formats: ['image/webp', 'image/avif'], // Formatos modernos para mejor compresión

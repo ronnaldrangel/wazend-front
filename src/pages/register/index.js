@@ -7,6 +7,8 @@ import { getSession } from 'next-auth/react';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { Turnstile } from '@marsidev/react-turnstile';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Layout from '../../components/layout/auth';
 import Spin from '../../components/loaders/spin';
 import SignSocial from '../login/SignSocial';
@@ -18,6 +20,7 @@ import { PageTitle } from '@/hooks/use-page-title';
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function SignUp() {
+  const { t } = useTranslation('common');
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -103,10 +106,10 @@ export default function SignUp() {
 
   return (
     <>
-      <PageTitle title="Registro" />
+      <PageTitle title={t('register')} />
       <Layout>
       <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-foreground">
-        🎉 Regístrate y obtén tu prueba gratis
+        {t('registerTitle')}
       </h2>
 
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -115,8 +118,8 @@ export default function SignUp() {
           id="name"
           name="name"
           type="text"
-          label="Nombre completo"
-          placeholder="Tu nombre completo"
+          label={t('fullName')}
+          placeholder={t('fullName')}
           value={formData.name}
           onChange={handleChange}
           autoComplete="name"
@@ -128,8 +131,8 @@ export default function SignUp() {
           id="email"
           name="email"
           type="email"
-          label="Correo electrónico"
-          placeholder="tu@ejemplo.com"
+          label={t('email')}
+          placeholder={t('emailPlaceholder')}
           value={formData.email}
           onChange={handleChange}
           autoComplete="email"
@@ -142,18 +145,18 @@ export default function SignUp() {
             htmlFor="phone"
             className="block text-sm font-medium leading-6 text-foreground"
           >
-            WhatsApp (opcional)
+            {t('whatsapp')} ({t('optional')})
           </label>
           <PhoneInput
             id="phone"
             name="phone"
-            placeholder="Ingresa tu número"
+            placeholder={t('enterPhone')}
             defaultCountry="ES"
             value={formData.phone}
             onChange={handlePhoneChange}
             className="mt-2 w-full"
           />
-          <p className="mt-2 text-xs text-muted-foreground">Solo para contacto y soporte</p>
+          <p className="mt-2 text-xs text-muted-foreground">{t('contactSupport')}</p>
         </div>
 
         {/* Contraseña */}
@@ -162,7 +165,7 @@ export default function SignUp() {
             htmlFor="password"
             className="block text-sm font-medium leading-6 text-foreground"
           >
-            Contraseña
+            {t('password')}
           </label>
           <div className="relative mt-2">
             <FormInput
@@ -194,11 +197,11 @@ export default function SignUp() {
         {showPasswordConditions && (
           <ul className="mt-2 space-y-1 text-sm">
             {[
-              ['uppercase', 'Una letra mayúscula'],
-              ['lowercase', 'Una letra minúscula'],
-              ['number', 'Un número'],
-              ['specialChar', 'Un carácter especial'],
-              ['length', 'Al menos 6 caracteres'],
+              ['uppercase', t('uppercase')],
+              ['lowercase', t('lowercase')],
+              ['number', t('number')],
+              ['specialChar', t('specialChar')],
+              ['length', t('minLength')],
             ].map(([key, label]) => (
               <li
                 key={key}
@@ -231,10 +234,10 @@ export default function SignUp() {
         >
           {isSubmitting ? (
             <>
-              <Spin className="mr-2" /> Cargando
+              <Spin className="mr-2" /> {t('loading')}
             </>
           ) : (
-            'Regístrate'
+            t('signUp')
           )}
         </Button>
       </form>
@@ -242,9 +245,9 @@ export default function SignUp() {
       {/* <SignSocial /> */}
 
       <p className="mt-10 text-center text-sm text-muted-foreground">
-        ¿Tienes una cuenta?{' '}
+        {t('haveAccount')}{' '}
         <Link href="/login" className={buttonVariants({ variant: 'link', size: 'md' })}>
-          Iniciar sesión
+          {t('signIn')}
         </Link>
       </p>
       </Layout>
@@ -257,5 +260,9 @@ export const getServerSideProps = async (context) => {
   if (session) {
     return { redirect: { destination: '/', permanent: false } };
   }
-  return { props: {} };
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale, ['common'])),
+    },
+  };
 };

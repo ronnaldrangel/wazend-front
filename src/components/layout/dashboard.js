@@ -5,7 +5,7 @@ import { PlusIcon } from '@heroicons/react/20/solid';
 import WhatsAppButton from '../../components/WhatsAppButton';
 import Biblia from './bible';
 import { Button } from '@/components/ui/button';
-import { LanguageSwitcher } from "@/components/lenguage-switcher"
+import LanguageSelector from "@/components/language-selector"
 
 export default function Layout({ children, title, cta }) {
   return (
@@ -54,7 +54,7 @@ export default function Layout({ children, title, cta }) {
       <footer>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 flex flex-row items-center justify-between text-sm text-muted-foreground">
           
-          <LanguageSwitcher />
+          <LanguageSelector />
 
           <Link href={`${(process.env.NEXT_PUBLIC_URL)}/terms-of-service/`} className="hover:text-foreground underline-offset-4 hover:underline text-right">
             Términos del Servicio y Condiciones de Uso

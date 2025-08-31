@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/router';
 import { Turnstile } from '@marsidev/react-turnstile';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Layout from '../../components/layout/auth';
 import { getSession } from 'next-auth/react';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -13,6 +15,7 @@ import { PageTitle } from '@/hooks/use-page-title';
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function ForgotPassword() {
+  const { t } = useTranslation('common');
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState('');
@@ -22,7 +25,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     
     if (!turnstileToken) {
-      toast.error('Por favor, completa la verificación de seguridad.');
+      toast.error(t('securityVerification'));
       return;
     }
     
@@ -38,14 +41,14 @@ export default function ForgotPassword() {
       });
 
       if (response.ok) {
-        toast.success('Se envió un correo para restablecer la contraseña.');
+        toast.success(t('emailSent'));
         router.replace('/login');
       } else {
         const errorData = await response.json();
-        toast.error(errorData.message || 'Error al enviar el correo.');
+        toast.error(errorData.message || t('emailError'));
       }
     } catch {
-      toast.error('Ha ocurrido un error.');
+      toast.error(t('error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -53,14 +56,14 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <PageTitle title="Recuperar contraseña" />
+      <PageTitle title={t('forgotPasswordTitle')} />
       <Layout>
       <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-foreground">
-        Recuperar contraseña
+        {t('forgotPasswordTitle')}
       </h2>
 
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
-        Escribe tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+        {t('forgotPasswordDescription')}
       </p>
 
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -68,8 +71,8 @@ export default function ForgotPassword() {
           id="email"
           name="email"
           type="email"
-          label="Correo electrónico"
-          placeholder="tu@ejemplo.com"
+          label={t('email')}
+          placeholder={t('emailPlaceholder')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           autoComplete="email"
@@ -90,18 +93,18 @@ export default function ForgotPassword() {
         <Button type="submit" className="w-full" disabled={isSubmitting || !turnstileToken}>
           {isSubmitting ? (
             <>
-              <Spin className="mr-2" /> Cargando
+              <Spin className="mr-2" /> {t('loading')}
             </>
           ) : (
-            'Enviar correo de reinicio'
+            t('sendResetLink')
           )}
         </Button>
       </form>
 
       <p className="mt-10 text-center text-sm text-muted-foreground">
-        ¿Ya tienes una cuenta?{' '}
+        {t('haveAccount')}{' '}
         <Link href="/login" className={buttonVariants({ variant: 'link', size: 'md' })}>
-          Iniciar sesión
+          {t('signIn')}
         </Link>
       </p>
     </Layout>
@@ -116,5 +119,9 @@ export const getServerSideProps = async (context) => {
       redirect: { destination: '/', permanent: false },
     };
   }
-  return { props: {} };
+  return {
+    props: {
+      ...(await serverSideTranslations(context.locale, ['common'])),
+    },
+  };
 };

@@ -3,6 +3,7 @@ import { SessionProvider, useSession } from 'next-auth/react';
 import Head from 'next/head'
 import { ThemeProvider } from "../components/ui/theme-provider"
 import Script from 'next/script';
+import { appWithTranslation } from 'next-i18next';
 
 import { Toaster } from 'sonner';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
@@ -70,4 +71,4 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);
