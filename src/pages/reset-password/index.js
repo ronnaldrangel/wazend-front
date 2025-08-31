@@ -57,7 +57,7 @@ export default function ResetPassword() {
     <>
       <PageTitle title={t('resetPassword')} />
       <Layout>
-      <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+      <h2 className="mt-6 text-2xl font-bold leading-9 tracking-tight text-foreground">
         {t('resetPassword')}
       </h2>
 
