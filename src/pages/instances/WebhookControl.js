@@ -114,8 +114,8 @@ const WebhookControl = ({ instanceName, serverUrl }) => {
                 <p className='text-sm text-muted-foreground mb-1'>
                     Tan pronto como ocurra uno de estos eventos, se llamará la URL del webhook anterior con los datos del evento.
                 </p>
-                <p className='text-sm text-blue-500 mb-6'>
-                    <Link href='https://docs.wazend.net/'>Consulte la documentación para obtener más información sobre los webhooks.</Link>
+                <p className='text-sm text-primary mb-6'>
+                    <Link href={process.env.NEXT_PUBLIC_DOCS}>Consulte la documentación para obtener más información sobre los webhooks.</Link>
                 </p>
             </div>
             <div className='px-4 pb-4'>

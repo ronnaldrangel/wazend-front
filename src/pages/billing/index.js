@@ -13,7 +13,8 @@ export default function Index() {
             <div className="flex flex-col md:flex-row gap-6">
                 {/* Column for tabs */}
                 <div className="w-full md:w-2/3">
-                    <Tabs defaultValue="subscriptions" className="w-full">
+                <SubscriptionsTable />
+                    {/* <Tabs defaultValue="subscriptions" className="w-full">
                         <TabsList className="mb-4">
                             <TabsTrigger value="subscriptions">Suscripciones</TabsTrigger>
                             <TabsTrigger value="orders">Órdenes</TabsTrigger>
@@ -25,11 +26,11 @@ export default function Index() {
                         <TabsContent value="orders">
                             <OrdersTableSoporte />
                         </TabsContent>
-                    </Tabs>
+                    </Tabs> */}
                 </div>
 
                 {/* Billing column */}
-                <div className="w-full md:w-1/3 md:pt-14">
+                <div className="w-full md:w-1/3">
                     <Billing />
                 </div>
             </div>

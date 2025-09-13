@@ -1,22 +1,33 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import useSWR from 'swr'
 import { useSession } from 'next-auth/react'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import Skeleton from '@/components/loaders/skeleton'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
+import CheckoutButton from './checkout'
 
 type Subscription = {
   id: number
+  id_woo: number
+  documentId: string
   status: string
-  total: string
+  status_woo: string
+  product_name: string
+  billing_period: string
   next_payment_date_gmt: string | null
-  line_items: { name: string }[]
+  last_payment_date_gmt: string | null
+  total: string
+  price: number
+  instances: any[]
+  instances_limit: number
+  createdAt: string
+  updatedAt: string
 }
 
-async function fetcher(url: string): Promise<Subscription[]> {
+async function fetcher(url: string): Promise<{ data: Subscription[], meta: any }> {
   const res = await fetch(url, { cache: 'no-store' })
   if (!res.ok) throw new Error('No se pudieron cargar las suscripciones')
   return res.json()
@@ -31,30 +42,37 @@ function statusClasses(status: string) {
       'on-hold': `${base} bg-yellow-500/10 text-yellow-600 dark:text-yellow-400`,
       cancelled: `${base} bg-destructive/10 text-destructive`,
       expired: `${base} bg-muted text-muted-foreground`,
+      paused: `${base} bg-blue-500/10 text-blue-600 dark:text-blue-400`,
     }[status as keyof ReturnType<typeof Object>] ?? `${base} bg-muted text-muted-foreground`
   )
+}
+
+function getBillingPeriodText(period: string) {
+  const periodMap: { [key: string]: string } = {
+    "month": "Mensual",
+    "year": "Anual",
+    "Monthly": "Mensual",
+    "Yearly": "Anual"
+  };
+  return periodMap[period] || period;
 }
 
 export default function SubscriptionsTableSoporte() {
   const { data: session, status } = useSession()
   const email = session?.user?.email
 
-  // Paginación
-  const [page, setPage] = useState(1)
-  const perPage = 10
-
-  // Key dinámica para SWR
+  // Key dinámica para SWR - mostrar solo los primeros 100
   const fetchKey = () => {
     if (!email) return null
     const params = new URLSearchParams({
-      email,
-      page: String(page),
-      per_page: String(perPage),
+      page: '1',
+      pageSize: '100',
     })
-    return `/api/subscriptions?${params.toString()}`
+    return `/api/strapi-subscriptions?${params.toString()}`
   }
 
-  const { data, error, isLoading } = useSWR<Subscription[]>(fetchKey, fetcher)
+  const { data: response, error, isLoading } = useSWR<{ data: Subscription[], meta: any }>(fetchKey, fetcher)
+  const data = response?.data || []
 
   // Estados tempranos
   if (status === 'loading' || isLoading) {
@@ -91,50 +109,64 @@ export default function SubscriptionsTableSoporte() {
             <TableRow>
               <TableHead className="w-[80px]">ID</TableHead>
               <TableHead>Estado</TableHead>
-              <TableHead>Producto</TableHead>
-              <TableHead>Próximo pago</TableHead>
-              <TableHead className="text-right">Total</TableHead>
+              {/* <TableHead>Producto</TableHead> */}
+              <TableHead>Precio</TableHead>
+              <TableHead>Siguente pago</TableHead>
+              <TableHead>Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.map(sub => (
               <TableRow key={sub.id} className="hover:bg-muted/50">
-                <TableCell>{sub.id}</TableCell>
+                <TableCell>#{sub.id_woo}</TableCell>
                 <TableCell>
-                  <span className={statusClasses(sub.status)}>{sub.status}</span>
+                  <span className={statusClasses(sub.status_woo || sub.status)}>
+                    {sub.status_woo || sub.status}
+                  </span>
                 </TableCell>
-                <TableCell>{sub.line_items?.[0]?.name ?? '—'}</TableCell>
+                {/* <TableCell>{sub.product_name || '—'}</TableCell> */}
                 <TableCell>
-                  {sub.next_payment_date_gmt
-                    ? new Date(sub.next_payment_date_gmt).toLocaleDateString()
-                    : '—'}
+                  <span className="font-medium">
+                    ${sub.total || sub.price || '0'} / {getBillingPeriodText(sub.billing_period)}
+                  </span>
                 </TableCell>
-                <TableCell className="text-right">${sub.total}</TableCell>
+                <TableCell>
+                  {sub.next_payment_date_gmt ? (() => {
+                    const nextPaymentDate = new Date(sub.next_payment_date_gmt);
+                    const today = new Date();
+                    const diffTime = nextPaymentDate.getTime() - today.getTime();
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    if (diffDays <= 7 && diffDays > 0) {
+                      return `En ${diffDays} día${diffDays === 1 ? '' : 's'}`;
+                    } else if (diffDays === 0) {
+                      return 'hoy';
+                    } else if (diffDays < 0) {
+                      return 'Vencido';
+                    } else {
+                      return nextPaymentDate.toLocaleDateString('es-ES');
+                    }
+                  })() : '—'}
+                </TableCell>
+                <TableCell>
+                  <CheckoutButton
+                    buttonText="Ver"
+                    redirectUrl={`/my-account/view-subscription/${sub.id_woo}/`}
+                  />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Controles de paginación */}
-      <div className="flex justify-between items-center mt-4">
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={page <= 1}
-          onClick={() => setPage(p => Math.max(p - 1, 1))}
-        >
-          Anterior
-        </Button>
-        <span className="text-xs">Página {page}</span>
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={data.length < perPage}
-          onClick={() => setPage(p => p + 1)}
-        >
-          Siguiente
-        </Button>
+      {/* Información de suscripciones */}
+      <div className="flex justify-center items-center mt-4">
+        {response?.meta?.pagination && (
+          <span className="text-sm text-muted-foreground">
+            Mostrando {data.length} de {response.meta.pagination.total} suscripciones
+          </span>
+        )}
       </div>
     </div>
   )

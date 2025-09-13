@@ -192,7 +192,7 @@ export default function Profile() {
                             variant="outline"
                             size="default"
                         >
-                            <Link href="https://docs.wazend.net/wazend" target="_blank">
+                            <Link href={process.env.NEXT_PUBLIC_DOCS} target="_blank">
                                 <DocumentTextIcon className="w-4 h-4" />
                                 Documentación
                             </Link>
