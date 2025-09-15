@@ -32,7 +32,8 @@ const SessionLoader = ({ children }) => {
   return children
 }
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({ Component, pageProps = {} }) {
+  const { session, ...restPageProps } = pageProps;
   return (
     <>
       <Head>
@@ -54,7 +55,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           <Toaster closeButton richColors position="top-right" />
           
           <SessionLoader>
-            <Component {...pageProps} />
+            <Component {...restPageProps} />
           </SessionLoader>
         </SessionProvider>
       </ThemeProvider>
