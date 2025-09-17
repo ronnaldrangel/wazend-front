@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Obtener el token JWT de la sesión
+    // Obtener el token JWT de la sesión (siguiendo el patrón de subs-list.js)
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     if (!token || !token.jwt) {
@@ -21,9 +21,9 @@ export default async function handler(req, res) {
     const page = parseInt(req.query.page || '1', 10);
     const pageSize = parseInt(req.query.pageSize || '25', 10);
 
-    // Hacer la petición a Strapi para obtener el usuario con sus subscriptions
+    // Hacer la petición a Strapi para obtener el usuario con sus subscriptions (siguiendo el patrón de subs-list.js)
     const response = await fetch(
-      `${strapiUrl}/api/users/me?populate[subscriptions][populate]=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+      `${strapiUrl}/api/users/me?populate[subscriptions][populate]=instances`,
       {
         method: 'GET',
         headers: {

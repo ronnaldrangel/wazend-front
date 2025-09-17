@@ -1,6 +1,5 @@
 import Layout from '../../components/layout/dashboard';
 import Billing from './billing';
-import OrdersTableSoporte from './orders';
 import SubscriptionsTable from './subscriptions';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { PageTitle } from '@/hooks/use-page-title';
