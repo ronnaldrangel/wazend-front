@@ -11,7 +11,7 @@ export default function Index() {
                 <div className="flex flex-col md:flex-row gap-6">
                     {/* Column for tabs */}
                     <div className="w-full md:w-2/3">
-                        <SubscriptionsTable />
+                        {/* <SubscriptionsTable /> */}
                     </div>
 
                     {/* Billing column */}
