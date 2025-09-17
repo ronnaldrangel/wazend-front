@@ -27,11 +27,26 @@ type Subscription = {
   updatedAt: string
 }
 
-async function fetcher(url: string): Promise<{ data: Subscription[], meta: any }> {
-  const res = await fetch(url, { cache: 'no-store' })
-  if (!res.ok) throw new Error('No se pudieron cargar las suscripciones')
-  return res.json()
-}
+const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+const fetcher = async (url: string, jwt: string) => {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`❌ Error en la solicitud: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('❌ Error al obtener datos de Strapi:', error);
+    throw error;
+  }
+};
 
 function statusClasses(status: string) {
   const base = 'inline-block rounded-full px-2 py-[2px] text-xs font-semibold capitalize'
@@ -58,28 +73,21 @@ function getBillingPeriodText(period: string) {
 }
 
 export default function SubscriptionsTableSoporte() {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
+  const jwt = (session as any)?.jwt
   const email = session?.user?.email
 
-  // Key dinámica para SWR - mostrar solo los primeros 100
-  const fetchKey = () => {
-    if (!email) return null
-    const params = new URLSearchParams({
-      page: '1',
-      pageSize: '100',
-    })
-    return `/api/strapi-subscriptions?${params.toString()}`
-  }
-
-  const { data: response, error, isLoading } = useSWR<{ data: Subscription[], meta: any }>(fetchKey, fetcher)
-  const data = response?.data || []
+  const { data, error, isLoading } = useSWR(
+    jwt ? `${strapiUrl}/api/users/me?populate[subscriptions][populate]=instances` : null,
+    (url) => fetcher(url, jwt)
+  );
 
   // Estados tempranos
-  if (status === 'loading' || isLoading) {
+  if (isLoading) {
     return <Skeleton />
   }
 
-  if (status === 'unauthenticated' || !email) {
+  if (!session || !jwt) {
     return (
       <Alert variant="destructive">
         <AlertTitle>No autenticado</AlertTitle>
@@ -97,9 +105,11 @@ export default function SubscriptionsTableSoporte() {
     )
   }
 
-  if (!data || data.length === 0) {
+  if (!data?.subscriptions || data.subscriptions.length === 0) {
     return <p>No hay suscripciones para {email}.</p>
   }
+
+  const subscriptions = data.subscriptions;
 
   return (
     <div className="bg-card rounded-lg shadow-md p-4 border border-border">
@@ -116,7 +126,7 @@ export default function SubscriptionsTableSoporte() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map(sub => (
+            {subscriptions.map((sub: any) => (
               <TableRow key={sub.id} className="hover:bg-muted/50">
                 <TableCell>#{sub.id_woo}</TableCell>
                 <TableCell>
@@ -158,15 +168,6 @@ export default function SubscriptionsTableSoporte() {
             ))}
           </TableBody>
         </Table>
-      </div>
-
-      {/* Información de suscripciones */}
-      <div className="flex justify-center items-center mt-4">
-        {response?.meta?.pagination && (
-          <span className="text-sm text-muted-foreground">
-            Mostrando {data.length} de {response.meta.pagination.total} suscripciones
-          </span>
-        )}
       </div>
     </div>
   )
