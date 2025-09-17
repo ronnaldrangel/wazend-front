@@ -7,29 +7,11 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@
 import { Button } from '@/components/ui/button'
 import Skeleton from '@/components/loaders/skeleton'
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
-import CheckoutButton from './checkout'
-
-type Subscription = {
-  id: number
-  id_woo: number
-  documentId: string
-  status: string
-  status_woo: string
-  product_name: string
-  billing_period: string
-  next_payment_date_gmt: string | null
-  last_payment_date_gmt: string | null
-  total: string
-  price: number
-  instances: any[]
-  instances_limit: number
-  createdAt: string
-  updatedAt: string
-}
+import CheckoutButton from './checkout.js'
 
 const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-const fetcher = async (url: string, jwt: string) => {
+const fetcher = async (url, jwt) => {
   try {
     const response = await fetch(url, {
       headers: {
@@ -48,7 +30,7 @@ const fetcher = async (url: string, jwt: string) => {
   }
 };
 
-function statusClasses(status: string) {
+function statusClasses(status) {
   const base = 'inline-block rounded-full px-2 py-[2px] text-xs font-semibold capitalize'
   return (
     {
@@ -58,12 +40,12 @@ function statusClasses(status: string) {
       cancelled: `${base} bg-destructive/10 text-destructive`,
       expired: `${base} bg-muted text-muted-foreground`,
       paused: `${base} bg-blue-500/10 text-blue-600 dark:text-blue-400`,
-    }[status as keyof ReturnType<typeof Object>] ?? `${base} bg-muted text-muted-foreground`
+    }[status] ?? `${base} bg-muted text-muted-foreground`
   )
 }
 
-function getBillingPeriodText(period: string) {
-  const periodMap: { [key: string]: string } = {
+function getBillingPeriodText(period) {
+  const periodMap = {
     "month": "Mensual",
     "year": "Anual",
     "Monthly": "Mensual",
@@ -74,7 +56,7 @@ function getBillingPeriodText(period: string) {
 
 export default function SubscriptionsTableSoporte() {
   const { data: session } = useSession()
-  const jwt = (session as any)?.jwt
+  const jwt = session?.jwt
   const email = session?.user?.email
 
   const { data, error, isLoading } = useSWR(
@@ -119,14 +101,13 @@ export default function SubscriptionsTableSoporte() {
             <TableRow>
               <TableHead className="w-[80px]">ID</TableHead>
               <TableHead>Estado</TableHead>
-              {/* <TableHead>Producto</TableHead> */}
               <TableHead>Precio</TableHead>
               <TableHead>Siguente pago</TableHead>
               <TableHead>Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {subscriptions.map((sub: any) => (
+            {subscriptions.map((sub) => (
               <TableRow key={sub.id} className="hover:bg-muted/50">
                 <TableCell>#{sub.id_woo}</TableCell>
                 <TableCell>
@@ -134,7 +115,6 @@ export default function SubscriptionsTableSoporte() {
                     {sub.status_woo || sub.status}
                   </span>
                 </TableCell>
-                {/* <TableCell>{sub.product_name || '—'}</TableCell> */}
                 <TableCell>
                   <span className="font-medium">
                     ${sub.total || sub.price || '0'} / {getBillingPeriodText(sub.billing_period)}
