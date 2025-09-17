@@ -1,15 +1,10 @@
-'use client'
-
-import React from 'react'
-import useSWR from 'swr'
-import { useSession } from 'next-auth/react'
+const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+import useSWR from 'swr';
+import { useSession } from 'next-auth/react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import Skeleton from '@/components/loaders/skeleton'
+import OrderSkeleton from '../../components/loaders/skeleton';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 import CheckoutButton from './checkout.js'
-
-const strapiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const fetcher = async (url, jwt) => {
   try {
@@ -47,48 +42,27 @@ function statusClasses(status) {
 function getBillingPeriodText(period) {
   const periodMap = {
     "month": "Mensual",
-    "year": "Anual",
-    "Monthly": "Mensual",
-    "Yearly": "Anual"
+    "year": "Anual"
   };
   return periodMap[period] || period;
 }
 
 export default function SubscriptionsTableSoporte() {
-  const { data: session } = useSession()
-  const jwt = session?.jwt
-  const email = session?.user?.email
+  const { data: session } = useSession();
+  const jwt = session?.jwt;
+  const email = session?.user?.email;
 
   const { data, error, isLoading } = useSWR(
     jwt ? `${strapiUrl}/api/users/me?populate[subscriptions][populate]=instances` : null,
     (url) => fetcher(url, jwt)
   );
 
-  // Estados tempranos
-  if (isLoading) {
-    return <Skeleton />
-  }
+  if (isLoading) return <OrderSkeleton />;
+  if (error) return <Alert variant="destructive"><AlertTitle>Error</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
+  if (!data) return <OrderSkeleton />;
 
-  if (!session || !jwt) {
-    return (
-      <Alert variant="destructive">
-        <AlertTitle>No autenticado</AlertTitle>
-        <AlertDescription>Debes iniciar sesión para ver tus suscripciones.</AlertDescription>
-      </Alert>
-    )
-  }
-
-  if (error) {
-    return (
-      <Alert variant="destructive">
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>{error.message}</AlertDescription>
-      </Alert>
-    )
-  }
-
-  if (!data?.subscriptions || data.subscriptions.length === 0) {
-    return <p>No hay suscripciones para {email}.</p>
+  if (!data?.subscriptions?.length) {
+    return <p>No hay suscripciones para {email}.</p>;
   }
 
   const subscriptions = data.subscriptions;
@@ -139,10 +113,14 @@ export default function SubscriptionsTableSoporte() {
                   })() : '—'}
                 </TableCell>
                 <TableCell>
-                  <CheckoutButton
-                    buttonText="Ver"
-                    redirectUrl={`/my-account/view-subscription/${sub.id_woo}/`}
-                  />
+                  {data && !isLoading && !error ? (
+                    <CheckoutButton
+                      buttonText="Ver"
+                      redirectUrl={`/my-account/view-subscription/${sub.id_woo}/`}
+                    />
+                  ) : (
+                    <span className="text-muted-foreground">Cargando...</span>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
