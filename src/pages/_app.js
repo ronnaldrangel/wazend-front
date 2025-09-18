@@ -36,6 +36,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{process.env.NEXT_PUBLIC_APP_NAME}</title>
       </Head>
       <ThemeProvider

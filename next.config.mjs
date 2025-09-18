@@ -9,7 +9,24 @@ const nextConfig = {
     localeDetection: false,
   },
   images: {
-    domains: ['wazend.net', 'pps.whatsapp.net', 'minio-app.wazend.net', 'tradervps.net'], // Dominios permitidos
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'wazend.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'pps.whatsapp.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'minio-app.wazend.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'tradervps.net',
+      },
+    ],
     formats: ['image/webp', 'image/avif'], // Formatos modernos para mejor compresión
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840], // Tamaños responsivos
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Tamaños para iconos

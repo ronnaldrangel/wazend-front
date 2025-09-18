@@ -8,7 +8,6 @@ export default function Document() {
       <Head>
         {/* Meta tags básicos para SEO */}
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="theme-color" content="#059669" />
         <meta name="msapplication-TileColor" content="#059669" />
